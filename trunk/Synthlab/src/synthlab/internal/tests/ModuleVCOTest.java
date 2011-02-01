@@ -25,6 +25,5 @@ public class ModuleVCOTest extends TestCase
     assertTrue(vco_.getOutput("oFrequency").getValue() == 2);
   }
 
-  
   private synthlab.internal.modules.ModuleVCO vco_;
 }
