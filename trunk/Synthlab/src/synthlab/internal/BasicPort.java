@@ -1,4 +1,4 @@
-package synthlab.internal.modules;
+package synthlab.internal;
 
 import synthlab.api.Port;
 

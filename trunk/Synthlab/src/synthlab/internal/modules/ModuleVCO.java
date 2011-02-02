@@ -1,6 +1,7 @@
 package synthlab.internal.modules;
 
 import synthlab.internal.BasicModule;
+import synthlab.internal.BasicPort;
 
 public class ModuleVCO extends BasicModule
 {
