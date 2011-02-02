@@ -49,7 +49,7 @@ public class GestionDeSound{
     public static void main(String args[])throws UnsupportedAudioFileException, LineUnavailableException, IOException
     {
       GestionDeSound g=new GestionDeSound();
-      g.play();
+        g.play();
       //System.out.println(g.toString());
     }
 
