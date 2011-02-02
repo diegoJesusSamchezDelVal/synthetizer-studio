@@ -6,8 +6,6 @@ import java.util.List;
 public interface Module
 {
   // --- Name
-  public void setName(String name);
-
   public String getName();
 
   // --- Inputs

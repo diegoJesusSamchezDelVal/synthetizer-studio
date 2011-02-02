@@ -3,20 +3,15 @@ package synthlab.api;
 public interface Port
 {
   // --- Name
-  public void setName(String name);
-
   public String getName();
   
   // --- Value
   public void setValue(Integer value);
   
-  Integer getValue();
+  public Integer getValue();
   
-  // --- Link
-  public void setLink( Port port );
+  // --- Module
+  public Module getModule();
   
-  public Port getLink();
-  
-  // --- Manipulation
-  public void refresh();
+  public void setModule(Module module);
 }

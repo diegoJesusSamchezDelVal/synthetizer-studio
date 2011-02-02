@@ -1,43 +1,20 @@
 package synthlab.api;
 
-import java.util.Map;
+import java.util.List;
 
-
-public class ModulePool
+public interface ModulePool
 {
-  public void register(Module module)
-  {
-    if (exists(module.getName()))
-      return;
+  public void register(Module module);
 
-    modules_.put(module.getName(), module);
-  }
+  public void unregister(Module module);
 
-  public void unregister(Module module)
-  {
-    unregister(module.getName());
-  }
+  public boolean contains(Module module);
 
-  public void unregister(String name)
-  {
-    if (!exists(name))
-      return;
+  public void link(Port p1, Port p2);
 
-    modules_.remove(name);
-  }
+  public void unlink(Port p1, Port p2);
+  
+  public boolean linked(Port p1, Port p2);
 
-  public boolean exists(String name)
-  {
-    return modules_.containsKey(name);
-  }
-
-  public Module retrieve(String name)
-  {
-    if (!exists(name))
-      return null;
-
-    return modules_.get(name);
-  }
-
-  private Map<String, Module> modules_;
+  public List<Module> getModules();
 }

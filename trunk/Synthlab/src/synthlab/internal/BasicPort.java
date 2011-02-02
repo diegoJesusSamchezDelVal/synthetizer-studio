@@ -1,20 +1,15 @@
 package synthlab.internal;
 
+import synthlab.api.Module;
 import synthlab.api.Port;
 
 public class BasicPort implements Port
 {
-  public BasicPort(String name, Integer value, Port link)
+  public BasicPort(String name, Integer value)
   {
-    setName(name);
-    setValue(value);
-    setLink(link);
-  }
-
-  @Override
-  public void setName(String name)
-  {
+    module_ = null;
     name_ = name;
+    setValue(value);
   }
 
   @Override
@@ -34,26 +29,20 @@ public class BasicPort implements Port
   {
     return value_;
   }
-
+  
   @Override
-  public void setLink(Port link)
+  public Module getModule()
   {
-    link_ = link;
+    return module_;
   }
-
+  
   @Override
-  public Port getLink()
+  public void setModule(Module module)
   {
-    return link_;
-  }
-
-  @Override
-  public void refresh()
-  {
-
+    module_ = module;
   }
 
   private String  name_;
   private Integer value_;
-  private Port    link_;
+  private Module  module_;
 }

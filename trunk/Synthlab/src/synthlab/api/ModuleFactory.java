@@ -14,4 +14,10 @@ public class ModuleFactory
     //TODO
     return null;
   }
+  
+  public Module createFromAnnotated(Object object)
+  {
+    //TODO
+    return null;
+  }
 }

@@ -35,7 +35,7 @@ drawl[0]=Math.abs((int)ml[0]);
 System.out.println(drawl[0]); 
 for(int i=0;i<drawl.length-1;i++) 
 { 
-g.drawLine(i*this.getWidth()/256,drawl+100,(i+1)*this.getWidth()/256,drawl[i+1]+100); 
+g.drawLine(i*this.getWidth()/256,drawl[i]+100,(i+1)*this.getWidth()/256,drawl[i+1]+100); 
 } 
 }
 } 

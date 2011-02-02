@@ -7,11 +7,11 @@ public class ModuleVCO extends BasicModule
 {
   public ModuleVCO()
   {
-    setName("VCO");
+    super("VCO");
 
-    addInput(new BasicPort("iFrequency", 0, null));
-    addInput(new BasicPort("iConstant", 1, null));
-    addOutput(new BasicPort("oFrequency", 0, null));
+    addInput(new BasicPort("iFrequency", 0));
+    addInput(new BasicPort("iConstant", 1));
+    addOutput(new BasicPort("oFrequency", 0));
   }
 
   @Override

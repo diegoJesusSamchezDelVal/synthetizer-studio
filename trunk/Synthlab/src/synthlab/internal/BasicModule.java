@@ -10,15 +10,10 @@ import synthlab.api.Port;
 
 public abstract class BasicModule implements Module
 {
-  public BasicModule()
+  public BasicModule(String name)
   {
-    inputs_ = new HashMap<String,Port>();
-    outputs_ = new HashMap<String,Port>();
-  }
-  
-  @Override
-  public void setName(String name)
-  {
+    inputs_ = new HashMap<String, Port>();
+    outputs_ = new HashMap<String, Port>();
     name_ = name;
   }
 
@@ -34,6 +29,7 @@ public abstract class BasicModule implements Module
     if (inputExists(input.getName()))
       return;
 
+    input.setModule(this);
     inputs_.put(input.getName(), input);
   }
 
@@ -50,6 +46,7 @@ public abstract class BasicModule implements Module
     if (!inputExists(name))
       return;
 
+    inputs_.get(name).setModule(null);
     inputs_.remove(name);
   }
 
@@ -59,13 +56,13 @@ public abstract class BasicModule implements Module
     for (String name : names)
       removeInput(name);
   }
-  
+
   @Override
-  public Port getInput( String name )
+  public Port getInput(String name)
   {
     if (!inputExists(name))
       return null;
-    
+
     return inputs_.get(name);
   }
 
@@ -86,7 +83,8 @@ public abstract class BasicModule implements Module
     if (outputExists(output.getName()))
       return;
 
-    outputs_.put(output.getName(),output);
+    output.setModule(this);
+    outputs_.put(output.getName(), output);
   }
 
   @Override
@@ -102,6 +100,7 @@ public abstract class BasicModule implements Module
     if (!outputExists(name))
       return;
 
+    outputs_.get(name).setModule(null);
     outputs_.remove(name);
   }
 
@@ -113,14 +112,14 @@ public abstract class BasicModule implements Module
   }
 
   @Override
-  public Port getOutput( String name )
+  public Port getOutput(String name)
   {
     if (!outputExists(name))
       return null;
-    
+
     return outputs_.get(name);
   }
-  
+
   @Override
   public List<Port> getOutputs()
   {
