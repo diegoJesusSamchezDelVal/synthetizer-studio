@@ -48,7 +48,6 @@ public class GeneratorDuSound{
       buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
     }
     
-    
       line.write(buffer, 0, 44100*2);
 
       line.stop();
