@@ -107,31 +107,19 @@ public class ModuleTest extends TestCase
     assertFalse(pool.linked(m1.getOutput("oFrequency"), m2.getInput("iFrequency")));
   }
   
-  @Test
-  public void testScheduler()
-  {
-ModulePool pool = ModulePoolFactory.createDefault();
-    
-    ModuleVCO m1 = new ModuleVCO();
-    ModuleVCO m2 = new ModuleVCO();
-    
-    pool.register(m1);
-    pool.register(m2);
-    
-    pool.link(m1.getOutput("oFrequency"), m2.getInput("iFrequency"));
-    
-    Scheduler s = SchedulerFactory.createDefault();
-    
-    s.setPool(pool);
-    
-    s.play(5);
-  }
-  
   static public Module createModule( String name, int nbInputs, int nbOutputs )
   {
     BasicModule module = new BasicModule(name) {
       @Override
-      public void compute(){}
+      public void compute()
+      {
+        // Accumulate all inputs and propagate to output
+        int sum = 1;
+        for ( Port p : getInputs() )
+          sum += p.getValue();
+        for ( Port p : getOutputs() )
+          p.setValue(sum);
+      }
     };
     
     for ( int i=0; i<nbInputs; ++i )
@@ -149,18 +137,24 @@ ModulePool pool = ModulePoolFactory.createDefault();
     return module;
   }
   
-  public void printLayers(List<List<Module>> layers)
+  @Test
+  public void testScheduler()
   {
-    int i = 0;
-    for ( List<Module> layer : layers )
-    {
-      System.out.println("Layer "+(i+1)+":");
-      for ( Module m : layer )
-      {
-        System.out.println(" - Module: "+m.getName());
-      }
-      ++i;
-    }
+    ModulePool pool = ModulePoolFactory.createDefault();
+    
+    Module m1 = createModule("m1", 0, 1);
+    Module m2 = createModule("m2", 1, 0);
+    
+    pool.register(m1);
+    pool.register(m2);
+    
+    pool.link(m1.getOutput("o1"), m2.getInput("i1"));
+    
+    Scheduler s = SchedulerFactory.createDefault();
+    
+    s.setPool(pool);
+    
+    //s.play(5);
   }
   
   @Test
@@ -257,8 +251,6 @@ ModulePool pool = ModulePoolFactory.createDefault();
     
     s.setPool(pool);
     
-    List<List<Module>> layers = s.getLayers();
-    
-    printLayers(layers);
+    s.play(5);
   }
 }

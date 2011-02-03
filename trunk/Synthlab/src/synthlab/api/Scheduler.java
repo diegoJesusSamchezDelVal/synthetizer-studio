@@ -11,7 +11,7 @@ public interface Scheduler
 
   public void reorder();
 
-  public List<List<Module>> getLayers();
+  public List<Module> getTasks();
 
   // --- ModulePool
   public void setPool(ModulePool pool);

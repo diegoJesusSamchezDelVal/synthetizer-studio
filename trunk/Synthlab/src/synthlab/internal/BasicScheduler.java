@@ -15,13 +15,37 @@ public class BasicScheduler implements Scheduler
 {
   public BasicScheduler()
   {
-    layers_ = new ArrayList<List<Module>>();
+    tasks_ = null;
+    pool_ = null;
+    links_ = null;
   }
 
   @Override
   public void play(int count)
   {
-    // TODO
+    // Sanity check
+    if (pool_ == null || tasks_ == null || links_ == null)
+      return;
+
+    System.out.println();
+    System.out.println(">>> Wave #0");
+    printStatus();
+    for (int i = count; i > 0; --i)
+    {
+      // Execute all tasks
+      for (Module module : tasks_)
+      {
+        module.compute();
+      }
+      // Propagate all outputs to inputs
+      for (Map.Entry<Port, Port> link : links_.entrySet())
+      {
+        link.getValue().setValue(link.getKey().getValue());
+      }
+      System.out.println();
+      System.out.println(">>> Wave #"+((count-i)+1));
+      printStatus();
+    }
   }
 
   @Override
@@ -35,9 +59,10 @@ public class BasicScheduler implements Scheduler
   {
     // Following is a topological sort. When we encounter a cycle, we group all
     // nodes in the same layer and resume the sort.
-    List<Module> modules = pool_.getModules();
+    tasks_ = pool_.getModules();
+    links_ = pool_.getLinks();
   }
-  
+
   @Override
   public ModulePool getPool()
   {
@@ -53,11 +78,28 @@ public class BasicScheduler implements Scheduler
   }
 
   @Override
-  public List<List<Module>> getLayers()
+  public List<Module> getTasks()
   {
-    return layers_;
+    return tasks_;
+  }
+  
+  private void printStatus()
+  {
+    for (Module module : tasks_)
+    {
+      System.out.println(" - Module "+module.getName());
+      for ( Port port : module.getInputs() )
+      {
+        System.out.println("   -> "+port.getName()+" = "+port.getValue());
+      }
+      for ( Port port : module.getOutputs() )
+      {
+        System.out.println("      "+port.getName()+" = "+port.getValue()+" ->");
+      }
+    }
   }
 
-  private ModulePool         pool_;
-  private List<List<Module>> layers_;
+  private ModulePool        pool_;
+  private List<Module>      tasks_;
+  private BiMap<Port, Port> links_;
 }
