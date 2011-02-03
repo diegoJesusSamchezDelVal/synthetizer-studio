@@ -1,3 +1,4 @@
+package starter;
 public class SynthlabGUI
 {
   public static void main(String[] args)
