@@ -1,6 +1,7 @@
 package synthlab.internal;
 
 import java.util.List;
+import com.google.common.collect.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class BasicModulePool implements ModulePool
     modules_ = new ArrayList<Module>();
     uuids2modules_ = new HashMap<UUID, Module>();
     modules2uuids_ = new HashMap<Module, UUID>();
-    outputs2inputs_ = new HashMap<Port,Port>();
+    links_ = HashBiMap.create();
   }
 
   @Override
@@ -92,7 +93,7 @@ public class BasicModulePool implements ModulePool
       }
     }
 
-    outputs2inputs_.put(output, input);
+    links_.put(output, input);
   }
 
   @Override
@@ -126,17 +127,23 @@ public class BasicModulePool implements ModulePool
       }
     }
 
-    outputs2inputs_.remove(output);
+    links_.remove(output);
   }
 
   @Override
   public boolean linked(Port p1, Port p2)
   {
-    return outputs2inputs_.get(p1)==p2 || outputs2inputs_.get(p2)==p1;
+    return links_.get(p1) == p2 || links_.inverse().get(p1) == p2;
+  }
+
+  @Override
+  public BiMap<Port, Port> getLinks()
+  {
+    return links_;
   }
 
   private List<Module>      modules_;
   private Map<UUID, Module> uuids2modules_;
   private Map<Module, UUID> modules2uuids_;
-  private Map<Port, Port>   outputs2inputs_;
+  private BiMap<Port, Port> links_;
 }

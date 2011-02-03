@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/private/student/6/36/25000636/projects/synthetizer-studio/guava-r08.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
