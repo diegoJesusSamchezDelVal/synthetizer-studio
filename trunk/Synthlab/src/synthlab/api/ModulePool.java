@@ -1,6 +1,8 @@
 package synthlab.api;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.BiMap;
 
@@ -14,7 +16,7 @@ public interface ModulePool
   public boolean contains(Module module);
   
   public List<Module> getModules();
-
+  
   // --- Links
   public void link(Port p1, Port p2);
 
