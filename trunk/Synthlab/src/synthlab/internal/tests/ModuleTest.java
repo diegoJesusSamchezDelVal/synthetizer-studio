@@ -4,14 +4,6 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-import java.util.List;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 import synthlab.api.*;
 import synthlab.internal.*;
 import synthlab.internal.modules.*;
@@ -267,7 +259,7 @@ public class ModuleTest extends TestCase
   }
   
   @Test
-  public void testOut() throws LineUnavailableException
+  public void testOut()
   {
     //ModuleVCO vco = new ModuleVCO();
     //ModuleOut out = new ModuleOut();
