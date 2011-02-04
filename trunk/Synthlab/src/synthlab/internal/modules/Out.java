@@ -14,7 +14,7 @@ public class Out extends BasicModule{
   @Override
   public void compute()
   {
-    double ifreq = getInput("Vol-in").getValue();
+    double volIn = getInput("Vol-in").getValue();
     
   }
   
