@@ -12,7 +12,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class GeneratorDuSound{
 
-  private SourceDataLine      line; 
+  private static  SourceDataLine      line; 
   private AudioFormat         baseFormat;
   
   private SourceDataLine getLine(AudioFormat audioFormat) {
@@ -47,15 +47,16 @@ public class GeneratorDuSound{
       buffer[sample*2] = (byte)(value & 0xFF);
       buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
     }
-    
+    while(true){
       line.write(buffer, 0, 44100*2);
-
-      line.stop();
+    }
+      
   }
   public static void main(String args[])throws UnsupportedAudioFileException, LineUnavailableException, IOException
   {
     GeneratorDuSound g=new GeneratorDuSound();
       g.play();
+      line.stop();
   
   }
 
