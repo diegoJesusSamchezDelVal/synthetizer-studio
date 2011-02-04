@@ -6,6 +6,12 @@ import junit.framework.TestCase;
 
 import java.util.List;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+
 import synthlab.api.*;
 import synthlab.internal.*;
 import synthlab.internal.modules.*;
@@ -251,6 +257,23 @@ public class ModuleTest extends TestCase
     
     s.setPool(pool);
     
-    s.play(5);
+    long start = System.currentTimeMillis();
+    long i = 0;
+    while ( System.currentTimeMillis()-start<1000 )
+    {
+      ++i;
+      s.play(1);
+    }
+    
+    // Be sure we are able to compute at least 44100 samples per second
+    assertTrue( i>44100 );
+    
+    System.out.println("We were able to compute "+i+" samples/second");
+  }
+  
+  @Test
+  public void testOut() throws LineUnavailableException
+  {
+    
   }
 }

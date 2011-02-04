@@ -6,9 +6,9 @@ public interface Port
   public String getName();
   
   // --- Value
-  public void setValue(Integer value);
+  public void setValue(double value);
   
-  public Integer getValue();
+  public double getValue();
   
   // --- Module
   public Module getModule();

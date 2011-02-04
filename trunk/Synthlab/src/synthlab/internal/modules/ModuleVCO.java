@@ -17,9 +17,9 @@ public class ModuleVCO extends BasicModule
   @Override
   public void compute()
   {
-    Integer ifreq = getInput("iFrequency").getValue();
-    Integer iconst = getInput("iConstant").getValue();
-    Integer out = (int) Math.pow(2., (ifreq + iconst));
+    double ifreq = getInput("iFrequency").getValue();
+    double iconst = getInput("iConstant").getValue();
+    double out = (int) Math.pow(2., (ifreq + iconst));
     getOutput("oFrequency").setValue(out);
   }
 }
