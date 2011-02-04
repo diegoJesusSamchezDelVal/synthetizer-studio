@@ -18,8 +18,7 @@ public class BasicModulePool implements ModulePool
   public BasicModulePool()
   {
     modules_ = new ArrayList<Module>();
-    uuids2modules_ = new HashMap<UUID, Module>();
-    modules2uuids_ = new HashMap<Module, UUID>();
+    uuids_ = HashBiMap.create();
     links_ = HashBiMap.create();
   }
 
@@ -31,9 +30,7 @@ public class BasicModulePool implements ModulePool
       return;
 
     modules_.add(module);
-    UUID uuid = UUID.randomUUID();
-    uuids2modules_.put(uuid, module);
-    modules2uuids_.put(module, uuid);
+    uuids_.put(UUID.randomUUID(), module);
   }
 
   @Override
@@ -44,9 +41,7 @@ public class BasicModulePool implements ModulePool
       return;
 
     modules_.remove(module);
-    UUID uuid = modules2uuids_.get(module);
-    uuids2modules_.remove(uuid);
-    modules2uuids_.remove(module);
+    uuids_.inverse().remove(module);
   }
 
   @Override
@@ -144,8 +139,7 @@ public class BasicModulePool implements ModulePool
     return links_;
   }
 
-  private List<Module>      modules_;
-  private Map<UUID, Module> uuids2modules_;
-  private Map<Module, UUID> modules2uuids_;
-  private BiMap<Port, Port> links_;
+  private List<Module>        modules_;
+  private BiMap<UUID, Module> uuids_;
+  private BiMap<Port, Port>   links_;
 }
