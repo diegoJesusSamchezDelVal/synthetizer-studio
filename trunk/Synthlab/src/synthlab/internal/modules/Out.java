@@ -8,13 +8,13 @@ public class Out extends BasicModule{
   public Out(String name)
   {
     super("parleur");
-    addInput(new BasicPort("iFrequency", 0));
+    addInput(new BasicPort("Vol-in", 0));
   }
 
   @Override
   public void compute()
   {
-    double ifreq = getInput("iFrequency").getValue();
+    double ifreq = getInput("Vol-in").getValue();
     
   }
   
