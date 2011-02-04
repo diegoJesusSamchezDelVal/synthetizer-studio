@@ -36,7 +36,6 @@ public class GestionDeSound{
     private void play()throws UnsupportedAudioFileException, LineUnavailableException, IOException{
         ais= AudioSystem.getAudioInputStream(new File(file_path));
         baseFormat = ais.getFormat();
-        //System.out.println(ais.toString());
         line = getLine(baseFormat);
         line.start();
         int inBytes = 0;
