@@ -9,8 +9,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
@@ -60,5 +58,4 @@ public class Out extends BasicModule{
        data.clear();
      } 
   }
-
 }
