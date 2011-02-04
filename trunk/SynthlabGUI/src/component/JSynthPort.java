@@ -1,9 +1,12 @@
 package component;
 
+import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
- * Cette classe hérite de JPanel et représente un port 
+ * Cette classe hï¿½rite de JPanel et reprï¿½sente un port 
  * */
 public class JSynthPort extends JPanel {
 
@@ -17,13 +20,17 @@ public class JSynthPort extends JPanel {
 	private JSynthModule parent;
 	
 	public JSynthPort(JSynthModule parent) {
-		this.parent = parent;
-		
+		this.parent = parent;	
 	
 	}
 	
+	public void paint(Graphics gc) {
+		ImageIcon img = new ImageIcon("res/image/port.png");
+		gc.drawImage(img.getImage(), 0, 0, null);		
+	}
+	
 	/**
-	 * Appelé apès changement de taille d'un composant module
+	 * Appelï¿½ apï¿½s changement de taille d'un composant module
 	 * */
 	public void notifyChange() {
 		
