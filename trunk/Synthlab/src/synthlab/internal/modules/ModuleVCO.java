@@ -12,6 +12,10 @@ public class ModuleVCO extends BasicModule
     addInput(new BasicPort("iFrequency", 0));
     addInput(new BasicPort("iConstant", 1));
     addOutput(new BasicPort("oFrequency", 0));
+
+    frameCount_ = 0;
+    frameRate_ = 44100;
+    initialFrequency_ = 440.;
   }
 
   @Override
@@ -19,7 +23,15 @@ public class ModuleVCO extends BasicModule
   {
     double ifreq = getInput("iFrequency").getValue();
     double iconst = getInput("iConstant").getValue();
-    double out = (int) Math.pow(2., (ifreq + iconst));
+    double out = Math.sin((double) frameCount_ / (double) frameRate_ * initialFrequency_ * 2. * Math.PI);
+    out *= (Short.MAX_VALUE);
+    out *= Math.pow(2, ifreq+iconst);
     getOutput("oFrequency").setValue(out);
+
+    frameCount_ = ++frameCount_ % 441400;
   }
+
+  private int    frameCount_;
+  private int    frameRate_;
+  private double initialFrequency_;
 }
