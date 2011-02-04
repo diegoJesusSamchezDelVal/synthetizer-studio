@@ -13,7 +13,9 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class GestionDeSound{
+    //private String file_path="source/homersimpson.wav";
     private String file_path="source/Audio.wav";
+    //private String file_path="source/garfield.wav"; 
     private AudioInputStream    ais; 
     private SourceDataLine      line; 
     private AudioFormat         baseFormat;

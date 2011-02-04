@@ -36,7 +36,7 @@ public class GeneratorDuSound{
     
     byte[] buffer = new byte[44100*2];
     final int maxVolume =(int) Math.pow(2.0, 15.0);
-    final double frequency = 3000.0;
+    final double frequency = 440.0;
     final double periodePerSample = frequency / 44100.0;
     double currentPositionInPeriode = 0.0;
     for(int sample=0; sample<44100; sample++) {
@@ -56,7 +56,7 @@ public class GeneratorDuSound{
   {
     GeneratorDuSound g=new GeneratorDuSound();
       g.play();
-    //System.out.println(g.toString());
+  
   }
 
 }
