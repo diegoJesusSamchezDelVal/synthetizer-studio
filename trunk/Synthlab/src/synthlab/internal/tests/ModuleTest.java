@@ -29,11 +29,7 @@ public class ModuleTest extends TestCase
 
     assertTrue(vco_.getInput("iFrequency").getValue() == 0);
     assertTrue(vco_.getInput("iConstant").getValue() == 1);
-    assertTrue(vco_.getOutput("oFrequency").getValue() == 0);
-
-    vco_.compute();
-
-    assertTrue(vco_.getOutput("oFrequency").getValue() == 2);
+    assertTrue(vco_.getOutput("oSignal").getValue() == 0);
   }
 
   @Test
@@ -102,15 +98,15 @@ public class ModuleTest extends TestCase
     pool.register(m1);
     pool.register(m2);
     
-    assertFalse(pool.linked(m1.getOutput("oFrequency"), m2.getInput("iFrequency")));
+    assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
     
-    pool.link(m1.getOutput("oFrequency"), m2.getInput("iFrequency"));
+    pool.link(m1.getOutput("oSignal"), m2.getInput("iFrequency"));
     
-    assertTrue(pool.linked(m1.getOutput("oFrequency"), m2.getInput("iFrequency")));
+    assertTrue(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
     
-    pool.unlink(m1.getOutput("oFrequency"), m2.getInput("iFrequency"));
+    pool.unlink(m1.getOutput("oSignal"), m2.getInput("iFrequency"));
     
-    assertFalse(pool.linked(m1.getOutput("oFrequency"), m2.getInput("iFrequency")));
+    assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
   }
   
   static public Module createModule( String name, int nbInputs, int nbOutputs )
@@ -266,14 +262,27 @@ public class ModuleTest extends TestCase
     }
     
     // Be sure we are able to compute at least 44100 samples per second
-    assertTrue( i>44100 );
-    
     System.out.println("We were able to compute "+i+" samples/second");
+    assertTrue( i>44100 );
   }
   
   @Test
   public void testOut() throws LineUnavailableException
   {
+    //ModuleVCO vco = new ModuleVCO();
+    //ModuleOut out = new ModuleOut();
     
+    //ModulePool pool = ModulePoolFactory.createDefault();
+    
+    //Scheduler s = SchedulerFactory.createDefault();
+    
+    //pool.register(vco);
+    //pool.register(out);
+    
+    //pool.link(vco.getOutput("iSignal"), out.getInput("iSignal"));
+    
+    //s.setPool(pool);
+    
+    //s.play(44100);
   }
 }

@@ -27,11 +27,12 @@ public class BasicScheduler implements Scheduler
     if (pool_ == null || tasks_ == null || links_ == null)
       return;
 
-    System.out.println();
-    System.out.println(">>> Wave #0");
-    printStatus();
+    //System.out.println();
+    //System.out.println(">>> Wave #0");
+    //printStatus();
     for (int i = count; i > 0; --i)
     {
+      long start = System.currentTimeMillis();
       // Execute all tasks
       for (Module module : tasks_)
       {
@@ -42,9 +43,9 @@ public class BasicScheduler implements Scheduler
       {
         link.getValue().setValue(link.getKey().getValue());
       }
-      System.out.println();
-      System.out.println(">>> Wave #"+((count-i)+1));
-      printStatus();
+      //System.out.println();
+      //System.out.println(">>> Wave #"+((count-i)+1));
+      //printStatus();
     }
   }
 
@@ -89,13 +90,9 @@ public class BasicScheduler implements Scheduler
     {
       System.out.println(" - Module "+module.getName());
       for ( Port port : module.getInputs() )
-      {
         System.out.println("   -> "+port.getName()+" = "+port.getValue());
-      }
       for ( Port port : module.getOutputs() )
-      {
         System.out.println("      "+port.getName()+" = "+port.getValue()+" ->");
-      }
     }
   }
 
