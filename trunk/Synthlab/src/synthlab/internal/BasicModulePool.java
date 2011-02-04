@@ -62,32 +62,21 @@ public class BasicModulePool implements ModulePool
     // Check which port is the output and which one is the input
     Port input;
     Port output;
-
-    if (p1.getModule().getInputs().contains(p1))
+    
+    if ( p1.isInput() && p2.isOutput() )
     {
-      if (p2.getModule().getInputs().contains(p2))
-      {
-        // Error, both ports are inputs
-        return;
-      }
-      else
-      {
-        input = p1;
-        output = p2;
-      }
+      input = p1;
+      output = p2;
+    }
+    else if ( p1.isOutput() && p2.isInput() )
+    {
+      input = p2;
+      output = p1;
     }
     else
     {
-      if (p2.getModule().getOutputs().contains(p2))
-      {
-        // Error, both ports are outputs
-        return;
-      }
-      else
-      {
-        output = p1;
-        input = p2;
-      }
+      // Error, both ports are inputs or outputs
+      return;
     }
 
     links_.put(output, input);

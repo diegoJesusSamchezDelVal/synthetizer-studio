@@ -41,6 +41,18 @@ public class BasicPort implements Port
   {
     module_ = module;
   }
+  
+  @Override
+  public boolean isInput()
+  {
+    return getModule().getInputs().contains(this);
+  }
+  
+  @Override
+  public boolean isOutput()
+  {
+    return getModule().getOutputs().contains(this);
+  }
 
   private String name_;
   private double value_;

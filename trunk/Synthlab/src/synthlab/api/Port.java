@@ -10,6 +10,11 @@ public interface Port
   
   public double getValue();
   
+  // --- Input/Output
+  public boolean isInput();
+  
+  public boolean isOutput();
+  
   // --- Module
   public Module getModule();
   
