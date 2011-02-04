@@ -23,9 +23,8 @@ public class ModuleVCO extends BasicModule
   {
     double ifreq = getInput("iFrequency").getValue();
     double iconst = getInput("iConstant").getValue();
-    double out = Math.sin((double) frameCount_ / (double) frameRate_ * initialFrequency_ * 2. * Math.PI);
-    out *= (Short.MAX_VALUE);
-    out *= Math.pow(2, ifreq+iconst);
+    double out = Math.sin( ((double)frameCount_/(double)frameRate_) * initialFrequency_ * 2. * Math.PI);
+    //out *= Math.pow(2, ifreq+iconst);
     getOutput("oSignal").setValue(out);
 
     frameCount_ = ++frameCount_ % 441400;

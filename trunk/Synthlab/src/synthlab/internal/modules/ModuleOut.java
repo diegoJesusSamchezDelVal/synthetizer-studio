@@ -1,10 +1,13 @@
 package synthlab.internal.modules;
 
+import java.awt.image.VolatileImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import javax.crypto.spec.IvParameterSpec;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,13 +20,13 @@ public class ModuleOut extends BasicModule
   public ModuleOut()
   {
     super("Out");
+    
+    sampleCompteur  = 0;
     addInput(new BasicPort("iSignal", 0));
-    baseFormat = new AudioFormat(44100.0f, 16, 1, true, false);
-    int nFrames = (int) Math.ceil(44100 * 1.0);
-    data = ByteBuffer.allocate(2 * 4410);
-    stream = new AudioInputStream(new ByteArrayInputStream(data.array()),
-        baseFormat, nFrames);
-
+    
+    baseFormat =  new AudioFormat(Encoding.PCM_SIGNED, 44100, Short.SIZE, 1, 2, 44100, true);
+    
+    data = ByteBuffer.allocate(2*44100);
   }
 
   @Override
@@ -31,16 +34,15 @@ public class ModuleOut extends BasicModule
   {
     double volIn = getInput("iSignal").getValue();
     
-    if (volIn < 1 && volIn > -1)
-    {
-      sampleCompteur++;
-      data.putShort((short) volIn);
-
-    }
-
+    volIn = Math.max(-1, volIn);
+    volIn = Math.min( 1, volIn);
+    
+    sampleCompteur++;
+    data.putShort((short) (volIn*Short.MAX_VALUE));
+    stream = new AudioInputStream(new ByteArrayInputStream(data.array()),  baseFormat, 44100*2);
     try
     {
-      if (sampleCompteur == 4410)
+      if (sampleCompteur == 44099)
       {
         Clip clip = AudioSystem.getClip();
         clip.open(stream);
@@ -51,7 +53,7 @@ public class ModuleOut extends BasicModule
     }
     catch (Exception e)
     {
-
+      e.printStackTrace();
     }
   }
 

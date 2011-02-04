@@ -271,7 +271,7 @@ public class ModuleTest extends TestCase
     pool.register(vco);
     pool.register(out);
     
-    pool.link(vco.getOutput("iSignal"), out.getInput("iSignal"));
+    pool.link(vco.getOutput("oSignal"), out.getInput("iSignal"));
     
     s.setPool(pool);
     
