@@ -261,20 +261,20 @@ public class ModuleTest extends TestCase
   @Test
   public void testOut()
   {
-    //ModuleVCO vco = new ModuleVCO();
-    //ModuleOut out = new ModuleOut();
+    ModuleVCO vco = new ModuleVCO();
+    ModuleOut out = new ModuleOut();
     
-    //ModulePool pool = ModulePoolFactory.createDefault();
+    ModulePool pool = ModulePoolFactory.createDefault();
     
-    //Scheduler s = SchedulerFactory.createDefault();
+    Scheduler s = SchedulerFactory.createDefault();
     
-    //pool.register(vco);
-    //pool.register(out);
+    pool.register(vco);
+    pool.register(out);
     
-    //pool.link(vco.getOutput("iSignal"), out.getInput("iSignal"));
+    pool.link(vco.getOutput("iSignal"), out.getInput("iSignal"));
     
-    //s.setPool(pool);
+    s.setPool(pool);
     
-    //s.play(44100);
+    s.play(44100);
   }
 }

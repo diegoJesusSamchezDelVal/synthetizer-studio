@@ -63,6 +63,10 @@ public class BasicModulePool implements ModulePool
     Port input;
     Port output;
     
+    // Sanity check
+    if ( p1==null || p2==null )
+      return;
+    
     if ( p1.isInput() && p2.isOutput() )
     {
       input = p1;

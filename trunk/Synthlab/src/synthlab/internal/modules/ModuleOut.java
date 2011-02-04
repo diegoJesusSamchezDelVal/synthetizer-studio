@@ -14,9 +14,9 @@ import synthlab.internal.BasicPort;
 
 public class ModuleOut extends BasicModule
 {
-  public ModuleOut(String name)
+  public ModuleOut()
   {
-    super("parleur");
+    super("Out");
     addInput(new BasicPort("iSignal", 0));
     baseFormat = new AudioFormat(44100.0f, 16, 1, true, false);
     int nFrames = (int) Math.ceil(44100 * 1.0);

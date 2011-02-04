@@ -45,12 +45,20 @@ public class BasicPort implements Port
   @Override
   public boolean isInput()
   {
+    // Sanity check
+    if ( getModule()==null || getModule().getInputs()==null )
+      return false;
+    
     return getModule().getInputs().contains(this);
   }
   
   @Override
   public boolean isOutput()
   {
+    // Sanity check
+    if ( getModule()==null || getModule().getOutputs()==null )
+      return false;
+    
     return getModule().getOutputs().contains(this);
   }
 
