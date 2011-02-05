@@ -1,4 +1,4 @@
-package component.knob;
+package ui.component.knob;
 
 public interface JSynthKnobTurnListener {
 	

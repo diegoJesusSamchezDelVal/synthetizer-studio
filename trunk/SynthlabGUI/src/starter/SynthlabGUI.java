@@ -1,6 +1,6 @@
 package starter;
 
-import implement.window.MainWindow;
+import ui.impl.MainWindow;
 
 public class SynthlabGUI {
 	

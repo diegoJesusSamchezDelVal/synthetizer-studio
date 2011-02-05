@@ -1,4 +1,4 @@
-package component.knob;
+package ui.component.knob;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -21,7 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import component.JSynthResources;
+import ui.component.JSynthResources;
+
 
 public class JSynthKnob extends JPanel implements MouseListener, MouseMotionListener, ImageObserver {
 

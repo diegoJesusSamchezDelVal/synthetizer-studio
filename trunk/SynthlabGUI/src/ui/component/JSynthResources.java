@@ -1,4 +1,4 @@
-package component;
+package ui.component;
 
 public class JSynthResources {
 	

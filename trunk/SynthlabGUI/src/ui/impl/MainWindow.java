@@ -1,4 +1,4 @@
-package implement;
+package ui.impl;
 
 import java.awt.BorderLayout;
 import java.util.ResourceBundle;

@@ -1,6 +1,6 @@
-package implement.module;
+package ui.impl.module;
 
-import component.JSynthModule;
+import ui.component.JSynthModule;
 
 public class SpeakerModule extends JSynthModule {
 
