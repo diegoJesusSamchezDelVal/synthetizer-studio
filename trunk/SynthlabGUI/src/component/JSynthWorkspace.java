@@ -3,6 +3,9 @@ package component;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+/**
+ * Espace pour afficher les modules utilisés.
+ * */
 public class JSynthWorkspace extends JPanel {
 
 	/**

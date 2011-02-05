@@ -1,10 +1,13 @@
-package implement.window;
+package implement;
 
 import java.awt.BorderLayout;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 
+/**
+ * La fenêtre principale de l'application.
+ * */
 public class MainWindow extends JFrame {
 	
 	/**
