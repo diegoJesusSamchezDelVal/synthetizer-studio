@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -68,17 +69,19 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		
 		
 				
-		backgroundImage = new ImageIcon(JSynthResources.KNOB_SCALE_MINMAX_IMAGE);
-		knobImage = new ImageIcon(JSynthResources.KNOB_BASE_IMAGE);
-		pointerImage = new ImageIcon(JSynthResources.KNOB_GREEN_POINTER_IMAGE);
+		//backgroundImage = new ImageIcon(JSynthResources.KNOB_SCALE_MINMAX_IMAGE);
+		//knobImage = new ImageIcon(JSynthResources.KNOB_BASE_IMAGE);
+		//pointerImage = new ImageIcon(JSynthResources.KNOB_GREEN_POINTER_IMAGE);
 		
-		knobPosition = new Point(
-				(backgroundImage.getIconWidth()-knobImage.getIconWidth())/2,
-				(backgroundImage.getIconHeight()-knobImage.getIconHeight())/2);
-		Dimension dim = new Dimension(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+		//knobPosition = new Point(
+		//		(backgroundImage.getIconWidth()-knobImage.getIconWidth())/2,
+		//		(backgroundImage.getIconHeight()-knobImage.getIconHeight())/2);
+		//Dimension dim = new Dimension(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+		Dimension dim = new Dimension(60,60);
 		setMinimumSize(dim);
 		setPreferredSize(dim);
 		setSize(dim);
+		setOpaque(false);
 		
 		centerPoint = new Point(getSize().width/2, getSize().width/2);
 		
@@ -106,13 +109,35 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	public void paintComponent(Graphics gc){
-		Graphics2D g = (Graphics2D)gc;
+		//Graphics2D g = (Graphics2D)gc;
+		
 			
-		g.drawImage(backgroundImage.getImage(), 0, 0, this);
-		g.drawImage(knobImage.getImage(), knobPosition.x, knobPosition.y, this);
+		//g.drawImage(backgroundImage.getImage(), 0, 0, this);
+		//g.drawImage(knobImage.getImage(), knobPosition.x, knobPosition.y, this);
 		// g.drawImage(pointerImage.getImage(), 0, 0, this);
-		g.setColor(Color.GREEN);
-		g.fillOval(pointerPosition.x, pointerPosition.y, 5, 5);
+	  
+	  // Enable anti-aliasing
+   /* RenderingHints renderHints = new RenderingHints(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    renderHints.put(RenderingHints.KEY_RENDERING,
+        RenderingHints.VALUE_RENDER_QUALITY);
+    ((Graphics2D) gc).setRenderingHints(renderHints);*/
+    
+	  gc.setColor(Color.white);
+	  gc.fillOval(0, 0, getWidth(), getHeight());
+	  
+	  gc.setColor(Color.black);
+	  gc.drawOval(5, 5, 50, 50);
+	  
+	  
+	  
+		gc.setColor(Color.GREEN);
+		gc.drawRect(pointerPosition.x, pointerPosition.y, centerPoint.x, centerPoint.y);
+		//gc.fillOval(pointerPosition.x-2, pointerPosition.y-2, 4, 4);
+		
+		gc.fillOval(centerPoint.x, centerPoint.y, 2, 2);
+		
+		
 		
 	
 	}
@@ -125,7 +150,8 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		Point currentPoint = e.getPoint();
-		System.out.println(currentPoint.toString());
+		// System.out.println(currentPoint.toString());
+		
 		int dx = centerPoint.x -  currentPoint.x;
 		int dy = centerPoint.y - currentPoint.y;
 		double currentAngle = Math.atan2(dy, dx);
@@ -139,7 +165,8 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		currentValue = percent * (maxValue - minValue);
 		
 		// mise à jour la position de pointer
-		pointerPosition = updatePointer(currentPoint);
+		pointerPosition = currentPoint;
+		
 		
 		notifyListener(currentValue);
 		
@@ -147,26 +174,18 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -176,31 +195,42 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	public Point updatePointer(Point currentPoint) {
-      double k = (centerPoint.y - currentPoint.y)/(centerPoint.x - currentPoint.x);
-  	  double b = centerPoint.y - (k * centerPoint.x); 
-  	  
-  	  boolean found = false;
-  	  double x = currentPoint.x;
-  	  while(!found) {
-    	    double y = k * x + b;
-    	    
-    	    int r =(int) Math.sqrt( Math.pow((centerPoint.y - y),2) + Math.pow((centerPoint.x - x),2));
-    	    if ((r-RADIUS) < 1) {
-    	        found = true;
-    	    } else {
-    	        if (x < centerPoint.x && r > RADIUS)
-    	          x++;
-    	        else if (x < centerPoint.x && r < RADIUS)
-    	          x--;
-    	        else if (x > centerPoint.x && r > RADIUS)
-                x--;
-    	        else if (x < centerPoint.x && r < RADIUS)
-                x++;	        
-    	    }	    
-  	  }
-  	  
-  	  int y = (int) (k * x + b);
-  	  return new Point((int) x,y);
+	    if ((centerPoint.x - currentPoint.x) != 0) {
+          double k =((double)(centerPoint.y - currentPoint.y))/((double)(centerPoint.x - currentPoint.x));
+      	  double b = centerPoint.y - (k * centerPoint.x); 
+      	  
+      	  //System.out.println(k+" "+b);
+      	  
+      	  boolean found = false;
+      	  double x = currentPoint.x;
+      	  while(!found) {
+        	    double y = k * x + b;
+        	    
+        	    int r =(int) Math.sqrt( Math.pow((centerPoint.y - y),2) + Math.pow((centerPoint.x - x),2));
+        	  //  System.out.println("R:"+r);
+        	    if ((r - RADIUS) < 1) {
+        	        found = true;
+        	    } else {
+        	        if (x < centerPoint.x && r > RADIUS)
+        	          x++;
+        	        else if (x < centerPoint.x && r < RADIUS)
+        	          x--;
+        	        else if (x > centerPoint.x && r > RADIUS)
+                    x--;
+        	        else if (x < centerPoint.x && r < RADIUS)
+                    x++;	        
+        	    }	    
+      	  }
+      	  
+      	  int y = (int) (k * x + b);
+      	  return new Point((int) x,y);
+	    } else {	      
+	      System.out.println("0");
+	        if (currentPoint.y < centerPoint.y)
+	            return new Point(centerPoint.x, centerPoint.y - RADIUS);
+	        else
+	            return pointerPosition;	        
+	    }
 	}
 	
 	
@@ -221,7 +251,7 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		knob.addKnobTurnListener(new JSynthKnobTurnListener() {			
 			@Override
 			public void knobTurned(KnobTurnEvent event) {
-				System.out.println("turned");
+				// System.out.println("turned");
 				DecimalFormat df = new DecimalFormat("0.00");
 				String s = df.format(event.getValue());
 				label.setText(s);				
