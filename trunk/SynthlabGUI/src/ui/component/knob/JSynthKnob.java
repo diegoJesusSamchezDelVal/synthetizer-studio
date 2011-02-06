@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.ImageObserver;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -32,6 +33,8 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static int RADIUS = 20;
 
 	private double minValue;
 	
@@ -136,6 +139,7 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		currentValue = percent * (maxValue - minValue);
 		
 		// mise à jour la position de pointer
+		pointerPosition = updatePointer(currentPoint);
 		
 		notifyListener(currentValue);
 		
@@ -171,6 +175,35 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		
 	}
 	
+	public Point updatePointer(Point currentPoint) {
+      double k = (centerPoint.y - currentPoint.y)/(centerPoint.x - currentPoint.x);
+  	  double b = centerPoint.y - (k * centerPoint.x); 
+  	  
+  	  boolean found = false;
+  	  double x = currentPoint.x;
+  	  while(!found) {
+    	    double y = k * x + b;
+    	    
+    	    int r =(int) Math.sqrt( Math.pow((centerPoint.y - y),2) + Math.pow((centerPoint.x - x),2));
+    	    if ((r-RADIUS) < 1) {
+    	        found = true;
+    	    } else {
+    	        if (x < centerPoint.x && r > RADIUS)
+    	          x++;
+    	        else if (x < centerPoint.x && r < RADIUS)
+    	          x--;
+    	        else if (x > centerPoint.x && r > RADIUS)
+                x--;
+    	        else if (x < centerPoint.x && r < RADIUS)
+                x++;	        
+    	    }	    
+  	  }
+  	  
+  	  int y = (int) (k * x + b);
+  	  return new Point((int) x,y);
+	}
+	
+	
 	/**
 	 * Test 
 	 * */
@@ -185,13 +218,13 @@ public class JSynthKnob extends JPanel implements MouseListener, MouseMotionList
 		f.add(knob);
 		f.add(label);
 		
-		knob.addKnobTurnListener(new JSynthKnobTurnListener() {
-			
+		knob.addKnobTurnListener(new JSynthKnobTurnListener() {			
 			@Override
 			public void knobTurned(KnobTurnEvent event) {
 				System.out.println("turned");
-				label.setText(String.valueOf(event.getValue()));
-				
+				DecimalFormat df = new DecimalFormat("0.00");
+				String s = df.format(event.getValue());
+				label.setText(s);				
 			}
 		});
 	}
