@@ -48,6 +48,14 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
     addMouseMotionListener(this);
   }
   
+  public void addKnobListener(KnobListener l) {
+    listeners.add(l);
+  }
+  
+  public void removeKnobListener(KnobListener l) {
+    listeners.remove(l);
+  }
+  
   public void paintComponent(Graphics gc){
     RenderingHints renderHints = new RenderingHints(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -97,7 +105,7 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
   {    
     repaint();
     pointer = updatePointer(e.getPoint());
-    //System.out.println(value);
+    System.out.println(value);
     
     notifyListener();
     
@@ -129,6 +137,9 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
         double b = centerPoint.y - (k * centerPoint.x);   
         
         if (hasBlock  && currentPoint.y > centerPoint.y && (k > Math.tan(Math.PI/6) || k < Math.tan(-Math.PI/6))){
+            if(pointer.x < centerPoint.x)
+              value = 0;
+            else value = 9999;
             return pointer;
         } else {
             
@@ -163,8 +174,9 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
         if (currentPoint.y < centerPoint.y) {
            value = 50; 
            return new Point(centerPoint.x, centerPoint.y - RADIUS);
-        } else
-            return pointer;         
+        } else {
+            return pointer;
+        }
     }
 }
   
@@ -174,12 +186,14 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
     int result;
     if (currentPoint.x < centerPoint.x){
        angle += Math.PI/6;
-       result = (int) (angle / (Math.PI / 150) /2);
+       result = (int) (angle / (Math.PI / 7500) );
       
     } else {
       angle += Math.PI/2;
-      result = (int) (angle / (Math.PI / 150)/2) +50;            
+      result = (int) (angle / (Math.PI / 7500)) +5000;            
     }
+    
+  
     return result;
   }
 
@@ -190,7 +204,7 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
     JFrame f = new JFrame();
     f.setLayout(new FlowLayout());
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setSize(400,400);
+    f.setSize(400,400); 
     f.setVisible(true);
  
     Knob k = new Knob();
