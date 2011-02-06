@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Knob2 extends JPanel implements MouseListener, MouseMotionListener
+public class Knob extends JPanel implements MouseListener, MouseMotionListener
 {
   
   /**
@@ -33,7 +33,7 @@ public class Knob2 extends JPanel implements MouseListener, MouseMotionListener
   
   private ArrayList<KnobListener> listeners = new ArrayList<KnobListener>();
 
-  public Knob2() {
+  public Knob() {
     Dimension dim = new Dimension(60,60);
     setMinimumSize(dim);
     setPreferredSize(dim);
@@ -193,7 +193,7 @@ public class Knob2 extends JPanel implements MouseListener, MouseMotionListener
     f.setSize(400,400);
     f.setVisible(true);
  
-    Knob2 k = new Knob2();
+    Knob k = new Knob();
     f.add(k);
     
    

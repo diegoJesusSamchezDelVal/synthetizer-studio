@@ -5,9 +5,9 @@ public class KnobEvent
   
   private int value;
   
-  private Knob2 source;
+  private Knob source;
   
-  public KnobEvent(Knob2 knob, int value) {
+  public KnobEvent(Knob knob, int value) {
       this.value = value;
       this.source = source;
   }
