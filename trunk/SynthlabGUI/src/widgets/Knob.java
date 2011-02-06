@@ -1,5 +1,6 @@
 package widgets;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,6 +8,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Formatter;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -15,10 +18,12 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
 {
   private static final long serialVersionUID = -2398408682438548381L;
 
-  public Knob()
+  public Knob(String name)
   {
     super();
 
+    name_ = name;
+    
     setupGeneral();
     setupImages();
   }
@@ -57,10 +62,16 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
     angle = 2 * Math.PI - angle;
     g.drawImage(pointer_, (int) (Math.cos(angle) * 12.) + 2,
         (int) (Math.sin(angle) * 12.) + 16, null);
-    
+
     Font f = g.getFont();
-    g.setFont(new Font("Arial",Font.BOLD,10));
-    g.drawString( ""+(float)((int)(value_*10.))/10., 20, 60);
+    g.setFont(new Font("Arial", Font.BOLD, 9));
+    g.setColor(Color.white);
+    g.drawString(
+        new Formatter(new StringBuilder(), Locale.FRENCH).format("%+1.1f",
+            value_).toString(), 18, 27);
+    g.setColor(Color.black);
+    g.setFont(new Font("Arial", Font.BOLD, 10));
+    g.drawString(name_, 55/2 - (g.getFontMetrics().stringWidth(name_)/2), 62);
     g.setFont(f);
   }
 
@@ -83,12 +94,6 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
       value_ = 1.;
     repaint();
   }
-
-  private Image  background1_;
-  private Image  background2_;
-  private Image  pointer_;
-  private double value_;
-  private Point  dragStart_;
 
   @Override
   public void mouseClicked(MouseEvent arg0)
@@ -120,14 +125,20 @@ public class Knob extends JPanel implements MouseListener, MouseMotionListener
   public void mouseDragged(MouseEvent e)
   {
     // 1pixel drag = 0.01 value change
-    inc( (dragStart_.getY()-e.getPoint().getY())/100. );
+    inc((dragStart_.getY() - e.getPoint().getY()) / 100.);
     dragStart_ = e.getPoint();
   }
 
   @Override
   public void mouseMoved(MouseEvent arg0)
   {
-    // TODO Auto-generated method stub
-    
+
   }
+
+  private Image  background1_;
+  private Image  background2_;
+  private Image  pointer_;
+  private double value_;
+  private Point  dragStart_;
+  private String name_;
 }
