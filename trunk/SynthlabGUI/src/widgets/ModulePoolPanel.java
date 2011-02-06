@@ -41,6 +41,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     add(new Module(vco2));
     add(new Module(vco3));
     add(new Module(out));
+    add(new Knob());
     
     setTransferHandler(new ModuleTransferHandler());
     try
