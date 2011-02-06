@@ -15,6 +15,11 @@ public interface Port
   
   public boolean isOutput();
   
+  // --- Status
+  public boolean isLinked();
+  
+  public void setLinked( boolean linked );
+  
   // --- Module
   public Module getModule();
   

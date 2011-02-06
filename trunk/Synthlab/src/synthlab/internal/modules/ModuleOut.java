@@ -1,19 +1,11 @@
 package synthlab.internal.modules;
 
-import java.awt.image.VolatileImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.*;
+import java.nio.*;
+import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat.*;
 
-import javax.crypto.spec.IvParameterSpec;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import synthlab.internal.BasicModule;
-import synthlab.internal.BasicPort;
+import synthlab.internal.*;
 
 public class ModuleOut extends BasicModule
 {

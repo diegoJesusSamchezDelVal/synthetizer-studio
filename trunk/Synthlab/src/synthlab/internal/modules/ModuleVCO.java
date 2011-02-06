@@ -21,8 +21,8 @@ public class ModuleVCO extends BasicModule
   @Override
   public void compute()
   {
-    double ifreq = getInput("iFrequency").getValue();
-    double iconst = getInput("iConstant").getValue();
+    //double ifreq = getInput("iFrequency").getValue();
+    //double iconst = getInput("iConstant").getValue();
     double out = Math.sin( ((double)frameCount_/(double)frameRate_) * initialFrequency_ * 2. * Math.PI);
     //out *= Math.pow(2, ifreq+iconst);
     getOutput("oSignal").setValue(out);

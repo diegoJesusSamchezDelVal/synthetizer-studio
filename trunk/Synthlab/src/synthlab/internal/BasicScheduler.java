@@ -1,15 +1,8 @@
 package synthlab.internal;
 
-import java.util.List;
 import com.google.common.collect.BiMap;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
-import synthlab.api.Module;
-import synthlab.api.ModulePool;
-import synthlab.api.Port;
-import synthlab.api.Scheduler;
+import java.util.*;
+import synthlab.api.*;
 
 public class BasicScheduler implements Scheduler
 {
@@ -27,12 +20,11 @@ public class BasicScheduler implements Scheduler
     if (pool_ == null || tasks_ == null || links_ == null)
       return;
 
-    //System.out.println();
-    //System.out.println(">>> Wave #0");
-    //printStatus();
+    System.out.println();
+    System.out.println(">>> Wave #0");
+    printStatus();
     for (int i = count; i > 0; --i)
     {
-      long start = System.currentTimeMillis();
       // Execute all tasks
       for (Module module : tasks_)
       {

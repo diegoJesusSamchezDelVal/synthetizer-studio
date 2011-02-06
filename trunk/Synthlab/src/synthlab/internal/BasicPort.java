@@ -9,6 +9,7 @@ public class BasicPort implements Port
   {
     module_ = null;
     name_ = name;
+    linked_ = false;
     setValue(value);
   }
 
@@ -61,7 +62,20 @@ public class BasicPort implements Port
     
     return getModule().getOutputs().contains(this);
   }
+  
+  @Override
+  public boolean isLinked()
+  {
+    return linked_;
+  }
+  
+  @Override
+  public void setLinked( boolean linked )
+  {
+    linked_ = linked;
+  }
 
+  private boolean linked_;
   private String name_;
   private double value_;
   private Module module_;

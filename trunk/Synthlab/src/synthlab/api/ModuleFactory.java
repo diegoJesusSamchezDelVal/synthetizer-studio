@@ -20,4 +20,17 @@ public class ModuleFactory
     //TODO
     return null;
   }
+  
+  public Module createFromPrototype( Module m )
+  {
+    try
+    {
+      return m.getClass().newInstance();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }

@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.*;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.UUID;
-import java.util.Set;
 
 import synthlab.api.Module;
 import synthlab.api.ModulePool;
@@ -83,6 +80,8 @@ public class BasicModulePool implements ModulePool
       return;
     }
 
+    output.setLinked( true );
+    input.setLinked( true );
     links_.put(output, input);
   }
 
@@ -91,6 +90,7 @@ public class BasicModulePool implements ModulePool
   {
     // Check which port is the output and which one is the input
     Port output;
+    Port input;
 
     if (p1.getModule().getInputs().contains(p1))
     {
@@ -102,6 +102,7 @@ public class BasicModulePool implements ModulePool
       else
       {
         output = p2;
+        input = p1;
       }
     }
     else
@@ -114,9 +115,12 @@ public class BasicModulePool implements ModulePool
       else
       {
         output = p1;
+        input = p2;
       }
     }
 
+    output.setLinked( false );
+    input.setLinked( false );
     links_.remove(output);
   }
 
