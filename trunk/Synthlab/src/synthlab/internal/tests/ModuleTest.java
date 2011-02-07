@@ -14,7 +14,7 @@ public class ModuleTest extends TestCase
   protected void setUp()
   {
   }
-
+/*
   @Test
   public void testCompute()
   {
@@ -259,7 +259,7 @@ public class ModuleTest extends TestCase
     System.out.println("We were able to compute " + i + " samples/second");
     // assertTrue( i>44100 );
   }
-
+*/
   @Test
   public void testOut()
   {
@@ -277,6 +277,6 @@ public class ModuleTest extends TestCase
     
     s.setPool(pool);
     
-    s.play(4);
+    s.play(88200);
   }
 }
