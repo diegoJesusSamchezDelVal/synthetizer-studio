@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class KnobPanel extends JPanel implements KnobListener {
+public class NumberKnobPanel extends JPanel implements KnobListener {
 
   /**
    * 
@@ -28,7 +28,7 @@ public class KnobPanel extends JPanel implements KnobListener {
   
   private String pattern;
 
-  private Knob knob;
+  private NumberKnob knob;
   
   /**
    * @param min valeur minimal
@@ -37,7 +37,7 @@ public class KnobPanel extends JPanel implements KnobListener {
    * @param pattern pattern des chiffres
    * 
    * */
-  public KnobPanel(double min, double max, String unit, String pattern) {
+  public NumberKnobPanel(double min, double max, String unit, String pattern) {
     maxValue = max;
     minValue = min;    
     this.unit = unit;
@@ -51,7 +51,7 @@ public class KnobPanel extends JPanel implements KnobListener {
     setSize(dim);
     
     
-    knob = new Knob();
+    knob = new NumberKnob();
     knob.addKnobListener(this);
     add(knob);
     knob.setLocation(1, 20);
@@ -103,10 +103,10 @@ public class KnobPanel extends JPanel implements KnobListener {
     f.setSize(400,400);
     f.setVisible(true);
  
-    KnobPanel k = new KnobPanel(1000, 3000, "Hz", "0");
+    NumberKnobPanel k = new NumberKnobPanel(1000, 3000, "Hz", "0");
     f.add(k);
     
-    k = new KnobPanel(-5, +5, "V", "0.0");
+    k = new NumberKnobPanel(-5, +5, "V", "0.0");
     f.add(k);
     
    

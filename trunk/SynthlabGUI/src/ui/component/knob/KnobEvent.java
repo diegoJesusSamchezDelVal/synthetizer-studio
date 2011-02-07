@@ -5,7 +5,7 @@ public class KnobEvent
   
   private int value;
   
-  private Knob source;
+  private NumberKnob source;
   
   public KnobEvent(Knob knob, int value) {
       this.value = value;
