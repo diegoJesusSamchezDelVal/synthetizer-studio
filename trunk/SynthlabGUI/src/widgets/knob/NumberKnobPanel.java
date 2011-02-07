@@ -40,11 +40,11 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
   
   
   
-  private int numberDisplaySize =20;
+  private int numberDisplaySize = 20;
   
-  private int titleSize = 20;
+  public static int TITLE_HEIGHT = 20;
   
-  private Dimension size = new Dimension(AbstractKnob.size.width + 20 + 2, 20 + 2 + AbstractKnob.size.height + titleSize + numberDisplaySize);
+  private Dimension size = new Dimension(AbstractKnob.size.width + 20 + 2, 20 + 2 + AbstractKnob.size.height + TITLE_HEIGHT + numberDisplaySize);
 
   private String title;
   
@@ -66,7 +66,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     knob = new NumberKnob();
     knob.addKnobListener(this);
     add(knob);
-    knob.setLocation((size.width-AbstractKnob.size.width) /2, numberDisplaySize + titleSize + 11);
+    knob.setLocation((size.width-AbstractKnob.size.width) /2, numberDisplaySize + TITLE_HEIGHT + 11);
     
   }
   
@@ -81,13 +81,13 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     //cadre
     gc.setColor(Color.black);
     gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
-    gc.drawRect(0, 0, getWidth()-1, titleSize);
-    gc.drawRect(0, 0, getWidth()-1, titleSize + numberDisplaySize);
+    gc.drawRect(0, 0, getWidth()-1, TITLE_HEIGHT);
+    gc.drawRect(0, 0, getWidth()-1, TITLE_HEIGHT + numberDisplaySize);
     
     
     gc.setColor(Color.white);
-    gc.fillRect(1, 1, getWidth()-2, titleSize-2);
-    gc.fillRect(1, 1+titleSize, getWidth()-2, numberDisplaySize-2);
+    gc.fillRect(1, 1, getWidth()-2, TITLE_HEIGHT-2);
+    gc.fillRect(1, 1+TITLE_HEIGHT, getWidth()-2, numberDisplaySize-2);
     
     // dessine le titre
     gc.setColor(Color.black);    
@@ -96,8 +96,8 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     
     DecimalFormat df = new DecimalFormat(pattern);
     String str = df.format(value);
-    gc.drawString(str, 3, 15 + titleSize);
-    gc.drawString(unit, 36, 15 + titleSize);
+    gc.drawString(str, 3, 15 + TITLE_HEIGHT);
+    gc.drawString(unit, 36, 15 + TITLE_HEIGHT);
     
   } 
   

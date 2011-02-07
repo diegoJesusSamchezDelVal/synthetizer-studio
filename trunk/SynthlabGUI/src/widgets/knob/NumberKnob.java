@@ -12,8 +12,6 @@ public class NumberKnob extends AbstractKnob
    * 
    */
   private static final long serialVersionUID = 1L;
-  
-
     
   private boolean hasBlock = true ;  
 
@@ -21,16 +19,7 @@ public class NumberKnob extends AbstractKnob
     super();   
   }
   
-  
-  
-
-
- 
-  
-  protected Point computePointer(Point currentPoint) {
-    
-    
-    
+  protected Point computePointer(Point currentPoint) {    
     if ((centerPoint.x - currentPoint.x) != 0) {
         double k =((double)(centerPoint.y - currentPoint.y))/((double)(centerPoint.x - currentPoint.x));
         double b = centerPoint.y - (k * centerPoint.x);   
