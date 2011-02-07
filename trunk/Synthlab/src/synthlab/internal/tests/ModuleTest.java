@@ -277,6 +277,13 @@ public class ModuleTest extends TestCase
     
     s.setPool(pool);
     
-    s.play(88200);
+    vco.setSingalMode(ValGlobales.SIGNAL_SINE);
+    s.play(44100);
+    vco.setSingalMode(ValGlobales.SIGNAL_SQUARE);
+    s.play(44100);
+    vco.setSingalMode(ValGlobales.SIGNAL_SAWTOOTH);
+    s.play(44100);
+    vco.setSingalMode(ValGlobales.SIGNAL_TRIANGLE);
+    s.play(44100);
   }
 }

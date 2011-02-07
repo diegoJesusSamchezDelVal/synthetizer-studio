@@ -54,9 +54,8 @@ public class ModuleOut extends BasicModule
       // time to send data to audio card
       if (sampleCounter_ == 44099)
       {
-        System.out.println("here");
         line_.start();
-        line_.write(data_.array(), 0, 44099*2);
+        line_.write(data_.array(), 0, 44100*2);
       }
     }
     catch (Exception e)
