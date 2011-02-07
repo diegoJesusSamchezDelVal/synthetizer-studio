@@ -1,4 +1,4 @@
-package ui.component.knob;
+package widgets.knob;
 
 public interface KnobListener
 {

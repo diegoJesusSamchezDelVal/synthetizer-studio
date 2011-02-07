@@ -1,4 +1,4 @@
-package ui.component.knob;
+package widgets.knob;
 
 import java.awt.Color;
 import java.awt.Dimension;

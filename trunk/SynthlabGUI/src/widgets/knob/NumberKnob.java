@@ -1,4 +1,4 @@
-package ui.component.knob;
+package widgets.knob;
 
 import java.awt.FlowLayout;
 import java.awt.Point;
