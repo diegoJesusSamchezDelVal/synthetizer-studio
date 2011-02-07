@@ -74,8 +74,7 @@ public class KnobPanel extends JPanel implements KnobListener {
     gc.fillRect(1, 1, getWidth()-2, 18);
     
     // dessine la valeur
-    gc.setColor(Color.black);
-    
+    gc.setColor(Color.black);    
     DecimalFormat df = new DecimalFormat(pattern);
     String str = df.format(value);
     gc.drawString(str, 10, 15);
