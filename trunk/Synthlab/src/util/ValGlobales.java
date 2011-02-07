@@ -13,9 +13,9 @@ public class ValGlobales{
 	public static final int PITCH_IN_MIN = -5;    //vol
 	public static final int PITCH_IN_MAX = 5;     //vol
 	
-	public static final int SINGAL_SINOSOIDAL = 1;
-	public static final int SINGAL_CAREE = 2;
-	public static final int SINGAL_DENTDESCIE = 3;
-	public static final int SINGAL_TRIANGLE = 4;
+	public static final int SIGNAL_SINE = 1;
+	public static final int SIGNAL_SQUARE = 2;
+	public static final int SIGNAL_SAWTOOTH = 3;
+	public static final int SIGNAL_TRIANGLE = 4;
 
 }

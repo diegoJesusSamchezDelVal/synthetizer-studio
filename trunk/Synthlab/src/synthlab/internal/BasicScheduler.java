@@ -20,9 +20,9 @@ public class BasicScheduler implements Scheduler
     if (pool_ == null || tasks_ == null || links_ == null)
       return;
 
-    System.out.println();
-    System.out.println(">>> Wave #0");
-    printStatus();
+    //System.out.println();
+    //System.out.println(">>> Wave #0");
+    //printStatus();
     for (int i = count; i > 0; --i)
     {
       // Execute all tasks
@@ -35,9 +35,9 @@ public class BasicScheduler implements Scheduler
       {
         link.getValue().setValue(link.getKey().getValue());
       }
-      System.out.println();
-      System.out.println(">>> Wave #"+((count-i)+1));
-      printStatus();
+      //System.out.println();
+      //System.out.println(">>> Wave #"+((count-i)+1));
+      //printStatus();
     }
   }
 

@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import synthlab.api.*;
 import synthlab.internal.*;
 import synthlab.internal.modules.*;
+import util.ValGlobales;
 
 public class ModuleTest extends TestCase
 {
@@ -78,134 +79,135 @@ public class ModuleTest extends TestCase
     assertTrue(pool1.contains(m1) == false);
     assertTrue(pool1.contains(m2) == false);
   }
-  
+
   @Test
   public void testLinks()
   {
     ModulePool pool = ModulePoolFactory.createDefault();
-    
+
     ModuleVCO m1 = new ModuleVCO();
     ModuleVCO m2 = new ModuleVCO();
-    
+
     pool.register(m1);
     pool.register(m2);
-    
+
     assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
-    
+
     pool.link(m1.getOutput("oSignal"), m2.getInput("iFrequency"));
-    
+
     assertTrue(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
-    
+
     pool.unlink(m1.getOutput("oSignal"), m2.getInput("iFrequency"));
-    
+
     assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
   }
-  
-  static public Module createModule( String name, int nbInputs, int nbOutputs )
+
+  static public Module createModule(String name, int nbInputs, int nbOutputs)
   {
-    BasicModule module = new BasicModule(name) {
+    BasicModule module = new BasicModule(name)
+    {
       @Override
       public void compute()
       {
         // Accumulate all inputs and propagate to output
         int sum = 1;
-        for ( Port p : getInputs() )
+        for (Port p : getInputs())
           sum += p.getValue();
-        for ( Port p : getOutputs() )
+        for (Port p : getOutputs())
           p.setValue(sum);
       }
     };
-    
-    for ( int i=0; i<nbInputs; ++i )
+
+    for (int i = 0; i < nbInputs; ++i)
     {
-      Port port = new BasicPort("i"+(i+1),0);
+      Port port = new BasicPort("i" + (i + 1), 0);
       module.addInput(port);
     }
-    
-    for ( int i=0; i<nbOutputs; ++i )
+
+    for (int i = 0; i < nbOutputs; ++i)
     {
-      Port port = new BasicPort("o"+(i+1),0);
+      Port port = new BasicPort("o" + (i + 1), 0);
       module.addOutput(port);
     }
-    
+
     return module;
   }
-  
+
   @Test
   public void testScheduler()
   {
     ModulePool pool = ModulePoolFactory.createDefault();
-    
+
     Module m1 = createModule("m1", 0, 1);
     Module m2 = createModule("m2", 1, 0);
-    
+
     pool.register(m1);
     pool.register(m2);
-    
+
     pool.link(m1.getOutput("o1"), m2.getInput("i1"));
-    
+
     Scheduler s = SchedulerFactory.createDefault();
-    
+
     s.setPool(pool);
-    
+
     s.play(5);
   }
-  
+
   @Test
   public void testSchedulerOrdering()
   {
-    //     m1
-    //     |
-    //     V
-    //     m2
+    // m1
+    // |
+    // V
+    // m2
     //
-    //     m3       m5
-    //              |
-    //              V
-    //    m4       m6
-    //     |        |
-    //     +---++---+
-    //         ||
-    //         VV
-    //         m7
-    //         ||
-    //     +---++---+
-    //     |        |
-    //     |+------+|
-    //     V|      VV
-    //    m8 -----> m9
-    //     |
-    //     V
-    //    m10 <----+
-    //     | |     |
-    //     | +-----+
-    //     V
-    //     m11
-    //     |
-    //     V
-    //    m12 -----> m13
-    //     |          |
-    //     V          V
-    //    m15 -----> m14
-    
-    Module m1  = createModule( "m1",  0, 1 );
-    Module m2  = createModule( "m2",  1, 1 );
-    Module m3  = createModule( "m3",  1, 1 );
-    Module m4  = createModule( "m4",  0, 1 );
-    Module m5  = createModule( "m5",  0, 1 );
-    Module m6  = createModule( "m6",  1, 1 );
-    Module m7  = createModule( "m7",  2, 2 );
-    Module m8  = createModule( "m8",  2, 2 );
-    Module m9  = createModule( "m9",  2, 2 );
-    Module m10 = createModule( "m10", 3, 2 );
-    Module m11 = createModule( "m11", 1, 2 );
-    Module m12 = createModule( "m12", 2, 2 );
-    Module m13 = createModule( "m13", 1, 1 );
-    Module m14 = createModule( "m14", 1, 1 );
-    Module m15 = createModule( "m15", 2, 0 );
-    
+    // m3 m5
+    // |
+    // V
+    // m4 m6
+    // | |
+    // +---++---+
+    // ||
+    // VV
+    // m7
+    // ||
+    // +---++---+
+    // | |
+    // |+------+|
+    // V| VV
+    // m8 -----> m9
+    // |
+    // V
+    // m10 <----+
+    // | | |
+    // | +-----+
+    // V
+    // m11
+    // |
+    // V
+    // m12 -----> m13
+    // | |
+    // V V
+    // m15 -----> m14
+
+    Module m1 = createModule("m1", 0, 1);
+    Module m2 = createModule("m2", 1, 1);
+    Module m3 = createModule("m3", 1, 1);
+    Module m4 = createModule("m4", 0, 1);
+    Module m5 = createModule("m5", 0, 1);
+    Module m6 = createModule("m6", 1, 1);
+    Module m7 = createModule("m7", 2, 2);
+    Module m8 = createModule("m8", 2, 2);
+    Module m9 = createModule("m9", 2, 2);
+    Module m10 = createModule("m10", 3, 2);
+    Module m11 = createModule("m11", 1, 2);
+    Module m12 = createModule("m12", 2, 2);
+    Module m13 = createModule("m13", 1, 1);
+    Module m14 = createModule("m14", 1, 1);
+    Module m15 = createModule("m15", 2, 0);
+
     ModulePool pool = ModulePoolFactory.createDefault();
-    
+
     pool.register(m15);
     pool.register(m14);
     pool.register(m13);
@@ -221,43 +223,43 @@ public class ModuleTest extends TestCase
     pool.register(m3);
     pool.register(m2);
     pool.register(m1);
-    
-    pool.link(m1.getOutput("o1"),m2.getInput("i1"));
-    pool.link(m4.getOutput("o1"),m7.getInput("i1"));
-    pool.link(m5.getOutput("o1"),m6.getInput("i1"));
-    pool.link(m6.getOutput("o1"),m7.getInput("i2"));
-    pool.link(m7.getOutput("o1"),m8.getInput("i1"));
-    pool.link(m7.getOutput("o2"),m9.getInput("i1"));
-    pool.link(m8.getOutput("o1"),m9.getInput("i2"));
-    pool.link(m8.getOutput("o2"),m10.getInput("i1"));
-    pool.link(m9.getOutput("o1"),m8.getInput("i2"));
-    pool.link(m9.getOutput("o2"),m10.getInput("i2"));
-    pool.link(m10.getOutput("o1"),m10.getInput("i3"));
-    pool.link(m10.getOutput("o2"),m11.getInput("i1"));
-    pool.link(m11.getOutput("o1"),m12.getInput("i1"));
-    pool.link(m11.getOutput("o2"),m12.getInput("i2"));
-    pool.link(m12.getOutput("o1"),m13.getInput("i1"));
-    pool.link(m12.getOutput("o2"),m15.getInput("i1"));
-    pool.link(m13.getOutput("o1"),m14.getInput("i1"));
-    pool.link(m14.getOutput("o1"),m15.getInput("i2"));
-    
+
+    pool.link(m1.getOutput("o1"), m2.getInput("i1"));
+    pool.link(m4.getOutput("o1"), m7.getInput("i1"));
+    pool.link(m5.getOutput("o1"), m6.getInput("i1"));
+    pool.link(m6.getOutput("o1"), m7.getInput("i2"));
+    pool.link(m7.getOutput("o1"), m8.getInput("i1"));
+    pool.link(m7.getOutput("o2"), m9.getInput("i1"));
+    pool.link(m8.getOutput("o1"), m9.getInput("i2"));
+    pool.link(m8.getOutput("o2"), m10.getInput("i1"));
+    pool.link(m9.getOutput("o1"), m8.getInput("i2"));
+    pool.link(m9.getOutput("o2"), m10.getInput("i2"));
+    pool.link(m10.getOutput("o1"), m10.getInput("i3"));
+    pool.link(m10.getOutput("o2"), m11.getInput("i1"));
+    pool.link(m11.getOutput("o1"), m12.getInput("i1"));
+    pool.link(m11.getOutput("o2"), m12.getInput("i2"));
+    pool.link(m12.getOutput("o1"), m13.getInput("i1"));
+    pool.link(m12.getOutput("o2"), m15.getInput("i1"));
+    pool.link(m13.getOutput("o1"), m14.getInput("i1"));
+    pool.link(m14.getOutput("o1"), m15.getInput("i2"));
+
     Scheduler s = SchedulerFactory.createDefault();
-    
+
     s.setPool(pool);
-    
+
     long start = System.currentTimeMillis();
     long i = 0;
-    while ( System.currentTimeMillis()-start<1000 )
+    while (System.currentTimeMillis() - start < 1000)
     {
       ++i;
-      //s.play(1);
+      s.play(1);
     }
-    
+
     // Be sure we are able to compute at least 44100 samples per second
-    System.out.println("We were able to compute "+i+" samples/second");
-    //assertTrue( i>44100 );
+    System.out.println("We were able to compute " + i + " samples/second");
+    // assertTrue( i>44100 );
   }
-  
+
   @Test
   public void testOut()
   {
@@ -275,6 +277,6 @@ public class ModuleTest extends TestCase
     
     s.setPool(pool);
     
-    //s.play(44100);
+    s.play(4);
   }
 }
