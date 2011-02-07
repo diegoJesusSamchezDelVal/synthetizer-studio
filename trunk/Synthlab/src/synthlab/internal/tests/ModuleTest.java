@@ -277,13 +277,16 @@ public class ModuleTest extends TestCase
     
     s.setPool(pool);
     
-    vco.setSingalMode(ValGlobales.SIGNAL_SINE);
+    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SINE );
     s.play(44100);
-    vco.setSingalMode(ValGlobales.SIGNAL_SQUARE);
+    
+    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SQUARE );
     s.play(44100);
-    vco.setSingalMode(ValGlobales.SIGNAL_SAWTOOTH);
+    
+    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SAWTOOTH );
     s.play(44100);
-    vco.setSingalMode(ValGlobales.SIGNAL_TRIANGLE);
+    
+    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_TRIANGLE );
     s.play(44100);
   }
 }
