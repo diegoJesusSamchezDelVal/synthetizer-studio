@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import synthlab.api.*;
 import synthlab.internal.*;
 import synthlab.internal.modules.*;
-import util.ValGlobales;
+
 
 public class ModuleTest extends TestCase
 {
