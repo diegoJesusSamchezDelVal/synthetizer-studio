@@ -57,7 +57,6 @@ public class ModuleOut extends BasicModule
         System.out.println("here");
         line_.start();
         line_.write(data_.array(), 0, 44099*2);
-        
       }
     }
     catch (Exception e)
