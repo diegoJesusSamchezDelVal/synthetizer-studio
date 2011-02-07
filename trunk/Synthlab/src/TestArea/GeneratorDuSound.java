@@ -44,7 +44,7 @@ public class GeneratorDuSound{
     
     //SINGAL_CAREE
     
-    for(int sample=0; sample<44100; sample++) {
+ /*   for(int sample=0; sample<44100; sample++) {
       if(sample%frequency<= frequency/2){
         buffer[sample*2] = (byte)( maxVolume& 0xFF);
         buffer[sample*2 + 1] = (byte)(( maxVolume & 0xFF00) >> 8);
@@ -52,18 +52,37 @@ public class GeneratorDuSound{
         buffer[sample*2] = (byte)(0 & 0xFF);
         buffer[sample*2 + 1] = (byte)((0 & 0xFF00) >> 8);
       }
-    }
+    }*/
     
     //SINGAL_SINOSOIDAL
     
- /*   for(int sample=0; sample<44100; sample++) {
+ /*  for(int sample=0; sample<44100; sample++) {
       int value = (int)(maxVolume * Math.sin(currentPositionInPeriode * 2.0 * Math.PI) - 1);
       currentPositionInPeriode += periodePerSample;
-      if(currentPositionInPeriode >= 1.0)
+      if(currentPositionInPeriode >= 1.0){
         currentPositionInPeriode -= 1.0;
+       }
       buffer[sample*2] = (byte)(value & 0xFF);
       buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
     }*/
+    
+    //SINGAL_DENTDESCIE   
+  /*  for(int sample=0; sample<44100; sample++) {
+       int value = (int)(2*maxVolume*currentPositionInPeriode/frequency);
+       currentPositionInPeriode += periodePerSample;
+       if(currentPositionInPeriode >= 1.0){
+           currentPositionInPeriode -= 1.0; 
+       }
+       buffer[sample*2] = (byte)(value & 0xFF);
+       buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
+     }*/
+    
+    
+    //SINGAL_TRIANGLE
+    for(int sample=0; sample<44100; sample++) {
+     
+    }
+    
     
     
     while(true){
