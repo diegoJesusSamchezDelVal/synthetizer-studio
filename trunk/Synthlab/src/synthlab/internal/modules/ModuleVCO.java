@@ -2,9 +2,13 @@ package synthlab.internal.modules;
 
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
+import util.ValGlobales;
 
 public class ModuleVCO extends BasicModule
 {
+  
+  private int singalMode = ValGlobales.SINGAL_SINOSOIDAL;
+ 
   public ModuleVCO()
   {
     super("VCO");
@@ -18,16 +22,38 @@ public class ModuleVCO extends BasicModule
     initialFrequency_ = 440.;
   }
 
+  public int getSingalMode()
+  {
+    return singalMode;
+  }
+
+  public void setSingalMode(int singalMode)
+  {
+    this.singalMode = singalMode;
+  }
+
   @Override
   public void compute()
   {
     //double ifreq = getInput("iFrequency").getValue();
     //double iconst = getInput("iConstant").getValue();
-    double out = Math.sin( ((double)frameCount_/(double)frameRate_) * initialFrequency_ * 2. * Math.PI);
-    //out *= Math.pow(2, ifreq+iconst);
-    getOutput("oSignal").setValue(out);
-
-    frameCount_ = ++frameCount_ % 441400;
+    double out;
+    switch (singalMode){
+      case ValGlobales.SINGAL_SINOSOIDAL:
+        out = Math.sin( ((double)frameCount_/(double)frameRate_) * initialFrequency_ * 2. * Math.PI);
+        //out *= Math.pow(2, ifreq+iconst);
+        getOutput("oSignal").setValue(out);
+        frameCount_ = ++frameCount_ % 44100;
+       
+       case ValGlobales.SINGAL_CAREE:
+         
+         
+       case ValGlobales.SINGAL_DENTDESCIE:
+       case ValGlobales.SINGAL_TRIANGLE:
+        default:
+          System.out.println("unknowen singal mode.");
+        
+    }
   }
 
   private int    frameCount_;

@@ -144,4 +144,5 @@ public abstract class BasicModule implements Module
   protected String            name_;
   protected Map<String, Port> inputs_;
   protected Map<String, Port> outputs_;
+
 }
