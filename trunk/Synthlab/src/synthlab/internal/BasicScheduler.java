@@ -35,9 +35,9 @@ public class BasicScheduler implements Scheduler
       {
         link.getValue().setValue(link.getKey().getValue());
       }
-      //System.out.println();
-      //System.out.println(">>> Wave #"+((count-i)+1));
-      //printStatus();
+      System.out.println();
+      System.out.println(">>> Wave #"+((count-i)+1));
+      printStatus();
     }
   }
 

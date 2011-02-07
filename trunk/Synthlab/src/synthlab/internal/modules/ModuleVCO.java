@@ -8,6 +8,7 @@ public class ModuleVCO extends BasicModule
 {
   
   private int singalMode = ValGlobales.SINGAL_SINOSOIDAL;
+  byte[] outBuffer = new byte[44100*2];
  
   public ModuleVCO()
   {
@@ -19,7 +20,8 @@ public class ModuleVCO extends BasicModule
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 440.;
+    initialFrequency_ = 440.0;
+    maxVolume_ = (int) Math.pow(2.0, 15.0);
   }
 
   public int getSingalMode()
@@ -45,9 +47,16 @@ public class ModuleVCO extends BasicModule
         getOutput("oSignal").setValue(out);
         frameCount_ = ++frameCount_ % 44100;
        
-       case ValGlobales.SINGAL_CAREE:
-         
-         
+ /*      case ValGlobales.SINGAL_CAREE:
+         for(int sample=0; sample<44100; sample++) {
+           if(sample%initialFrequency_<= initialFrequency_/2){
+             outBuffer[frameRate_*2] = (byte)(1 & 0xFF);
+             outBuffer[frameRate_*2 + 1] = (byte)((1 & 0xFF00) >> 8);
+           }else{
+             outBuffer[frameRate_*2] = (byte)(0 & 0xFF);
+             outBuffer[frameRate_*2 + 1] = (byte)((0 & 0xFF00) >> 8);
+           }
+         }*/
        case ValGlobales.SINGAL_DENTDESCIE:
        case ValGlobales.SINGAL_TRIANGLE:
         default:
@@ -58,5 +67,8 @@ public class ModuleVCO extends BasicModule
 
   private int    frameCount_;
   private int    frameRate_;
+  private int    maxVolume_;
   private double initialFrequency_;
+  private double currentPositionInPeriode_;
+  private final double periodePerSample = initialFrequency_ /frameRate_;
 }
