@@ -17,6 +17,7 @@ public class ModuleVCO extends BasicModule
 
     frameCount_ = 0;
     frameRate_ = 44100;
+    sampleSize_ = (int) Math.pow(2.0, 15.0);
     initialFrequency_ = 440.0;
     signalMode_ = ValGlobales.SIGNAL_SINE;
   }
@@ -41,16 +42,17 @@ public class ModuleVCO extends BasicModule
     switch (signalMode_)
     {
       case ValGlobales.SIGNAL_SINE:
-        out = Math.sin(((double) frameCount_ / (double) frameRate_)
-            * initialFrequency_ * 2. * Math.PI);
+        out = Math.sin(((double) frameCount_ / (double) frameRate_)* initialFrequency_ * 2. * Math.PI);
         break;
       case ValGlobales.SIGNAL_SAWTOOTH:
+        out = Math.sin(((double) frameCount_ / (double) frameRate_)* initialFrequency_ * 2. * Math.PI);
         break;
       case ValGlobales.SIGNAL_TRIANGLE:
+        out = 0;
         break;
       case ValGlobales.SIGNAL_SQUARE:
-        out = Math.ceil(Math.sin(((double) frameCount_ / (double) frameRate_)
-            * initialFrequency_ * 2. * Math.PI));
+        out = (Math.sin(((double) frameCount_ / (double) frameRate_)
+            * initialFrequency_ * 2. * Math.PI))>=0 ? 1. : -1;
         break;
       default:
         System.out.println("unknown signal mode.");
@@ -64,5 +66,6 @@ public class ModuleVCO extends BasicModule
   private int          frameCount_;
   private int          frameRate_;
   private double       initialFrequency_;
+  private int          sampleSize_;
   private int          signalMode_;
 }
