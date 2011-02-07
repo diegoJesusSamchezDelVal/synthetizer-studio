@@ -159,7 +159,8 @@ public class Module extends JPanel implements MouseListener,
     if ( e.getClickCount()==2 )
     {
       // JOptionPane.showMessageDialog(this, "Module settings dialog not implement yet.");
-      new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent());
+      new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent(), e.getLocationOnScreen());
+      
     }
   }
 

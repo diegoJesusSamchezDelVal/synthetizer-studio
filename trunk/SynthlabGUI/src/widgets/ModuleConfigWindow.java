@@ -1,5 +1,7 @@
 package widgets;
 
+import java.awt.Point;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -15,7 +17,7 @@ public class ModuleConfigWindow extends JDialog {
   private static final long serialVersionUID = 1L;
   private Module module_;
 
-  public ModuleConfigWindow(synthlab.api.Module module, JFrame parent) {
+  public ModuleConfigWindow(synthlab.api.Module module, JFrame parent, Point point) {
       super(parent, true);
       module_ = module;
       
@@ -26,6 +28,8 @@ public class ModuleConfigWindow extends JDialog {
          add(knob);
       }
       
+      setLocation(point);
+      setResizable(false);
       pack();
       setVisible(true);
   }
