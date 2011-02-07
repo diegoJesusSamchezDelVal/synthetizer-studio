@@ -278,15 +278,11 @@ public class ModuleTest extends TestCase
     s.setPool(pool);
     
     vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SINE );
-    s.play(44100);
     
-    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SQUARE );
-    s.play(44100);
-    
-    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_SAWTOOTH );
-    s.play(44100);
-    
-    vco.getInput("iShape").setValue( ModuleVCO.SHAPE_TRIANGLE );
-    s.play(44100);
+    for ( double i=-5; i<5; i+=1 )
+    {
+      vco.getInput("iFrequency").setValue(i);
+      s.play(44100);
+    }
   }
 }

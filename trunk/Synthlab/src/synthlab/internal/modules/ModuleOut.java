@@ -27,7 +27,6 @@ public class ModuleOut extends BasicModule
     }
     catch (LineUnavailableException e)
     {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
