@@ -1,16 +1,20 @@
 package synthlab.internal;
 
+import java.nio.ByteBuffer;
+
 import synthlab.api.Module;
 import synthlab.api.Port;
+import synthlab.api.Scheduler;
 
 public class BasicPort implements Port
 {
-  public BasicPort(String name, Integer value)
+  public BasicPort(String name, double value)
   {
     module_ = null;
     name_ = name;
     linked_ = false;
-    setValue(value);
+    values_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize*(Double.SIZE/8));
+    setValues(value);
   }
 
   @Override
@@ -20,15 +24,27 @@ public class BasicPort implements Port
   }
 
   @Override
-  public void setValue(double value)
+  public void setValues(ByteBuffer values)
   {
-    value_ = value;
+    values.clear();
+    values_.clear();
+    values_.put(values);
+    values_.clear();
+    values.clear();
+  }
+  
+  public void setValues(double value)
+  {
+    values_.clear();
+    for ( int i=0; i<Scheduler.SamplingBufferSize; ++i)
+      values_.putDouble(value);
+    values_.clear();
   }
 
   @Override
-  public double getValue()
+  public ByteBuffer getValues()
   {
-    return value_;
+    return values_;
   }
 
   @Override
@@ -77,6 +93,6 @@ public class BasicPort implements Port
 
   private boolean linked_;
   private String name_;
-  private double value_;
+  private ByteBuffer values_;
   private Module module_;
 }

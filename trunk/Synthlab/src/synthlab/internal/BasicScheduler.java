@@ -33,7 +33,7 @@ public class BasicScheduler implements Scheduler
       // Propagate all outputs to inputs
       for (Map.Entry<Port, Port> link : links_.entrySet())
       {
-        link.getValue().setValue(link.getKey().getValue());
+        link.getValue().setValues(link.getKey().getValues());
       }
       //System.out.println();
       //System.out.println(">>> Wave #"+((count-i)+1));
@@ -82,9 +82,9 @@ public class BasicScheduler implements Scheduler
     {
       System.out.println(" - Module "+module.getName());
       for ( Port port : module.getInputs() )
-        System.out.println("   -> "+port.getName()+" = "+port.getValue());
+        System.out.println("   -> "+port.getName()+" = "+port.getValues());
       for ( Port port : module.getOutputs() )
-        System.out.println("      "+port.getName()+" = "+port.getValue()+" ->");
+        System.out.println("      "+port.getName()+" = "+port.getValues()+" ->");
     }
   }
 

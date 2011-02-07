@@ -1,14 +1,17 @@
 package synthlab.api;
 
+import java.nio.ByteBuffer;
+
 public interface Port
 {
   // --- Name
   public String getName();
   
   // --- Value
-  public void setValue(double value);
+  public void setValues(ByteBuffer value);
+  public void setValues(double value);
   
-  public double getValue();
+  public ByteBuffer getValues();
   
   // --- Input/Output
   public boolean isInput();

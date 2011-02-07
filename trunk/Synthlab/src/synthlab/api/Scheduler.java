@@ -17,4 +17,7 @@ public interface Scheduler
   public void setPool(ModulePool pool);
 
   public ModulePool getPool();
+  
+  // --- Configuration
+  public final int SamplingBufferSize = 441;
 }
