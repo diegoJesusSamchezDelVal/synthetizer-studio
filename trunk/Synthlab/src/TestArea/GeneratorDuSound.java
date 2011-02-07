@@ -80,7 +80,33 @@ public class GeneratorDuSound{
     
     //SINGAL_TRIANGLE
     for(int sample=0; sample<44100; sample++) {
-     
+      if(sample%frequency>=0 && sample%frequency<frequency/4){
+        int value = (int)(4*maxVolume*currentPositionInPeriode/frequency);
+        currentPositionInPeriode += periodePerSample;
+        if(currentPositionInPeriode >= 1.0){
+            currentPositionInPeriode -= 1.0; 
+        }
+        buffer[sample*2] = (byte)(value & 0xFF);
+        buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
+      }
+      if(sample%frequency>= frequency/4 && sample%frequency<frequency*3/4){
+        int value = (int)(2*maxVolume-(4*maxVolume*currentPositionInPeriode/frequency));
+        currentPositionInPeriode += periodePerSample;
+        if(currentPositionInPeriode >= 1.0){
+            currentPositionInPeriode -= 1.0; 
+        }
+        buffer[sample*2] = (byte)(value & 0xFF);
+        buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
+      }
+      if(sample%frequency>= frequency*3/4 && sample%frequency<frequency){
+        int value = (int)(4*maxVolume/frequency*(currentPositionInPeriode-frequency));
+        currentPositionInPeriode += periodePerSample;
+        if(currentPositionInPeriode >= 1.0){
+            currentPositionInPeriode -= 1.0; 
+        }
+        buffer[sample*2] = (byte)(value & 0xFF);
+        buffer[sample*2 + 1] = (byte)((value & 0xFF00) >> 8);
+      }
     }
     
     
