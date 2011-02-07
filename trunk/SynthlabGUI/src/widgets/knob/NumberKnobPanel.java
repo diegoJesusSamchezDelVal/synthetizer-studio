@@ -123,7 +123,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
   private void notifyPort(double value)
   {
     if(inputPort != null && !inputPort.isLinked())
-      inputPort.setValue(value);    
+      inputPort.setValues(value);    
   }
   
   public void setPort(Port port){

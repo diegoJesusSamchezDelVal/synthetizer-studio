@@ -15,6 +15,7 @@ public class ModuleRegistryPanel extends JPanel
     registry_ = ModuleRegistryFactory.createDefault();
 
     // TODO insane hack to hard code some prototypes in the registry
+    registry_.register(new ModuleLFO());
     registry_.register(new ModuleVCO());
     registry_.register(new ModuleOut());
 

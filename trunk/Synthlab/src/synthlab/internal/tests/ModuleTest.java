@@ -264,6 +264,7 @@ public class ModuleTest extends TestCase
   public void testOut()
   {
     ModuleVCO vco = new ModuleVCO();
+    ModuleLFO lfo = new ModuleLFO();
     ModuleOut out = new ModuleOut();
     
     ModulePool pool = ModulePoolFactory.createDefault();
@@ -271,17 +272,16 @@ public class ModuleTest extends TestCase
     Scheduler s = SchedulerFactory.createDefault();
     
     pool.register(vco);
+    pool.register(lfo);
     pool.register(out);
     
     pool.link(vco.getOutput("oSignal"), out.getInput("iSignal"));
+    pool.link(lfo.getOutput("oSignal"), vco.getInput("iFrequency"));
     
     s.setPool(pool);
 
     vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SINE);
-    for ( double i=0; i<5; i+=0.5 )
-    {
-      vco.getInput("iFrequency").setValues(i);
-      s.play(100);
-    }
+    
+    s.play((44100/Scheduler.SamplingBufferSize)*5); // 5 seconds
   }
 }

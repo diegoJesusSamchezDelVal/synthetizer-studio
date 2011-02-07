@@ -19,26 +19,28 @@ public class BasicScheduler implements Scheduler
     // Sanity check
     if (pool_ == null || tasks_ == null || links_ == null)
       return;
+    
+    Audio.getLine().start();
+    
+    long start;
 
-    //System.out.println();
-    //System.out.println(">>> Wave #0");
-    //printStatus();
     for (int i = count; i > 0; --i)
     {
+      start = System.currentTimeMillis();
+      
       // Execute all tasks
       for (Module module : tasks_)
-      {
         module.compute();
-      }
+      
       // Propagate all outputs to inputs
       for (Map.Entry<Port, Port> link : links_.entrySet())
-      {
         link.getValue().setValues(link.getKey().getValues());
-      }
-      //System.out.println();
-      //System.out.println(">>> Wave #"+((count-i)+1));
-      //printStatus();
+
+      // Synchronize scheduler: always keep 2ms ahead
+      while ( (System.currentTimeMillis()-start)<(1000./(44100./Scheduler.SamplingBufferSize)-2) );
     }
+
+    Audio.getLine().close();
   }
 
   @Override
