@@ -6,23 +6,42 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.text.DecimalFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class KnobPanel extends JPanel implements KnobListener {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   private double value;
   
   private double maxValue;
   
   private double minValue;
+  
+  private String unit;
+  
+  private String pattern;
 
   private Knob knob;
   
-  public KnobPanel(double min, double max) {
+  /**
+   * @param min valeur minimal
+   * @param max valeur maximal
+   * @param unit unité 
+   * @param pattern pattern des chiffres
+   * 
+   * */
+  public KnobPanel(double min, double max, String unit, String pattern) {
     maxValue = max;
     minValue = min;    
+    this.unit = unit;
+    this.pattern = pattern;
     
     setLayout(null);
    
@@ -54,8 +73,14 @@ public class KnobPanel extends JPanel implements KnobListener {
     gc.setColor(Color.white);
     gc.fillRect(1, 1, getWidth()-2, 18);
     
+    // dessine la valeur
     gc.setColor(Color.black);
-    gc.drawString(String.valueOf(value), 20, 15);
+    
+    DecimalFormat df = new DecimalFormat(pattern);
+    String str = df.format(value);
+    gc.drawString(str, 10, 15);
+    gc.drawString(unit, 45, 15);
+    
   } 
   
   @Override
@@ -79,7 +104,10 @@ public class KnobPanel extends JPanel implements KnobListener {
     f.setSize(400,400);
     f.setVisible(true);
  
-    KnobPanel k = new KnobPanel(1000, 3000);
+    KnobPanel k = new KnobPanel(1000, 3000, "Hz", "0");
+    f.add(k);
+    
+    k = new KnobPanel(-5, +5, "V", "0.0");
     f.add(k);
     
    
