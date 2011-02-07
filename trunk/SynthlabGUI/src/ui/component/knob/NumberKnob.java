@@ -5,7 +5,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-public class NumberKnob extends Knob
+public class NumberKnob extends AbstractKnob
 {
   
   /**
@@ -29,7 +29,7 @@ public class NumberKnob extends Knob
   
   protected Point computePointer(Point currentPoint) {
     
-    int RADIUS = 28;
+    
     
     if ((centerPoint.x - currentPoint.x) != 0) {
         double k =((double)(centerPoint.y - currentPoint.y))/((double)(centerPoint.x - currentPoint.x));

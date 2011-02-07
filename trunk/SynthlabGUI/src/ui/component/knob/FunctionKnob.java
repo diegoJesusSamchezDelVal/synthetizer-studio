@@ -5,7 +5,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-public class FunctionKnob extends Knob
+public class FunctionKnob extends AbstractKnob
 {
 
   /**

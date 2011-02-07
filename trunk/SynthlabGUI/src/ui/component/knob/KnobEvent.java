@@ -7,7 +7,7 @@ public class KnobEvent
   
   private NumberKnob source;
   
-  public KnobEvent(Knob knob, int value) {
+  public KnobEvent(AbstractKnob knob, int value) {
       this.value = value;
       this.source = source;
   }

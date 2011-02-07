@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public abstract class Knob extends JPanel implements MouseListener, MouseMotionListener
+public abstract class AbstractKnob extends JPanel implements MouseListener, MouseMotionListener
 {
     protected Point centerPoint;
     
@@ -21,18 +21,20 @@ public abstract class Knob extends JPanel implements MouseListener, MouseMotionL
     
     protected int value;
     
+    public final static Dimension size = new Dimension(40,40);
     
+    public final static int RADIUS = size.width/2 - 1;
     
     protected ArrayList<KnobListener> listeners = new ArrayList<KnobListener>();
     
-    protected Knob() {
-      Dimension dim = new Dimension(60,60);
-      setMinimumSize(dim);
-      setPreferredSize(dim);
-      setSize(dim);
+    protected AbstractKnob() {
+     
+      setMinimumSize(size);
+      setPreferredSize(size);
+      setSize(size);
       setOpaque(false);
-      centerPoint = new Point(30,30);
-      pointer = new Point(30,0);
+      centerPoint = new Point(size.width/2, size.height/2);
+      pointer = new Point(size.width/2, 0);
       
       addMouseListener(this);
       addMouseMotionListener(this);
@@ -66,7 +68,7 @@ public abstract class Knob extends JPanel implements MouseListener, MouseMotionL
       gc.setColor(Color.black);
       gc.drawOval(0, 0, getWidth()-1, getHeight()-1);
       
-      gc.setColor(Color.green);
+      gc.setColor(Color.red);
       gc.drawLine(centerPoint.x, centerPoint.y, pointer.x, pointer.y);
     }
     
