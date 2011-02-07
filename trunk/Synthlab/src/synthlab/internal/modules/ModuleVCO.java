@@ -2,7 +2,6 @@ package synthlab.internal.modules;
 
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
-import util.ValGlobales;
 
 public class ModuleVCO extends BasicModule
 {
@@ -18,7 +17,6 @@ public class ModuleVCO extends BasicModule
     frameCount_ = 0;
     frameRate_ = 44100;
     initialFrequency_ = 440.0;
-    signalMode_ = ValGlobales.SIGNAL_SINE;
   }
 
   @Override
@@ -63,5 +61,4 @@ public class ModuleVCO extends BasicModule
   private int         frameCount_;
   private int         frameRate_;
   private double      initialFrequency_;
-  private int         signalMode_;
 }
