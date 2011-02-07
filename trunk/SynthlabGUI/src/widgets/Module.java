@@ -155,10 +155,11 @@ public class Module extends JPanel implements MouseListener,
   @Override
   public void mouseClicked(MouseEvent e)
   {
-    // Double clicked = open settings panel for this module
+    //TODO Double clicked = open settings panel for this module
     if ( e.getClickCount()==2 )
     {
-      JOptionPane.showMessageDialog(this, "Module settings dialog not implement yet.");
+      // JOptionPane.showMessageDialog(this, "Module settings dialog not implement yet.");
+      new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent());
     }
   }
 
@@ -186,4 +187,6 @@ public class Module extends JPanel implements MouseListener,
   private synthlab.api.Module module_;
   private BufferedImage       shadow_;
   private ConvolveOp          op_;
+  
+   
 }

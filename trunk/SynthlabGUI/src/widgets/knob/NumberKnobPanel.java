@@ -11,6 +11,8 @@ import java.text.DecimalFormat;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import synthlab.api.Port;
+
 public class NumberKnobPanel extends JPanel implements KnobListener {
 
   /**
@@ -30,16 +32,6 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
 
   private NumberKnob knob;
   
-  /**
-   * @param min valeur minimal
-   * @param max valeur maximal
-   * @param unit unité 
-   * @param pattern pattern des chiffres
-   * 
-   * */
-  
-  
-  
   private int numberDisplaySize = 20;
   
   public static int TITLE_HEIGHT = 20;
@@ -48,12 +40,24 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
 
   private String title;
   
-  public NumberKnobPanel(String title, double min, double max, String unit, String pattern) {
+  private boolean enabled = true;
+  
+  private Port inputPort;
+  
+  /**
+   * @param min valeur minimal
+   * @param max valeur maximal
+   * @param unit unité 
+   * @param pattern pattern des chiffres
+   * 
+   * */
+  public NumberKnobPanel(String title, double min, double max, String unit, String pattern, boolean enable) {
     this.title = title;
     maxValue = max;
     minValue = min;    
     this.unit = unit;
     this.pattern = pattern;
+    enabled = enable;
     
     setLayout(null);
    
@@ -85,15 +89,18 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     gc.drawRect(0, 0, getWidth()-1, TITLE_HEIGHT + numberDisplaySize);
     
     
-    gc.setColor(Color.white);
+    if (enabled)
+      gc.setColor(Color.white);
+    else 
+      gc.setColor(Color.lightGray);
     gc.fillRect(1, 1, getWidth()-2, TITLE_HEIGHT-2);
     gc.fillRect(1, 1+TITLE_HEIGHT, getWidth()-2, numberDisplaySize-2);
     
     // dessine le titre
     gc.setColor(Color.black);    
     gc.drawString(title, 3, 15);
-    // dessine la valeur
     
+    // dessine la valeur
     DecimalFormat df = new DecimalFormat(pattern);
     String str = df.format(value);
     gc.drawString(str, 3, 15 + TITLE_HEIGHT);
@@ -109,7 +116,22 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     
     double piece = (maxValue - minValue) / 10000;
     value = minValue + piece * scale;
+    notifyPort(value);
     repaint(0,0,getWidth(), 20);
+  }
+  
+  private void notifyPort(double value)
+  {
+    if(inputPort != null && !inputPort.isLinked())
+      inputPort.setValue(value);    
+  }
+  
+  public void setPort(Port port){
+    inputPort = port;
+  }
+
+  public void setState(boolean enabled){
+    this.enabled = enabled;
   }
   
   /**
@@ -122,13 +144,13 @@ public class NumberKnobPanel extends JPanel implements KnobListener {
     f.setSize(400,400);
     f.setVisible(true);
  
-    NumberKnobPanel k = new NumberKnobPanel("Pitch", 100, 1000, "Hz", "0");
+    NumberKnobPanel k = new NumberKnobPanel("Pitch", 100, 1000, "Hz", "0", true);
     f.add(k);
     
-    k = new NumberKnobPanel("Pitch-in", -5, +5, "V", "0.0");
+    k = new NumberKnobPanel("Pitch-in", -5, +5, "V", "0.0", false);
     f.add(k);
     
-    k = new NumberKnobPanel("A", 0, 1000, "ms", "0");
+    k = new NumberKnobPanel("A", 0, 1000, "ms", "0", true);
     f.add(k);
     
    

@@ -35,7 +35,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
     pool_.link(vco1.getOutput("oSignal"), out.getInput("iSignal"));
     pool_.link(vco2.getOutput("oSignal"), vco1.getInput("iFrequency"));
-    pool_.link(vco3.getOutput("oSignal"), vco1.getInput("iConstant"));
+    // pool_.link(vco3.getOutput("oSignal"), vco1.getInput("iConstant"));
 
     add(new Module(vco1));
     add(new Module(vco2));
