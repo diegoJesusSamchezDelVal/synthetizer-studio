@@ -28,39 +28,38 @@ public class ModuleVCO extends BasicModule
     double iconst = getInput("iConstant").getValue();
 
     double positionInPeriod = (double) frameCount_ / (double) frameRate_;
-    double frequency = Math.pow(2, ifreq + iconst) * initialFrequency_;
-
+    double frequency = Math.pow( 2, ifreq + iconst )*initialFrequency_;
+    
     if (ishape <= SHAPE_SQUARE)
     {
-      out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1.
-          : -1;
+      out = (Math.sin( positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1. : -1;
     }
-    else if (ishape <= SHAPE_SINE)
+    else if ( ishape <= SHAPE_SINE )
     {
-      out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
+      out = Math.sin( positionInPeriod * frequency * 2. * Math.PI);
     }
-    else if (ishape <= SHAPE_TRIANGLE)
+    else if ( ishape <= SHAPE_TRIANGLE)
     {
-      if (positionInPeriod < 0.25)
+      if(positionInPeriod < 0.25)
       {
-        out = 4.0 * positionInPeriod;
+        out = 4.0*positionInPeriod;
       }
-      else if (positionInPeriod < 0.75)
+      else if ( positionInPeriod <0.75 )
       {
-        out = 2.0 - 4.0 * positionInPeriod;
+        out = 2.0 - 4.0*positionInPeriod;
       }
       else
       {
-        out = 4.0 * positionInPeriod - 4.0;
+        out = 4.0*positionInPeriod - 4.0;
       }
     }
-    else if (ishape <= SHAPE_SAWTOOTH)
+    else if ( ishape <= SHAPE_SAWTOOTH )
     {
-      out = (2.0 * positionInPeriod) / (1. / frequency) - 1.0;
+      out = (2.0*positionInPeriod)/ (1./frequency) - 1.0;
     }
     else
     {
-      assert (false);
+      assert(false);
     }
 
     getOutput("oSignal").setValue(out);
@@ -71,8 +70,8 @@ public class ModuleVCO extends BasicModule
   public static final double SHAPE_SINE     = -0.0;
   public static final double SHAPE_TRIANGLE = +0.5;
   public static final double SHAPE_SAWTOOTH = +1.0;
-
-  private int                frameCount_;
-  private int                frameRate_;
-  private double             initialFrequency_;
+  
+  private int         frameCount_;
+  private int         frameRate_;
+  private double      initialFrequency_;
 }
