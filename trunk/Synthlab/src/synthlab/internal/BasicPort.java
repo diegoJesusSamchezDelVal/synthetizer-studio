@@ -8,7 +8,7 @@ import synthlab.api.Scheduler;
 
 public class BasicPort implements Port
 {
-  public BasicPort(String name, double value)
+  public BasicPort(String name, double value, ValueType type, ValueUnit unit, ValueRange range )
   {
     module_ = null;
     name_ = name;
@@ -91,8 +91,29 @@ public class BasicPort implements Port
     linked_ = linked;
   }
 
+  @Override
+  public ValueType getValueType()
+  {
+    return type_;
+  }
+
+  @Override
+  public ValueUnit getValueUnit()
+  {
+    return unit_;
+  }
+
+  @Override
+  public ValueRange getValueRange()
+  {
+    return range_;
+  }
+  
   private boolean linked_;
   private String name_;
   private ByteBuffer values_;
   private Module module_;
+  private ValueType type_;
+  private ValueUnit unit_;
+  private ValueRange range_;
 }

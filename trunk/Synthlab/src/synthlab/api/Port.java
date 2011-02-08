@@ -23,6 +23,43 @@ public interface Port
   
   public void setLinked( boolean linked );
   
+  // --- Meta data
+  public static enum ValueType
+  {
+    CONTINUOUS,
+    DISCRETE
+  }
+  public static enum ValueUnit
+  {
+    HERTZ,
+    VOLT,
+    PERCENTAGE,
+    DECIBELS,
+    MILLISECONDS,
+    AMPLITUDE
+  }
+  public static class ValueRange
+  {
+    public ValueRange( double min, double max, int c )
+    {
+      minimum = min;
+      maximum = max;
+      count = c;
+    }
+    public ValueRange( double min, double max)
+    {
+      minimum = min;
+      maximum = max;
+      count = 1;
+    }
+    public double minimum;
+    public double maximum;
+    public int count;
+  }
+  public ValueType getValueType();
+  public ValueUnit getValueUnit();
+  public ValueRange getValueRange();
+  
   // --- Module
   public Module getModule();
   

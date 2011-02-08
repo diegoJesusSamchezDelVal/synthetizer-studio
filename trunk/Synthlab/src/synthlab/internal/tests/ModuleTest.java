@@ -101,7 +101,7 @@ public class ModuleTest extends TestCase
 
     assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
   }
-
+*/
   static public Module createModule(String name, int nbInputs, int nbOutputs)
   {
     BasicModule module = new BasicModule(name)
@@ -111,22 +111,20 @@ public class ModuleTest extends TestCase
       {
         // Accumulate all inputs and propagate to output
         int sum = 1;
-        for (Port p : getInputs())
-          sum += p.getValue();
         for (Port p : getOutputs())
-          p.setValue(sum);
+          p.setValues(1);
       }
     };
 
     for (int i = 0; i < nbInputs; ++i)
     {
-      Port port = new BasicPort("i" + (i + 1), 0);
+      Port port = new BasicPort("i" + (i + 1), 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1));
       module.addInput(port);
     }
 
     for (int i = 0; i < nbOutputs; ++i)
     {
-      Port port = new BasicPort("o" + (i + 1), 0);
+      Port port = new BasicPort("o" + (i + 1), 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1));
       module.addOutput(port);
     }
 
@@ -256,10 +254,10 @@ public class ModuleTest extends TestCase
     }
 
     // Be sure we are able to compute at least 44100 samples per second
-    System.out.println("We were able to compute " + i + " samples/second");
+    System.out.println("We were able to compute " + (i*Scheduler.SamplingBufferSize) + " samples/second");
     // assertTrue( i>44100 );
   }
-*/
+
   public void wait( int seconds )
   {
     long start = System.currentTimeMillis();

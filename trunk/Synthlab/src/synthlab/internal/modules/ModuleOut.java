@@ -5,7 +5,8 @@ import java.nio.*;
 import javax.sound.sampled.*;
 import javax.sound.sampled.AudioFormat.*;
 
-import synthlab.api.Scheduler;
+import synthlab.api.*;
+import synthlab.api.Port;
 import synthlab.internal.*;
 
 public class ModuleOut extends BasicModule
@@ -14,7 +15,7 @@ public class ModuleOut extends BasicModule
   {
     super("Out");
     
-    addInput(new BasicPort("iSignal", 0));
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1,1) ));
   }
 
   @Override

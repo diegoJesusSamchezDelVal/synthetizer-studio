@@ -1,5 +1,6 @@
 package synthlab.internal.modules;
 
+import synthlab.api.Port;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
@@ -19,11 +20,11 @@ public class ModuleVCA extends BasicModule
     super("VCA");
     
     //port In (input)(Gain)
-    addInput(new BasicPort("iSignal", 0));
-    addInput(new BasicPort("iGain", 0));
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+    addInput(new BasicPort("iGain", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1)));
     
     //port out (output)
-    addOutput(new BasicPort("oSignal", 0));
+    addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
     
     //init a 0
     volume = 0.0;

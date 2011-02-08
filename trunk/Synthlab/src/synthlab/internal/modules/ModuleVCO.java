@@ -1,5 +1,6 @@
 package synthlab.internal.modules;
 
+import synthlab.api.Port;
 import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
@@ -10,10 +11,10 @@ public class ModuleVCO extends BasicModule
   {
     super("VCO");
 
-    addInput(new BasicPort("iFrequency", 0));
-    addInput(new BasicPort("iConstant", 0));
-    addInput(new BasicPort("iShape", 0));
-    addOutput(new BasicPort("oSignal", 0));
+    addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.HERTZ, new Port.ValueRange(-1,1)));
+    addInput(new BasicPort("iConstant", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.HERTZ, new Port.ValueRange(-1, 1)));
+    addInput(new BasicPort("iShape", 0, Port.ValueType.DISCRETE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1, 4)));
+    addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
     frameCount_ = 0;
     frameRate_ = 44100;
