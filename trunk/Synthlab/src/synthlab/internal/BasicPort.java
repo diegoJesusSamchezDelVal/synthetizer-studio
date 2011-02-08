@@ -1,6 +1,7 @@
 package synthlab.internal;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 
 import synthlab.api.Module;
 import synthlab.api.Port;
@@ -13,6 +14,9 @@ public class BasicPort implements Port
     module_ = null;
     name_ = name;
     linked_ = false;
+    type_ = type;
+    unit_ = unit;
+    range_ = range;
     values_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize*(Double.SIZE/8));
     setValues(value);
   }
@@ -116,4 +120,6 @@ public class BasicPort implements Port
   private ValueType type_;
   private ValueUnit unit_;
   private ValueRange range_;
+  
+  
 }
