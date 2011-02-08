@@ -12,7 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class FunctionKnobPanel extends JPanel implements KnobListener {
+import synthlab.api.Port;
+
+public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractKnobPanel {
 
   /**
    * 
@@ -20,6 +22,8 @@ public class FunctionKnobPanel extends JPanel implements KnobListener {
   private static final long serialVersionUID = 1L;
   
   private int value;
+  
+  private Port inputPort;
 
   /**
    * icone de l'ouest
@@ -79,58 +83,63 @@ public class FunctionKnobPanel extends JPanel implements KnobListener {
       this.icon3 = icon3;    
   }
 
-  public void paintComponent(Graphics gc) {
-    super.paintComponent(gc);
-    RenderingHints renderHints = new RenderingHints(
-        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    renderHints.put(RenderingHints.KEY_RENDERING,
-        RenderingHints.VALUE_RENDER_QUALITY);
-    ((Graphics2D) gc).setRenderingHints(renderHints);
-    
-    gc.setColor(Color.black);
-    gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+      public void paintComponent(Graphics gc) {
+            super.paintComponent(gc);
+            RenderingHints renderHints = new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            renderHints.put(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+            ((Graphics2D) gc).setRenderingHints(renderHints);
+            
+            gc.setColor(Color.black);
+            gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+               
+            
+            gc.setColor(Color.white);
+            gc.fillRect(1, 1, getWidth()-2, getHeight()-2);
+            
+            gc.setColor(Color.black);
+            gc.drawRect(0, 0, getWidth()-1, TITLE_HEIGHT);
+            
+            gc.setColor(Color.black);
+            gc.drawString(title, 10, 15);
+            
+            gc.drawImage(icon0.getImage(), 2, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height/2) - 5 , null);
+            gc.drawImage(icon1.getImage(), getWidth()/2 -5, TITLE_HEIGHT +2 , null);
+            gc.drawImage(icon2.getImage(), getWidth() - imgSize-2, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height/2) - 5 , null);
+            gc.drawImage(icon3.getImage(), getWidth()/2 -7, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height) , null);
+            
+        
+        
+      } 
+  
+      @Override
+      public void knobTurned(KnobEvent e)
+      {
+        value = e.getValue();    
+      }
+      
+      /**
+       * Test 
+       * */
+      public static void main(String [] args) {
+        JFrame f = new JFrame();
+        f.setLayout(new FlowLayout());
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(400,400);
+        f.setVisible(true);
+     
+        FunctionKnobPanel k = new FunctionKnobPanel("Type");
+        f.add(k);
+        
+        
+        
        
-    
-    gc.setColor(Color.white);
-    gc.fillRect(1, 1, getWidth()-2, getHeight()-2);
-    
-    gc.setColor(Color.black);
-    gc.drawRect(0, 0, getWidth()-1, TITLE_HEIGHT);
-    
-    gc.setColor(Color.black);
-    gc.drawString(title, 10, 15);
-    
-    gc.drawImage(icon0.getImage(), 2, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height/2) - 5 , null);
-    gc.drawImage(icon1.getImage(), getWidth()/2 -5, TITLE_HEIGHT +2 , null);
-    gc.drawImage(icon2.getImage(), getWidth() - imgSize-2, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height/2) - 5 , null);
-    gc.drawImage(icon3.getImage(), getWidth()/2 -7, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height) , null);
-    
-    
-    
-  } 
-  
-  @Override
-  public void knobTurned(KnobEvent e)
-  {
-    value = e.getValue();    
-  }
-  
-  /**
-   * Test 
-   * */
-  public static void main(String [] args) {
-    JFrame f = new JFrame();
-    f.setLayout(new FlowLayout());
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setSize(400,400);
-    f.setVisible(true);
- 
-    FunctionKnobPanel k = new FunctionKnobPanel("Type");
-    f.add(k);
-    
-    
-    
-   
-  }
+      }
+
+    @Override
+    public void setPort(Port p) {
+       inputPort = p;    
+    }
 
 }

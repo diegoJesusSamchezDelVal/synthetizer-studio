@@ -16,7 +16,7 @@ import synthlab.api.Port;
 /**
  * Panneau de règlage avec un afficheur
  * */
-public class NumberKnobPanel extends JPanel implements KnobListener {
+public class NumberKnobPanel extends JPanel implements KnobListener, AbstractKnobPanel {
 
   /**
    * 
