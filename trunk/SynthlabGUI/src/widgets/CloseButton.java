@@ -6,9 +6,11 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.JPanel;
 
+/**
+ * La croix en haut à gauche des modules qui permet de les enlever.
+ * */
 public class CloseButton extends JPanel implements MouseListener, MouseMotionListener {
     
     /**
