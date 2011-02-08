@@ -289,14 +289,32 @@ public class ModuleTest extends TestCase
     vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SINE);
     
     s.play(0);
-    wait(5); // Wait for 5 seconds: playing
+    wait(2); // Wait for 5 seconds: playing
     
     s.stop();
     wait(1); // Wait for 1 second: stopped
     
+    vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SQUARE); //pulse signal
     s.play(0);
-    wait(5); // Wait for  seconds: playing
+    wait(2); // Wait for  seconds: playing
     
     s.stop();
+    wait(1); // Wait for 1 second: stopped
+    
+    vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SAWTOOTH);
+    
+    s.play(0);
+    wait(2); // Wait for 5 seconds: playing
+    
+    s.stop();
+    wait(1); // Wait for 1 second: stopped
+    
+    vco.getInput("iShape").setValues(ModuleVCO.SHAPE_TRIANGLE);
+    
+    s.play(0);
+    wait(2); // Wait for 5 seconds: playing
+    
+    s.stop();
+ 
   }
 }

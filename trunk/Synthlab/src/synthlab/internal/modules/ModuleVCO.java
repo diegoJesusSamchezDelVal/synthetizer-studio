@@ -17,7 +17,7 @@ public class ModuleVCO extends BasicModule
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 260.0;
+    initialFrequency_ = 440.0;
   }
 
   @Override
@@ -38,6 +38,9 @@ public class ModuleVCO extends BasicModule
       double positionInPeriod = (double) frameCount_ / (double) frameRate_;
       double frequency = Math.pow(2, ifreq + iconst) * initialFrequency_;
 
+      double framePerPeriod_ = (double)frameRate_ / frequency;
+      double currentPositionInPercent = frameCount_/framePerPeriod_;
+      
       if (ishape <= SHAPE_SQUARE)
       {
         out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1.
@@ -49,11 +52,16 @@ public class ModuleVCO extends BasicModule
       }
       else if (ishape <= SHAPE_TRIANGLE)
       {
-        out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
+        if(currentPositionInPercent <0.25)
+          out = 4.0*currentPositionInPercent;
+        else if (currentPositionInPercent<0.75)
+          out = 2.0 - 4.0*currentPositionInPercent;
+        else 
+          out = 4.0*currentPositionInPercent - 4.0;
       }
       else if (ishape <= SHAPE_SAWTOOTH)
       {
-        out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
+        out = 2.0*frameCount_/framePerPeriod_ - 1.0;
       }
       else
       {
