@@ -69,20 +69,6 @@ public class BasicScheduler implements Scheduler
     return tasks_;
   }
 
-  private void printStatus()
-  {
-    for (Module module : tasks_)
-    {
-      System.out.println(" - Module " + module.getName());
-      for (Port port : module.getInputs())
-        System.out
-            .println("   -> " + port.getName() + " = " + port.getValues());
-      for (Port port : module.getOutputs())
-        System.out.println("      " + port.getName() + " = " + port.getValues()
-            + " ->");
-    }
-  }
-
   private class PlayThread extends Thread
   {
     public void run()

@@ -110,7 +110,6 @@ public class ModuleTest extends TestCase
       public void compute()
       {
         // Accumulate all inputs and propagate to output
-        int sum = 1;
         for (Port p : getOutputs())
           p.setValues(1);
       }

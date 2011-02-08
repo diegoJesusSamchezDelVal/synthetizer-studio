@@ -1,8 +1,6 @@
 package synthlab.internal;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-
 import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
