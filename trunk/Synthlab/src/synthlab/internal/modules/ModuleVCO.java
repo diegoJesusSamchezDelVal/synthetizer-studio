@@ -25,7 +25,7 @@ public class ModuleVCO extends BasicModule
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 32.7; // Octave:0, Note:Do
+    initialFrequency_ = 32.7; // Octave:0, Note:Do , with Hz
   }
 
   @Override
@@ -59,12 +59,17 @@ public class ModuleVCO extends BasicModule
               double framePerPeriod_ = (double) frameRate_ / frequency;
               double currentPositionInPercent = frameCount_ / framePerPeriod_;
 
-              if (ishape <= SHAPE_SQUARE)
+              // 4 kinds of signal. attention of the
+              
+              if (ishape <= SHAPE_SAWTOOTH )
               {
-                out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1.
-                    : -1;
+                out = 2.0 * frameCount_ / framePerPeriod_ - 1.0;
               }
-              else if (ishape <= SHAPE_SINE)
+              else if (ishape <= SHAPE_PULSE)
+              {
+                out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1. : -1;
+              }
+              else if (ishape <=SHAPE_SINE)
               {
                 out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
               }
@@ -76,10 +81,6 @@ public class ModuleVCO extends BasicModule
                   out = 2.0 - 4.0 * currentPositionInPercent;
                 else
                   out = 4.0 * currentPositionInPercent - 4.0;
-              }
-              else if (ishape <= SHAPE_SAWTOOTH)
-              {
-                out = 2.0 * frameCount_ / framePerPeriod_ - 1.0;
               }
               else
               {
@@ -95,10 +96,11 @@ public class ModuleVCO extends BasicModule
     }
   }
 
-  public static final double SHAPE_SQUARE   = -0.5;
-  public static final double SHAPE_SINE     = -0.0;
-  public static final double SHAPE_TRIANGLE = +0.5;
-  public static final double SHAPE_SAWTOOTH = +1.0;
+  public static final double SHAPE_SAWTOOTH   = 0.0;
+  public static final double SHAPE_PULSE      = 1.0;
+  public static final double SHAPE_SINE       = 2.0;
+  public static final double SHAPE_TRIANGLE   = 3.0;
+  
 
   private int                frameCount_;
   private int                frameRate_;
