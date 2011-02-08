@@ -128,7 +128,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener, AbstractKno
    * Faite rien si le port est null ou occupé par une câble.  
    * @param value la valeur à envoyer
    * */
-  private void notifyPort(double value)
+  public void notifyPort(double value)
   {
       if(inputPort != null && !inputPort.isLinked()) {
 	  inputPort.setValues(value);

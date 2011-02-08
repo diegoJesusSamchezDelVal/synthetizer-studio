@@ -77,6 +77,8 @@ public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractK
       add(knob);
       knob.setLocation(imgSize, imgSize + NumberKnobPanel.TITLE_HEIGHT);
       
+      knob.value = 1;
+      
       this.icon0 = icon0;
       this.icon1 = icon1;
       this.icon2 = icon2;
@@ -109,14 +111,30 @@ public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractK
             gc.drawImage(icon2.getImage(), getWidth() - imgSize-2, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height/2) - 5 , null);
             gc.drawImage(icon3.getImage(), getWidth()/2 -7, TITLE_HEIGHT+imgSize+(AbstractKnob.size.height) , null);
             
-        
-        
       } 
+      
+      @Override
+      public void setPort(Port p) {
+         inputPort = p;    
+      }
+
+      @Override
+      public void notifyPort(double value) {
+  	if(inputPort != null && !inputPort.isLinked()) {
+  		  inputPort.setValues(value);
+  		  
+  		  DecimalFormat df = new DecimalFormat("0.00");	  
+  		  System.out.println("Send " + df.format(value) + " to " + inputPort.getName());
+  	      }
+  	
+      }
+
   
       @Override
       public void knobTurned(KnobEvent e)
       {
-        value = e.getValue();    
+            value = e.getValue(); 
+            notifyPort(value);
       }
       
       /**
@@ -137,9 +155,5 @@ public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractK
        
       }
 
-    @Override
-    public void setPort(Port p) {
-       inputPort = p;    
-    }
-
+   
 }
