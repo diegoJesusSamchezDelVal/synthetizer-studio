@@ -45,6 +45,7 @@ public class MainWindow extends JFrame
     JMenu menuHelp = new JMenu("Help");
 
     JMenuItem itemFileNew = new JMenuItem("New");
+    JMenuItem itemFileOpen = new JMenuItem("Open");
     JMenuItem itemFileSave = new JMenuItem("Save");
     JMenuItem itemFileSaveAs = new JMenuItem("Save as...");
     JMenuItem itemFileClose = new JMenuItem("Close");
@@ -60,6 +61,7 @@ public class MainWindow extends JFrame
     JMenuItem itemHelpAbout = new JMenuItem("About");
 
     menuFile.add(itemFileNew);
+    menuFile.add(itemFileOpen);
     menuFile.add(itemFileSave);
     menuFile.add(itemFileSaveAs);
     menuFile.add(itemFileClose);
