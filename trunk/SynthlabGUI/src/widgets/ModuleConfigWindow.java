@@ -43,7 +43,7 @@ public class ModuleConfigWindow extends JDialog {
 	  if(p.getName().equals("iShape")) //TODO just pour test.  
 	      knob = new FunctionKnobPanel(p.getName());
 	  else 
-	      knob = new NumberKnobPanel(p.getName(), 1, 100, "", "0.0", !p.isLinked());
+	      knob = new NumberKnobPanel(p.getName(), -1.0, 1.0, "", "0.0", !p.isLinked());
          knob.setPort(p);
          add((JPanel)knob);
       }
