@@ -1,6 +1,8 @@
 package synthlab.internal.modules;
 
+
 import synthlab.api.Port;
+import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
@@ -9,17 +11,24 @@ public class ModuleVCA extends BasicModule
 {
 
   private double volume;
+  private int frameCount_;
   
-  // taux d'echantillon 16bit 
-  private final double maxVolume = 32534;
-  private final double minVolume =-32534;
+  // mode
+ // private int mode;
+  //private final int LINEAR = 1;
+  //private final int EXPOL = 2;
   
   
+  private final double maxVolume = 1;
+  private final double minVolume =-1;
+  
+
   public ModuleVCA()
   {
     super("VCA");
     
     //port In (input)(Gain)
+
     addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
     addInput(new BasicPort("iGain", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1)));
     
@@ -28,13 +37,26 @@ public class ModuleVCA extends BasicModule
     
     //init a 0
     volume = 0.0;
+    
+    //init mode
+  //  mode = LINEAR;
   }
 
   @Override
   public void compute()
   {
-    // TODO Auto-generated method stub
     
+    getInput("iSignal").getValues().clear();
+    getInput("iGain").getValues().clear();
+    getOutput("oSignal").getValues().clear();
+    
+    for (int i = 0; i < Scheduler.SamplingBufferSize; ++i){
+      double val = getInput("iSignal").getValues().getDouble(); //Signal input
+      double gain = getInput("iGain").getValues().getDouble();
+      this.setVolume(val*gain);
+      getOutput("oSignal").setValues(volume);
+      frameCount_ = ++frameCount_ % 44100;
+    }
   }
 
   public double getVolume()
@@ -48,5 +70,4 @@ public class ModuleVCA extends BasicModule
     else if(vol>maxVolume) volume = maxVolume;
     else if(vol<minVolume) volume = minVolume;
   }
-
 }
