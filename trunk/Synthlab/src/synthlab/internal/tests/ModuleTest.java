@@ -102,6 +102,7 @@ public class ModuleTest extends TestCase
     assertFalse(pool.linked(m1.getOutput("oSignal"), m2.getInput("iFrequency")));
   }
 */
+  /*
   static public Module createModule(String name, int nbInputs, int nbOutputs)
   {
     BasicModule module = new BasicModule(name)
@@ -111,7 +112,12 @@ public class ModuleTest extends TestCase
       {
         // Accumulate all inputs and propagate to output
         for (Port p : getOutputs())
-          p.setValues(1);
+        {
+          synchronized (p)
+          {
+            p.setValues(1);
+          }
+        }
       }
     };
 
@@ -256,13 +262,13 @@ public class ModuleTest extends TestCase
     System.out.println("We were able to compute " + (i*Scheduler.SamplingBufferSize) + " samples/second");
     // assertTrue( i>44100 );
   }
-
+ */
   public void wait( int seconds )
   {
     long start = System.currentTimeMillis();
     while ( System.currentTimeMillis()-start < (seconds*1000) );
   }
-  
+ 
   @Test
   public void testOut()
   {
@@ -291,7 +297,7 @@ public class ModuleTest extends TestCase
     s.stop();
     wait(1); // Wait for 1 second: stopped
     
-    vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SQUARE); //pulse signal
+    vco.getInput("iShape").setValues(ModuleVCO.SHAPE_PULSE);
     s.play(0);
     wait(2); // Wait for  seconds: playing
     
@@ -312,6 +318,5 @@ public class ModuleTest extends TestCase
     wait(2); // Wait for 5 seconds: playing
     
     s.stop();
- 
   }
 }

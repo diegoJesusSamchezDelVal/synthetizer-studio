@@ -13,13 +13,13 @@ public class ModuleVCO extends BasicModule
 
     addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
-    
+
     addInput(new BasicPort("iConstant", 4, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
-    
-    addInput(new BasicPort("iShape", 0, Port.ValueType.DISCRETE,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1, 4)));
-    
+
+    addInput(new BasicPort("iShape", SHAPE_SINE, Port.ValueType.DISCRETE,
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1, 4)));
+
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
@@ -57,23 +57,14 @@ public class ModuleVCO extends BasicModule
                   * initialFrequency_;
 
               double framePerPeriod_ = (double) frameRate_ / frequency;
-              double currentPositionInPercent = frameCount_ / framePerPeriod_;
+              double currentPositionInPercent = (frameCount_ % framePerPeriod_)
+                  / framePerPeriod_;
 
-              // 4 kinds of signal. attention of the
-              
-              if (ishape <= SHAPE_SAWTOOTH )
+              if (ishape >= SHAPE_SAWTOOTH)
               {
                 out = 2.0 * frameCount_ / framePerPeriod_ - 1.0;
               }
-              else if (ishape <= SHAPE_PULSE)
-              {
-                out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1. : -1;
-              }
-              else if (ishape <=SHAPE_SINE)
-              {
-                out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
-              }
-              else if (ishape <= SHAPE_TRIANGLE)
+              else if (ishape >= SHAPE_TRIANGLE)
               {
                 if (currentPositionInPercent < 0.25)
                   out = 4.0 * currentPositionInPercent;
@@ -81,6 +72,15 @@ public class ModuleVCO extends BasicModule
                   out = 2.0 - 4.0 * currentPositionInPercent;
                 else
                   out = 4.0 * currentPositionInPercent - 4.0;
+              }
+              else if (ishape >= SHAPE_SINE)
+              {
+                out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
+              }
+              else if (ishape >= SHAPE_PULSE)
+              {
+                out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1.
+                    : -1;
               }
               else
               {
@@ -96,11 +96,10 @@ public class ModuleVCO extends BasicModule
     }
   }
 
-  public static final double SHAPE_SAWTOOTH   = 0.0;
-  public static final double SHAPE_PULSE      = 1.0;
-  public static final double SHAPE_SINE       = 2.0;
-  public static final double SHAPE_TRIANGLE   = 3.0;
-  
+  public static final double SHAPE_SAWTOOTH = 0.75;
+  public static final double SHAPE_TRIANGLE = 0.50;
+  public static final double SHAPE_SINE     = 0.25;
+  public static final double SHAPE_PULSE    = 0.00;
 
   private int                frameCount_;
   private int                frameRate_;

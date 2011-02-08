@@ -12,10 +12,10 @@ public class ModuleLFO extends BasicModule
     super("LFO");
 
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1)));
 
     frameCount_ = 0;
-    frameRate_ = 44100;
+    frameRate_ = (44100*8);
   }
 
   @Override
@@ -31,10 +31,10 @@ public class ModuleLFO extends BasicModule
 
         double positionInPeriod = (double) frameCount_ / (double) frameRate_;
 
-        out = (Math.sin(positionInPeriod * 2. * Math.PI)+1.)/2.;
+        out = (Math.sin(positionInPeriod  * 2. * Math.PI)+1.)/2.;
 
         getOutput("oSignal").getValues().putDouble(out);
-        frameCount_ = ++frameCount_ % 44100;
+        frameCount_ = ++frameCount_ % (44100*8);
       }
       getOutput("oSignal").getValues().clear();
     }
