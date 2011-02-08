@@ -13,16 +13,19 @@ public class ModuleVCO extends BasicModule
 
     addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
-    addInput(new BasicPort("iConstant", 0, Port.ValueType.CONTINUOUS,
+    
+    addInput(new BasicPort("iConstant", 4, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
+    
     addInput(new BasicPort("iShape", 0, Port.ValueType.DISCRETE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1, 4)));
+    
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 440; // Octave:0, Note:Do
+    initialFrequency_ = 32.7; // Octave:0, Note:Do
   }
 
   @Override

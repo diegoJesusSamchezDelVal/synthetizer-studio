@@ -31,11 +31,12 @@ public class ModuleLFO extends BasicModule
 
         double positionInPeriod = (double) frameCount_ / (double) frameRate_;
 
-        out = Math.sin(positionInPeriod / 10. * 2. * Math.PI);
+        out = (Math.sin(positionInPeriod * 2. * Math.PI)+1.)/2.;
 
         getOutput("oSignal").getValues().putDouble(out);
         frameCount_ = ++frameCount_ % 44100;
       }
+      getOutput("oSignal").getValues().clear();
     }
   }
 
