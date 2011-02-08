@@ -3,25 +3,25 @@ package synthlab.api;
 
 public class ModuleFactory
 {
-  public Module createFromDescription(String description)
+  public static Module createFromDescription(String description)
   {
     //TODO
     return null;
   }
   
-  public Module createFromXML(String filename)
+  public static Module createFromXML(String filename)
   {
     //TODO
     return null;
   }
   
-  public Module createFromAnnotated(Object object)
+  public static Module createFromAnnotated(Object object)
   {
     //TODO
     return null;
   }
   
-  public Module createFromPrototype( Module m )
+  public static Module createFromPrototype( Module m )
   {
     try
     {

@@ -43,9 +43,10 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   
   public void addModule( Module module )
   {
-    pool_.register(module.getWrapped());
-    add(module);
-    module.setBounds( dropPosition_.x-100, dropPosition_.y-20, module.getBounds().width, module.getBounds().height );
+    Module m = new Module( ModuleFactory.createFromPrototype(module.getWrapped()) );
+    pool_.register(m.getWrapped());
+    add(m);
+    m.setBounds( dropPosition_.x-100, dropPosition_.y-20, m.getBounds().width, m.getBounds().height );
   }
 
   public void paint(Graphics g)

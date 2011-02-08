@@ -33,7 +33,7 @@ public class ModuleLFO extends BasicModule
       frameCount_ = ++frameCount_ % 44100;
     }
   }
-
+  
   private int frameCount_;
   private int frameRate_;
 }
