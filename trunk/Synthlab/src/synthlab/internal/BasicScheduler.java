@@ -98,15 +98,18 @@ public class BasicScheduler implements Scheduler
         start = System.currentTimeMillis();
 
         // Execute all tasks
-        for (Module module : tasks_)
-          module.compute();
+        synchronized (pool_)
+        {
+          for (Module module : tasks_)
+            module.compute();
 
-        // Propagate all outputs to inputs
-        for (Map.Entry<Port, Port> link : links_.entrySet())
-          link.getValue().setValues(link.getKey().getValues());
+          // Propagate all outputs to inputs
+          for (Map.Entry<Port, Port> link : links_.entrySet())
+            link.getValue().setValues(link.getKey().getValues());
+        }
 
         // Synchronize scheduler: always keep 2ms ahead
-        while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 2))
+        while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 0))
           ;
       }
 

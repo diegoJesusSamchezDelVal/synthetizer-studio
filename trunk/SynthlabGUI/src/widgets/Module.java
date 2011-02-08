@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import synthlab.api.Port;
-import synthlab.internal.BasicPort;
 
 public class Module extends JPanel implements MouseListener,
     MouseMotionListener

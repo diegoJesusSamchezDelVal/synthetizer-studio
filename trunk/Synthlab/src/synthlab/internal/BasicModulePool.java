@@ -23,22 +23,28 @@ public class BasicModulePool implements ModulePool
   public void register(Module module)
   {
     // TODO should remove all links ?
-    if (contains(module))
-      return;
+    synchronized (this)
+    {
+      if (contains(module))
+        return;
 
-    modules_.add(module);
-    uuids_.put(UUID.randomUUID(), module);
+      modules_.add(module);
+      uuids_.put(UUID.randomUUID(), module);
+    }
   }
 
   @Override
   public void unregister(Module module)
   {
     // TODO should remove all links ?
-    if (!contains(module))
-      return;
+    synchronized (this)
+    {
+      if (!contains(module))
+        return;
 
-    modules_.remove(module);
-    uuids_.inverse().remove(module);
+      modules_.remove(module);
+      uuids_.inverse().remove(module);
+    }
   }
 
   @Override
@@ -59,17 +65,17 @@ public class BasicModulePool implements ModulePool
     // Check which port is the output and which one is the input
     Port input;
     Port output;
-    
+
     // Sanity check
-    if ( p1==null || p2==null )
+    if (p1 == null || p2 == null)
       return;
-    
-    if ( p1.isInput() && p2.isOutput() )
+
+    if (p1.isInput() && p2.isOutput())
     {
       input = p1;
       output = p2;
     }
-    else if ( p1.isOutput() && p2.isInput() )
+    else if (p1.isOutput() && p2.isInput())
     {
       input = p2;
       output = p1;
@@ -80,8 +86,8 @@ public class BasicModulePool implements ModulePool
       return;
     }
 
-    output.setLinked( true );
-    input.setLinked( true );
+    output.setLinked(true);
+    input.setLinked(true);
     links_.put(output, input);
   }
 
@@ -119,8 +125,8 @@ public class BasicModulePool implements ModulePool
       }
     }
 
-    output.setLinked( false );
-    input.setLinked( false );
+    output.setLinked(false);
+    input.setLinked(false);
     links_.remove(output);
   }
 

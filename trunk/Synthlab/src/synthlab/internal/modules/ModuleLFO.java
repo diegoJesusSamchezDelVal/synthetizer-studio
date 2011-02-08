@@ -11,7 +11,8 @@ public class ModuleLFO extends BasicModule
   {
     super("LFO");
 
-    addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+    addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
     frameCount_ = 0;
     frameRate_ = 44100;
@@ -20,21 +21,24 @@ public class ModuleLFO extends BasicModule
   @Override
   public void compute()
   {
-    getOutput("oSignal").getValues().clear();
-
-    for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+    synchronized (getOutput("oSignal"))
     {
-      double out = 0;
+      getOutput("oSignal").getValues().clear();
 
-      double positionInPeriod = (double) frameCount_ / (double) frameRate_;
+      for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+      {
+        double out = 0;
 
-      out = Math.sin(positionInPeriod/10. * 2. * Math.PI);
+        double positionInPeriod = (double) frameCount_ / (double) frameRate_;
 
-      getOutput("oSignal").getValues().putDouble(out);
-      frameCount_ = ++frameCount_ % 44100;
+        out = Math.sin(positionInPeriod / 10. * 2. * Math.PI);
+
+        getOutput("oSignal").getValues().putDouble(out);
+        frameCount_ = ++frameCount_ % 44100;
+      }
     }
   }
-  
+
   private int frameCount_;
   private int frameRate_;
 }
