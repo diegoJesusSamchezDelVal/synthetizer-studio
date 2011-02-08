@@ -13,8 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import synthlab.api.Port;
+import widgets.configPanel.AbstractConfigPanel;
 
-public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractKnobPanel {
+public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractConfigPanel {
 
   /**
    * 
@@ -133,7 +134,7 @@ public class FunctionKnobPanel extends JPanel implements KnobListener, AbstractK
       @Override
       public void knobTurned(KnobEvent e)
       {
-            value = e.getValue(); 
+            value = e.getValue();
             notifyPort(value);
       }
       

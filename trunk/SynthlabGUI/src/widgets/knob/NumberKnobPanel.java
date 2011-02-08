@@ -12,11 +12,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import synthlab.api.Port;
+import widgets.configPanel.AbstractConfigPanel;
 
 /**
  * Panneau de règlage avec un afficheur
  * */
-public class NumberKnobPanel extends JPanel implements KnobListener, AbstractKnobPanel {
+public class NumberKnobPanel extends JPanel implements KnobListener, AbstractConfigPanel {
 
   /**
    * 

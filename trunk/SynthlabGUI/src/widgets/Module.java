@@ -156,7 +156,7 @@ public class Module extends JPanel implements MouseListener,
     }
     
       super.paintComponents(g);
-      paintChildren(g);
+     
       
      
   }
