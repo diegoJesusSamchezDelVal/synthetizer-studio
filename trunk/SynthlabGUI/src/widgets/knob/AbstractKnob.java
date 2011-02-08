@@ -15,15 +15,22 @@ import javax.swing.JPanel;
 
 public abstract class AbstractKnob extends JPanel implements MouseListener, MouseMotionListener
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5381272966044226174L;
+    
+    public static final int MAX_VALUE = 10000;
+
     protected Point centerPoint;
     
     protected Point pointer;
     
-    protected int value;
+    protected int value = 5000;
     
     public final static Dimension size = new Dimension(40,40);
     
-    public final static int RADIUS = size.width/2 - 1;
+    public final static int RADIUS = size.width/2 - 2;
     
     protected ArrayList<KnobListener> listeners = new ArrayList<KnobListener>();
     
@@ -38,6 +45,7 @@ public abstract class AbstractKnob extends JPanel implements MouseListener, Mous
       
       addMouseListener(this);
       addMouseMotionListener(this);
+      
     }
     
     public void addKnobListener(KnobListener l) {
@@ -100,17 +108,17 @@ public abstract class AbstractKnob extends JPanel implements MouseListener, Mous
     @Override
     public void mouseDragged(MouseEvent e)
     {
-      repaint();
-      pointer = computePointer(e.getPoint());
-      System.out.println(value);
-      notifyListener();
+          repaint();
+          pointer = computePointer(e.getPoint());
+          // System.out.println(value);
+          notifyListener();
       
     }  
 
     @Override
     public void mouseMoved(MouseEvent e)
     {
-      repaint();      
+	repaint();      
     }
     
     protected abstract Point computePointer(Point point);

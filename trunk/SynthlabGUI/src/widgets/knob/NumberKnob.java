@@ -27,7 +27,7 @@ public class NumberKnob extends AbstractKnob
         if (hasBlock  && currentPoint.y > centerPoint.y && (k > Math.tan(Math.PI/6) || k < Math.tan(-Math.PI/6))){
             if(pointer.x < centerPoint.x)
               value = 0;
-            else value = 9999;
+            else value = MAX_VALUE -1;
             return pointer;
         } else {
             
@@ -60,7 +60,7 @@ public class NumberKnob extends AbstractKnob
     } else {        
       
         if (currentPoint.y < centerPoint.y) {
-           value = 50; 
+           value = MAX_VALUE / 2; 
            return new Point(centerPoint.x, centerPoint.y - RADIUS);
         } else {
             return pointer;
