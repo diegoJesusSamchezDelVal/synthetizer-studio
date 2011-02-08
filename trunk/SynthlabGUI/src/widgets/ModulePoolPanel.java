@@ -24,6 +24,9 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     setupGeneral();
 
     pool_ = ModulePoolFactory.createDefault();
+    Scheduler s = SchedulerFactory.createDefault();
+    s.setPool(pool_);
+    s.play(0);
     
     setTransferHandler(new ModuleTransferHandler());
     try

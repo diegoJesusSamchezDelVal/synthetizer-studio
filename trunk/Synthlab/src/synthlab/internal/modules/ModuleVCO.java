@@ -12,12 +12,12 @@ public class ModuleVCO extends BasicModule
 
     addInput(new BasicPort("iFrequency", 0));
     addInput(new BasicPort("iConstant", 0));
-    addInput(new BasicPort("iShape", -1));
+    addInput(new BasicPort("iShape", 0));
     addOutput(new BasicPort("oSignal", 0));
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 440.0;
+    initialFrequency_ = 260.0;
   }
 
   @Override
@@ -49,22 +49,11 @@ public class ModuleVCO extends BasicModule
       }
       else if (ishape <= SHAPE_TRIANGLE)
       {
-        if (positionInPeriod < 0.25)
-        {
-          out = 4.0 * positionInPeriod;
-        }
-        else if (positionInPeriod < 0.75)
-        {
-          out = 2.0 - 4.0 * positionInPeriod;
-        }
-        else
-        {
-          out = 4.0 * positionInPeriod - 4.0;
-        }
+        out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
       }
       else if (ishape <= SHAPE_SAWTOOTH)
       {
-        out = (2.0 * positionInPeriod) / (1. / frequency) - 1.0;
+        out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
       }
       else
       {

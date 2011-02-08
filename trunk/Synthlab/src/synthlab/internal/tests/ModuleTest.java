@@ -282,7 +282,7 @@ public class ModuleTest extends TestCase
     pool.register(out);
     
     pool.link(vco.getOutput("oSignal"), out.getInput("iSignal"));
-    pool.link(lfo.getOutput("oSignal"), vco.getInput("iFrequency"));
+    //pool.link(lfo.getOutput("oSignal"), vco.getInput("iFrequency"));
     
     s.setPool(pool);
 
