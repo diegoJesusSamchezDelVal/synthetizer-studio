@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import synthlab.api.Port;
+import synthlab.internal.BasicPort;
 
 public class Module extends JPanel implements MouseListener,
     MouseMotionListener
@@ -19,8 +20,35 @@ public class Module extends JPanel implements MouseListener,
 
     setupGeneral();
     setupShadow();
+    setupPorts();
   }
   
+  public void setupPorts()
+  {
+    setLayout( null );
+    int currentHeight;
+    
+    currentHeight = 30;
+    for ( Port p : module_.getInputs() )
+    {
+      // Port circle
+      PortHandler ph = new PortHandler(p);
+      ph.setBounds( 0, currentHeight, 16, 14 );
+      add( ph );
+      currentHeight += 20;
+    }
+    
+    currentHeight = 30;
+    for ( Port p : module_.getOutputs() )
+    {
+      // Port circle
+      PortHandler ph = new PortHandler(p);
+      add( ph );
+      ph.setBounds( 184, currentHeight, (int)ph.getBounds().getWidth(), (int)ph.getBounds().getHeight() );
+      currentHeight += 20;
+    }
+  }
+
   public synthlab.api.Module getWrapped()
   {
     return module_;
@@ -101,14 +129,6 @@ public class Module extends JPanel implements MouseListener,
     stepHeight = 20;
     for (Port p : module_.getInputs())
     {
-      // Port circle
-      if (p.isLinked())
-      {
-        g.setColor(Color.yellow);
-        g.fillOval(5, currentHeight - 7, 6, 6);
-        g.setColor(Color.black);
-      }
-      g.drawOval(5, currentHeight - 7, 6, 6);
       // Port name
       g.drawString(p.getName(), 15, currentHeight);
       currentHeight += stepHeight;
@@ -119,25 +139,18 @@ public class Module extends JPanel implements MouseListener,
     stepHeight = 20;
     for (Port p : module_.getOutputs())
     {
-      // Port circle
-      if (p.isLinked())
-      {
-        g.setColor(Color.yellow);
-        g.fillOval(200 - 5 - 6, currentHeight - 7, 6, 6);
-        g.setColor(Color.black);
-      }
-      g.drawOval(200 - 5 - 6, currentHeight - 7, 6, 6);
       // Port name
       g.drawString(p.getName(),
           200 - 15 - g.getFontMetrics().stringWidth(p.getName()), currentHeight);
       currentHeight += stepHeight;
     }
+    
+      super.paintComponents(g);
   }
 
   @Override
   public void mouseDragged(MouseEvent e)
   {
-    // Move the module
     setBounds(e.getX() + getBounds().x - startingPosition_.x, e.getY()
         + getBounds().y - startingPosition_.y, getBounds().width,
         getBounds().height);
@@ -155,32 +168,56 @@ public class Module extends JPanel implements MouseListener,
   @Override
   public void mouseClicked(MouseEvent e)
   {
-    //TODO Double clicked = open settings panel for this module
-    if ( e.getClickCount()==2 )
+    // TODO Double clicked = open settings panel for this module
+    if (e.getClickCount() == 2)
     {
       // JOptionPane.showMessageDialog(this, "Module settings dialog not implement yet.");
       new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent(), e.getLocationOnScreen());
-      
     }
   }
 
+  public Port portAt(int x, int y)
+  {
+    int i;
+
+    // At input port ?
+    i = 0;
+    for (Port p : module_.getInputs())
+    {
+      if (x >= 2 && y >= 30 + i * 20 && x <= 14 && y <= 30 + i * 20 + 12)
+        return p;
+      ++i;
+    }
+
+    // At output port ?
+    i = 0;
+    for (Port p : module_.getOutputs())
+    {
+      if (x >= 186 && y >= 30 + i * 20 && x <= 198 && y <= 30 + i * 20 + 12)
+        return p;
+      ++i;
+    }
+
+    return null;
+  }
+
   @Override
-  public void mouseMoved(MouseEvent arg0)
+  public void mouseMoved(MouseEvent e)
   {
   }
 
   @Override
-  public void mouseEntered(MouseEvent arg0)
+  public void mouseEntered(MouseEvent e)
   {
   }
 
   @Override
-  public void mouseExited(MouseEvent arg0)
+  public void mouseExited(MouseEvent e)
   {
   }
 
   @Override
-  public void mouseReleased(MouseEvent arg0)
+  public void mouseReleased(MouseEvent e)
   {
   }
 
@@ -188,6 +225,4 @@ public class Module extends JPanel implements MouseListener,
   private synthlab.api.Module module_;
   private BufferedImage       shadow_;
   private ConvolveOp          op_;
-  
-   
 }

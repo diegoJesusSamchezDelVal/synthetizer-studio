@@ -11,6 +11,7 @@ public class BasicScheduler implements Scheduler
     tasks_ = null;
     pool_ = null;
     links_ = null;
+    playThread_ = new PlayThread();
   }
 
   @Override
@@ -19,34 +20,24 @@ public class BasicScheduler implements Scheduler
     // Sanity check
     if (pool_ == null || tasks_ == null || links_ == null)
       return;
-    
-    Audio.getLine().start();
-    
-    long start;
 
-    for (int i = count; i > 0; --i)
-    {
-      start = System.currentTimeMillis();
-      
-      // Execute all tasks
-      for (Module module : tasks_)
-        module.compute();
-      
-      // Propagate all outputs to inputs
-      for (Map.Entry<Port, Port> link : links_.entrySet())
-        link.getValue().setValues(link.getKey().getValues());
-
-      // Synchronize scheduler: always keep 2ms ahead
-      while ( (System.currentTimeMillis()-start)<(1000./(44100./Scheduler.SamplingBufferSize)-2) );
-    }
-
-    Audio.getLine().close();
+    playThread_ = new PlayThread();
+    running_ = true;
+    playThread_.start();
   }
 
   @Override
   public void stop()
   {
-    // TODO
+    running_ = false;
+    try
+    {
+      playThread_.join();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -77,20 +68,56 @@ public class BasicScheduler implements Scheduler
   {
     return tasks_;
   }
-  
+
   private void printStatus()
   {
     for (Module module : tasks_)
     {
-      System.out.println(" - Module "+module.getName());
-      for ( Port port : module.getInputs() )
-        System.out.println("   -> "+port.getName()+" = "+port.getValues());
-      for ( Port port : module.getOutputs() )
-        System.out.println("      "+port.getName()+" = "+port.getValues()+" ->");
+      System.out.println(" - Module " + module.getName());
+      for (Port port : module.getInputs())
+        System.out
+            .println("   -> " + port.getName() + " = " + port.getValues());
+      for (Port port : module.getOutputs())
+        System.out.println("      " + port.getName() + " = " + port.getValues()
+            + " ->");
+    }
+  }
+
+  private class PlayThread extends Thread
+  {
+    public void run()
+    {
+      Audio.openLine();
+      Audio.startLine();
+
+      long start;
+
+      // TODO should add mutexes here
+      while (running_)
+      {
+        start = System.currentTimeMillis();
+
+        // Execute all tasks
+        for (Module module : tasks_)
+          module.compute();
+
+        // Propagate all outputs to inputs
+        for (Map.Entry<Port, Port> link : links_.entrySet())
+          link.getValue().setValues(link.getKey().getValues());
+
+        // Synchronize scheduler: always keep 2ms ahead
+        while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 2))
+          ;
+      }
+
+      Audio.stopLine();
+      Audio.closeLine();
     }
   }
 
   private ModulePool        pool_;
   private List<Module>      tasks_;
   private BiMap<Port, Port> links_;
+  private boolean           running_;
+  private PlayThread        playThread_;
 }

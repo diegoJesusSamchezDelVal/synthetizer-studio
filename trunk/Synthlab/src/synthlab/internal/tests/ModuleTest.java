@@ -260,6 +260,12 @@ public class ModuleTest extends TestCase
     // assertTrue( i>44100 );
   }
 */
+  public void wait( int seconds )
+  {
+    long start = System.currentTimeMillis();
+    while ( System.currentTimeMillis()-start < (seconds*1000) );
+  }
+  
   @Test
   public void testOut()
   {
@@ -282,6 +288,15 @@ public class ModuleTest extends TestCase
 
     vco.getInput("iShape").setValues(ModuleVCO.SHAPE_SINE);
     
-    s.play((44100/Scheduler.SamplingBufferSize)*5); // 5 seconds
+    s.play(0);
+    wait(5); // Wait for 5 seconds: playing
+    
+    s.stop();
+    wait(1); // Wait for 1 second: stopped
+    
+    s.play(0);
+    wait(5); // Wait for  seconds: playing
+    
+    s.stop();
   }
 }

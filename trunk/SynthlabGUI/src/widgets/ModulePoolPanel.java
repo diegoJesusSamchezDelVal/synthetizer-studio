@@ -4,10 +4,13 @@ import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.Map;
 
 import javax.swing.*;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import synthlab.api.*;
 
 public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotionListener, DropTargetListener
@@ -21,27 +24,6 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     setupGeneral();
 
     pool_ = ModulePoolFactory.createDefault();
-
-    // TODO Here start insane test hack
-    synthlab.api.Module vco1 = new synthlab.internal.modules.ModuleVCO();
-    synthlab.api.Module vco2 = new synthlab.internal.modules.ModuleVCO();
-    synthlab.api.Module vco3 = new synthlab.internal.modules.ModuleVCO();
-    synthlab.api.Module out = new synthlab.internal.modules.ModuleOut();
-
-    pool_.register(vco1);
-    pool_.register(vco2);
-    pool_.register(vco3);
-    pool_.register(out);
-
-    pool_.link(vco1.getOutput("oSignal"), out.getInput("iSignal"));
-    pool_.link(vco2.getOutput("oSignal"), vco1.getInput("iFrequency"));
-    // pool_.link(vco3.getOutput("oSignal"), vco1.getInput("iConstant"));
-
-    add(new Module(vco1));
-    add(new Module(vco2));
-    add(new Module(vco3));
-    add(new Module(out));
-    // add(new Knob("iSignal"));
     
     setTransferHandler(new ModuleTransferHandler());
     try
@@ -52,6 +34,8 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     {
       e.printStackTrace();
     }
+    
+    links_ =  HashBiMap.create();
   }
   
   public void addModule( Module module )
@@ -75,21 +59,33 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     
     // Draw links
     drawLinks(g);
+    
+    if ( linking_ )
+    {
+      drawLink( g, linkStart_.x, linkStart_.y, linkCurrent_.x, linkCurrent_.y);
+    }
 
     // Render modules
     super.paint(g);
+  }
+  
+  public boolean isLinking()
+  {
+    return linking_;
   }
 
   private void drawLinks(Graphics g)
   {
     // TODO insane hack to display hard-coded links
-    Component[] components = getComponents();
-    drawLink(g, components[1].getX() + 193, components[1].getY() + 36,
-                components[0].getX() + 6, components[0].getY() + 36);
-    drawLink(g, components[2].getX() + 193, components[2].getY() + 36,
-                components[0].getX() + 6, components[0].getY() + 36+20);
-    drawLink(g, components[0].getX() + 193, components[0].getY() + 36,
-                components[3].getX() + 6, components[3].getY() + 36);
+    for ( Map.Entry<PortHandler, PortHandler> entry : links_.entrySet() )
+    {
+      drawLink( g,
+          (int)(entry.getKey().getBounds().getX() + entry.getKey().getParent().getBounds().getX()),
+          (int)(entry.getKey().getBounds().getY() + entry.getKey().getParent().getBounds().getY())+6,
+          (int)(entry.getValue().getBounds().getX() + entry.getValue().getParent().getBounds().getX()),
+          (int)(entry.getValue().getBounds().getY() + entry.getValue().getParent().getBounds().getY())+6
+              );
+    }
   }
 
   private void drawLink(Graphics g, int x0, int y0, int x1, int y1)
@@ -122,12 +118,13 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
     background_ = new ImageIcon("background.jpg").getImage();
     
+    linking_ = false;
+    
     setVisible(true);
   }
 
   public void updateLinks()
   {
-    links_ = pool_.getLinks();
   }
 
   @Override
@@ -138,6 +135,8 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   @Override
   public void mouseMoved(MouseEvent e)
   {
+    linkCurrent_ = e.getPoint();
+    repaint();
   }
 
   @Override
@@ -163,12 +162,8 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   @Override
   public void mouseReleased(MouseEvent arg0)
   {
+    endDrag( null, null );
   }
-
-  private ModulePool        pool_;
-  private BiMap<Port, Port> links_;
-  private Image background_;
-  private Point dropPosition_;
 
   @Override
   public void dragEnter(DropTargetDragEvent arg0)
@@ -195,4 +190,40 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   public void dropActionChanged(DropTargetDragEvent arg0)
   {
   }
+  
+  public void updateDrag( Module module, PortHandler port, Point e, Point p )
+  {
+    linking_ = true;
+    linkStart_ = e;
+    linkCurrent_ = p;
+    portStart_ = port;
+    repaint();
+  }
+  
+  public void endDrag( Module module, PortHandler port )
+  {
+    linking_ = false;
+    repaint();
+    Component c = findComponentAt(linkCurrent_);
+    if ( c.getClass().equals(PortHandler.class) )
+    {
+      link( portStart_, (PortHandler)c );
+    }
+  }
+  
+  public void link( PortHandler output, PortHandler input )
+  {
+    System.out.println( output.getWrapped().getName() + " -> " + input.getWrapped().getName() );
+    pool_.link(output.getWrapped(), input.getWrapped());
+    links_.put(output, input);
+  }
+  
+  private ModulePool        pool_;
+  private Image background_;
+  private Point dropPosition_;
+  private boolean linking_;
+  private Point linkStart_;
+  private Point linkCurrent_;
+  private PortHandler portStart_; 
+  private BiMap<PortHandler,PortHandler> links_;
 }
