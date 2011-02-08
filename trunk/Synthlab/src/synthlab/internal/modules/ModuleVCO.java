@@ -18,7 +18,7 @@ public class ModuleVCO extends BasicModule
 
     frameCount_ = 0;
     frameRate_ = 44100;
-    initialFrequency_ = 32.70; // Octave:0, Note:Do
+    initialFrequency_ = 440; // Octave:0, Note:Do
   }
 
   @Override
