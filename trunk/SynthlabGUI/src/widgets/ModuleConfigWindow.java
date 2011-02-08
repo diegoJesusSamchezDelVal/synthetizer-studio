@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import synthlab.api.Module;
 import synthlab.api.Port;
 import widgets.knob.AbstractKnobPanel;
-import widgets.knob.FunctionKnob;
 import widgets.knob.FunctionKnobPanel;
 import widgets.knob.NumberKnobPanel;
 
@@ -55,9 +54,6 @@ public class ModuleConfigWindow extends JDialog {
   
   public void paintComponent(Graphics gc) {
       	gc.setColor(Color.white);
-      	gc.fillRect(0, 0, getWidth(), getHeight());
+      	gc.fillRect(0, 0, getWidth(), getHeight()); 
   }
-  
-  
-  
-  }
+}

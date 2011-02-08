@@ -96,6 +96,11 @@ public class Module extends JPanel implements MouseListener,
     cb.setLocation(185, 4);
     add(cb, 0);
     
+    //Test
+    configPanel = new ModuleConfigPanel(module_);
+    configPanel.setVisible(true);
+    System.out.print(configPanel.getDisplayHeight());
+    add(configPanel,0);
     
   }
 
@@ -115,9 +120,9 @@ public class Module extends JPanel implements MouseListener,
     int maximumPortNumber = Math.max(module_.getInputs().size(), module_
         .getOutputs().size());
     g.setColor(Color.white);
-    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 , 10, 10);
+    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 + configPanel.getDisplayHeight(), 10, 10);
     g.setColor(Color.black);
-    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
+    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30+ configPanel.getDisplayHeight(), 10, 10);
 
     // Module name
     g.drawString(module_.getName(),
@@ -152,6 +157,9 @@ public class Module extends JPanel implements MouseListener,
     }
     
       super.paintComponents(g);
+      paintChildren(g);
+      
+     
   }
 
   @Override
@@ -182,6 +190,8 @@ public class Module extends JPanel implements MouseListener,
 	    configWindow = new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent(), new Point(0,0));
 	configWindow.setLocation(e.getLocationOnScreen());
 	configWindow.setVisible(true);
+	
+	configPanel.setVisible(true);
     }
   }
 
@@ -238,4 +248,7 @@ public class Module extends JPanel implements MouseListener,
   private int wide = 200;
   
   private ModuleConfigWindow configWindow;
+  
+  //Test
+  private ModuleConfigPanel configPanel;
 }
