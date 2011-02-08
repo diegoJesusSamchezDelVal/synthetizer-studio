@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import synthlab.api.Module;
@@ -39,12 +40,16 @@ public class ModuleConfigWindow extends JDialog {
       
       AbstractKnobPanel knob;
       for(Port p : module_.getInputs()) {
-	  if(p.getName().equals("iShape")) //TODO just pour test.  
-	      knob = new FunctionKnobPanel(p.getName());
-	  else 
-	      knob = new NumberKnobPanel(p.getName(), -1.0, 1.0, "", "0.0", !p.isLinked());
-         knob.setPort(p);
-         add((JPanel)knob);
+          if(p.getName().equals("iShape")) //TODO just pour test.  
+              knob = new FunctionKnobPanel(p.getName());
+          else 
+              knob = new NumberKnobPanel(p.getName(), -1.0, 1.0, "", "0.0", !p.isLinked());
+          knob.setPort(p);
+          add((JPanel)knob);
+      }
+           
+      if(getContentPane().getComponentCount() == 0) {
+	  add(new JLabel("No configuration for this module."));
       }
       
       setLocation(point);

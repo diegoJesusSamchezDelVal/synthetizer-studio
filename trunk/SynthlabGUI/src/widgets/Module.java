@@ -15,7 +15,6 @@ public class Module extends JPanel implements MouseListener,
   public Module(synthlab.api.Module module)
   {
     super();
-
     module_ = module;
 
     setupGeneral();

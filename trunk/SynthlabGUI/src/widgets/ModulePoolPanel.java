@@ -222,7 +222,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     links_.put(output, input);
   }
   
-  private ModulePool        pool_;
+  private ModulePool pool_;
   private Image background_;
   private Point dropPosition_;
   private boolean linking_;
