@@ -96,10 +96,10 @@ public class Module extends JPanel implements MouseListener,
     add(cb, 0);
     
     //Test
-    configPanel = new ModuleConfigPanel(module_);
-    configPanel.setVisible(true);
-    System.out.print(configPanel.getDisplayHeight());
-    add(configPanel,0);
+   // configPanel = new ModuleConfigPanel(module_);
+  //  configPanel.setVisible(true);
+   // System.out.print(configPanel.getDisplayHeight());
+   // add(configPanel,0);
     
   }
 
@@ -190,7 +190,7 @@ public class Module extends JPanel implements MouseListener,
 	configWindow.setLocation(e.getLocationOnScreen());
 	configWindow.setVisible(true);
 	
-	configPanel.setVisible(true);
+	//configPanel.setVisible(true);
     }
   }
 

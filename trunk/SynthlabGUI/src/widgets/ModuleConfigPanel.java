@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 import synthlab.api.Module;
 import synthlab.api.Port;
-import widgets.knob.AbstractKnobPanel;
+import widgets.configPanel.AbstractConfigPanel;
 import widgets.knob.FunctionKnobPanel;
 import widgets.knob.NumberKnobPanel;
 
@@ -23,7 +23,7 @@ public class ModuleConfigPanel extends JPanel {
 	
 	setVisible(false);
 	
-	AbstractKnobPanel knob;
+	AbstractConfigPanel knob;
 	for(Port p : module.getInputs()) {
 	    if(p.getName().equals("iShape")) //TODO just pour test.  
 		knob = new FunctionKnobPanel(p.getName());
