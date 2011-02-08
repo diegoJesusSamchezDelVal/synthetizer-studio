@@ -11,8 +11,8 @@ public class ModuleVCO extends BasicModule
   {
     super("VCO");
 
-    addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.VOLT, new Port.ValueRange(0,84)));
-    addInput(new BasicPort("iConstant", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.VOLT, new Port.ValueRange(0, 84)));
+    addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.VOLT, new Port.ValueRange(0,8)));
+    addInput(new BasicPort("iConstant", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
     addInput(new BasicPort("iShape", 0, Port.ValueType.DISCRETE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1, 4)));
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
