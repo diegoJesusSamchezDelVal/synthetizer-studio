@@ -19,6 +19,8 @@ public class PortHandler extends JPanel implements MouseMotionListener,
     MouseListener
 {
   private static final long serialVersionUID = 6479523243400160278L;
+  
+  private boolean mouseOver = false;
 
   public PortHandler(Port port)
   {
@@ -60,6 +62,10 @@ public class PortHandler extends JPanel implements MouseMotionListener,
       g.setColor(Color.yellow);
       g.fillOval(5, 3, 6, 6);
       g.setColor(Color.black);
+    } else if(mouseOver) {
+	g.setColor(Color.green);
+	g.fillOval(5, 3, 6, 6);
+	g.setColor(Color.black);
     }
     
     if ( ((ModulePoolPanel) getParent().getParent()).isLinking() && !port_.isLinked() )
@@ -74,6 +80,8 @@ public class PortHandler extends JPanel implements MouseMotionListener,
     {
       g.drawOval(5, 3, 6, 6);
     }
+    
+    
   }
 
   @Override
@@ -83,14 +91,16 @@ public class PortHandler extends JPanel implements MouseMotionListener,
 
   @Override
   public void mouseEntered(MouseEvent e)
-  {
-
+  {    
+      mouseOver = true;
+      repaint();
   }
 
   @Override
   public void mouseExited(MouseEvent e)
   {
-
+      mouseOver = false;
+      repaint();    
   }
 
   @Override
@@ -123,6 +133,7 @@ public class PortHandler extends JPanel implements MouseMotionListener,
   @Override
   public void mouseMoved(MouseEvent e)
   {
+      repaint();
   }
 
   private Port port_;

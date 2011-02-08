@@ -83,14 +83,17 @@ public class Module extends JPanel implements MouseListener,
     setBorder(BorderFactory.createLineBorder(Color.black));
     setBackground(Color.white);
 
-    int maximumPortNumber = Math.max(module_.getInputs().size(), module_
-        .getOutputs().size());
+    int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
     setBounds(0, 0, 200 + 10, maximumPortNumber * 20 + 30 + 10);
 
     addMouseListener(this);
     addMouseMotionListener(this);
 
     startingPosition_ = new Point();
+    
+    CloseButton cb = new CloseButton(this);
+    cb.setLocation(185, 4);
+    add(cb, 0);
   }
 
   public void paint(Graphics g)
