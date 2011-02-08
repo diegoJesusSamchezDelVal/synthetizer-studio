@@ -50,8 +50,7 @@ public class ModuleConfigWindow extends JDialog {
       
       setLocation(point);
       setResizable(false);
-      pack();
-      setVisible(true);
+      pack();     
   }
   
   public void paintComponent(Graphics gc) {

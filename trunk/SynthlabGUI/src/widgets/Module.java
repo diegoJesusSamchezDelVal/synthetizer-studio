@@ -20,7 +20,7 @@ public class Module extends JPanel implements MouseListener,
 
     setupGeneral();
     setupShadow();
-    setupPorts();
+    setupPorts();    
   }
   
   public void setupPorts()
@@ -91,9 +91,12 @@ public class Module extends JPanel implements MouseListener,
 
     startingPosition_ = new Point();
     
+   
     CloseButton cb = new CloseButton(this);
     cb.setLocation(185, 4);
     add(cb, 0);
+    
+    
   }
 
   public void paint(Graphics g)
@@ -112,9 +115,9 @@ public class Module extends JPanel implements MouseListener,
     int maximumPortNumber = Math.max(module_.getInputs().size(), module_
         .getOutputs().size());
     g.setColor(Color.white);
-    g.fillRoundRect(0, 0, 200, maximumPortNumber * 20 + 30, 10, 10);
+    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 , 10, 10);
     g.setColor(Color.black);
-    g.drawRoundRect(0, 0, 200, maximumPortNumber * 20 + 30, 10, 10);
+    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
 
     // Module name
     g.drawString(module_.getName(),
@@ -175,7 +178,10 @@ public class Module extends JPanel implements MouseListener,
     if (e.getClickCount() == 2)
     {
       // JOptionPane.showMessageDialog(this, "Module settings dialog not implement yet.");
-      new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent(), e.getLocationOnScreen());
+	if (configWindow == null)
+	    configWindow = new ModuleConfigWindow(module_, (JFrame)getRootPane().getParent(), new Point(0,0));
+	configWindow.setLocation(e.getLocationOnScreen());
+	configWindow.setVisible(true);
     }
   }
 
@@ -228,4 +234,8 @@ public class Module extends JPanel implements MouseListener,
   private synthlab.api.Module module_;
   private BufferedImage       shadow_;
   private ConvolveOp          op_;
+  
+  private int wide = 200;
+  
+  private ModuleConfigWindow configWindow;
 }
