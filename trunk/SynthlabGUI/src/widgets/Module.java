@@ -119,9 +119,9 @@ public class Module extends JPanel implements MouseListener,
     int maximumPortNumber = Math.max(module_.getInputs().size(), module_
         .getOutputs().size());
     g.setColor(Color.white);
-    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 + configPanel.getDisplayHeight(), 10, 10);
+    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 , 10, 10);
     g.setColor(Color.black);
-    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30+ configPanel.getDisplayHeight(), 10, 10);
+    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30 , 10, 10);
 
     // Module name
     g.drawString(module_.getName(),
