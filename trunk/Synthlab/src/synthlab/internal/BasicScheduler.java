@@ -76,11 +76,14 @@ public class BasicScheduler implements Scheduler
       Audio.openLine();
       Audio.startLine();
 
-      long start;
+      long start= System.currentTimeMillis();;
 
       // TODO should add mutexes here
       while (running_)
       {
+        // Scheduler timing: spin lock for 10ms
+        while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 0))
+          ;
         start = System.currentTimeMillis();
 
         // Execute all tasks
@@ -93,10 +96,6 @@ public class BasicScheduler implements Scheduler
           for (Map.Entry<Port, Port> link : links_.entrySet())
             link.getValue().setValues(link.getKey().getValues());
         }
-
-        // Synchronize scheduler: always keep 2ms ahead
-        while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 0))
-          ;
       }
 
       Audio.stopLine();

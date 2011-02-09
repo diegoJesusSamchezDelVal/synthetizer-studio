@@ -15,6 +15,8 @@ public class ModuleOut extends BasicModule
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+
+    data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
   }
 
   @Override
@@ -24,12 +26,13 @@ public class ModuleOut extends BasicModule
     {
       getInput("iSignal").getValues().clear();
 
-      ByteBuffer data = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
       for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
-        data.putShort(i * 2, (short) (getInput("iSignal").getValues()
+      {
+        data_.putShort(i * 2, (short) (getInput("iSignal").getValues()
             .getDouble(i * 8) * Short.MAX_VALUE));
+      }
 
-      Audio.getLine().write(data.array(), 0, Scheduler.SamplingBufferSize * 2);
+      Audio.getLine().write(data_.array(), 0, Scheduler.SamplingBufferSize * (Short.SIZE/8));
 
       getInput("iSignal").getValues().clear();
     }
@@ -37,4 +40,5 @@ public class ModuleOut extends BasicModule
 
   AudioInputStream stream_;
   DataLine.Info    lineInfo_;
+  ByteBuffer       data_;
 }
