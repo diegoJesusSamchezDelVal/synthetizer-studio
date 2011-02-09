@@ -44,13 +44,18 @@ public class ModuleConfigWindow extends JDialog {
 		module_ = module;
 		AbstractConfigPanel knob;
 		for (Port p : module_.getInputs()) {
-			if (p.getValueType() == Port.ValueType.DISCRETE) {
-				knob = new FunctionKnobPanel(p.getName());
+			if (p.getValueType() == Port.ValueType.DISCRETE && p.getValueRange().count == 4) {
+			    knob = new FunctionKnobPanel(p.getName());
+			} else if (p.getValueType() == Port.ValueType.DISCRETE) {
+			    double min = p.getValueRange().minimum;
+				double max = p.getValueRange().maximum;
+			    knob = new NumberKnobPanel(p.getName(), min, max, unitList
+					.get(p.getValueUnit()), "0", !p.isLinked(), false);
 			} else if (p.getValueType() == Port.ValueType.CONTINUOUS) {
 				double min = p.getValueRange().minimum;
 				double max = p.getValueRange().maximum;
 				knob = new NumberKnobPanel(p.getName(), min, max, unitList
-						.get(p.getValueUnit()), "0.0", !p.isLinked());
+						.get(p.getValueUnit()), "0.0", !p.isLinked(), true);
 			} else if (p.getValueType() == Port.ValueType.KEYBOARD) {
 				knob = new KeyboardPanel();
 			} else {

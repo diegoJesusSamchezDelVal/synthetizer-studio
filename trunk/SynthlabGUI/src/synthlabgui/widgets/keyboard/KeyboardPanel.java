@@ -24,6 +24,7 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel,
 	@Override
 	public void setPort(Port port) {
 		inputPort = port;
+		notifyPort(-1);
 	}
 
 	@Override
