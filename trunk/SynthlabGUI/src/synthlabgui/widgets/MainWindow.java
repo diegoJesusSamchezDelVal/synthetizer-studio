@@ -96,7 +96,6 @@ public class MainWindow extends JFrame implements WindowListener
   {
     Audio.stopLine();
     Audio.closeLine();
-    System.out.println("Au revoir:)");
     System.exit(0);
   }
 
