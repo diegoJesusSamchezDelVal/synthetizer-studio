@@ -9,6 +9,7 @@ import synthlab.internal.modules.ModuleLFO;
 import synthlab.internal.modules.ModuleMixer;
 import synthlab.internal.modules.ModuleOut;
 import synthlab.internal.modules.ModuleVCA;
+import synthlab.internal.modules.ModuleVCF;
 import synthlab.internal.modules.ModuleVCO;
 
 public class ModuleRegistryPanel extends JPanel
@@ -24,6 +25,7 @@ public class ModuleRegistryPanel extends JPanel
     registry_.register(new ModuleVCO());
     registry_.register(new ModuleVCA());
     registry_.register(new ModuleMixer());
+    registry_.register(new ModuleVCF());
     registry_.register(new ModuleOut());
     refresh();
     setupGeneral();
