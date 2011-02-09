@@ -26,7 +26,7 @@ public class ModuleTransferHandler extends TransferHandler
       try
       {
         synthlab.api.Module m = (synthlab.api.Module) df.getTransferData(ModuleTransferable.moduleFlavor);
-        Module module = new Module(m);
+        Module module = new Module(m,((ModulePoolPanel) cp));
         ((ModulePoolPanel) cp).addModule(module);
         ((ModulePoolPanel) cp).repaint();
         return true;

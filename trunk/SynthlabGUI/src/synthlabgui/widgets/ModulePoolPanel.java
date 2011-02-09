@@ -54,10 +54,25 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
   public void addModule(Module module)
   {
-    Module m = new Module(ModuleFactory.createFromPrototype(module.getWrapped()));
+    Module m = new Module(ModuleFactory.createFromPrototype(module.getWrapped()), this);
     pool_.register(m.getWrapped());
     add(m);
     m.setBounds(dropPosition_.x - 100, dropPosition_.y - 20, m.getBounds().width, m.getBounds().height);
+  }
+  
+  /**
+   * Cette méthode enlève le module donné en paramètre et débranche tous les câbles qui sont lui connectés.
+   * @param module le module à enlever
+   * */
+  public void removeModuel(Module module)
+  {
+      for(PortHandler ph : module.getPorts()) {
+	 unlink(ph);
+      }	 
+      pool_.unregister(module.getWrapped());
+      remove(module);
+      
+      repaint();
   }
 
   public void paint(Graphics g)
@@ -216,6 +231,20 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   {
     pool_.link(output.getWrapped(), input.getWrapped());
     links_.put(output, input);
+  }
+  
+  public void unlink(PortHandler port) {
+      PortHandler port2 = links_.get(port);
+      if(port2 != null) {
+	  pool_.unlink(port.getWrapped(), port2.getWrapped());
+	  links_.remove(port);
+      } else {
+	  port2 = links_.inverse().get(port);
+	  if(port2 != null) {
+	      pool_.unlink(port.getWrapped(), port2.getWrapped());
+	      links_.remove(port2);
+	  }
+      }     
   }
 
   private ModulePool                      pool_;

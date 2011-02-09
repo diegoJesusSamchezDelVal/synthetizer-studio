@@ -11,6 +11,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,10 +22,13 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
 {
   private static final long serialVersionUID = -5287018845570600845L;
 
-  public Module(synthlab.api.Module module)
+private ModulePoolPanel poolPanel;
+
+  public Module(synthlab.api.Module module, ModulePoolPanel parent)
   {
     super();
     module_ = module;
+    poolPanel = parent;
     setupGeneral();
     setupShadow();
     setupPorts();
@@ -40,6 +45,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
       PortHandler ph = new PortHandler(p);
       ph.setBounds(0, currentHeight, 16, 14);
       add(ph);
+      ports.add(ph);
       currentHeight += 20;
     }
     currentHeight = 30;
@@ -48,6 +54,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
       // Port circle
       PortHandler ph = new PortHandler(p);
       add(ph);
+      ports.add(ph);
       ph.setBounds(184, currentHeight, (int) ph.getBounds().getWidth(), (int) ph.getBounds().getHeight());
       currentHeight += 20;
     }
@@ -89,9 +96,10 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     addMouseListener(this);
     addMouseMotionListener(this);
     startingPosition_ = new Point();
-    CloseButton cb = new CloseButton(this);
+    CloseButton cb = new CloseButton(this, poolPanel);
     cb.setLocation(185, 4);
     add(cb, 0);
+    
     // Test
     // configPanel = new ModuleConfigPanel(module_);
     // configPanel.setVisible(true);
@@ -223,6 +231,10 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
   public void mouseReleased(MouseEvent e)
   {
   }
+  
+  public ArrayList<PortHandler> getPorts() {
+      return ports;
+  }
 
   private Point               startingPosition_;
 
@@ -235,6 +247,8 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
   private int                 wide = 200;
 
   private ModuleConfigWindow  configWindow;
+  
+  private ArrayList<PortHandler> ports = new ArrayList<PortHandler>();
   // Test
   // private ModuleConfigPanel configPanel;
 }
