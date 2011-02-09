@@ -84,7 +84,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     drawLinks(g);
     if (linking_)
     {
-      drawLink(g, linkStart_.x, linkStart_.y, linkCurrent_.x, linkCurrent_.y);
+      drawLink(g, linkStart_.x, linkStart_.y, linkCurrent_.x, linkCurrent_.y, Color.yellow);
     }
     // Render modules
     super.paint(g);
@@ -97,28 +97,68 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
   private void drawLinks(Graphics g)
   {
+    selectedLink_ = null;
     for (Map.Entry<PortHandler, PortHandler> entry : links_.entrySet())
     {
-      drawLink(g, (int) (entry.getKey().getBounds().getX() + entry.getKey().getParent().getBounds().getX()),
-          (int) (entry.getKey().getBounds().getY() + entry.getKey().getParent().getBounds().getY()) + 6, (int) (entry
-              .getValue().getBounds().getX() + entry.getValue().getParent().getBounds().getX()), (int) (entry
-              .getValue().getBounds().getY() + entry.getValue().getParent().getBounds().getY()) + 6);
+      int x0 = (int) (entry.getKey().getBounds().getX() + entry.getKey().getParent().getBounds().getX());
+      int y0 = (int) (entry.getKey().getBounds().getY() + entry.getKey().getParent().getBounds().getY()) + 6;
+      int x1 = (int) (entry.getValue().getBounds().getX() + entry.getValue().getParent().getBounds().getX());
+      int y1 = (int) (entry.getValue().getBounds().getY() + entry.getValue().getParent().getBounds().getY()) + 6;
+      boolean selected = linkContains(x0, y0, x1, y1, linkCurrent_);
+      drawLink(g, x0, y0, x1, y1, selected ? Color.red : Color.yellow);
+      if (selected)
+        selectedLink_ = entry;
     }
   }
 
-  private void drawLink(Graphics g, int x0, int y0, int x1, int y1)
+  private void drawLink(Graphics g, int x0, int y0, int x1, int y1, Color c)
   {
-    ((Graphics2D) g).setStroke(new BasicStroke(5));
-    g.setColor(Color.darkGray);
-    GeneralPath path = new GeneralPath();
-    path.moveTo(x0, y0);
-    path.curveTo(x0 + 100, y0, x1 - 100, y1, x1, y1);
-    ((Graphics2D) g).draw(path);
-    ((Graphics2D) g).setStroke(new BasicStroke(3));
-    g.setColor(Color.yellow);
-    ((Graphics2D) g).draw(path);
+    Graphics2D g2 = (Graphics2D) g;
+    // Create the draw path
+    GeneralPath drawPath = new GeneralPath();
+    drawPath.moveTo(x0, y0);
+    drawPath.curveTo(x0 + 100, y0, x1 - 100, y1, x1, y1);
+    // Draw external link (gray)
+    g2.setStroke(new BasicStroke(5));
+    g2.setColor(Color.darkGray);
+    g2.draw(drawPath);
+    // Draw internal link (yellow) - or red if selected
+    g2.setStroke(new BasicStroke(3));
+    g2.setColor(c);
+    ;
+    g2.draw(drawPath);
+    // Restore standard stroke and color
     g.setColor(Color.black);
-    ((Graphics2D) g).setStroke(new BasicStroke(1));
+    g2.setStroke(new BasicStroke(1));
+  }
+
+  private boolean linkContains(int x0, int y0, int x1, int y1, Point p)
+  {
+    int marginX = 5;
+    int marginY = 5;
+    GeneralPath selectPathX = new GeneralPath();
+    GeneralPath selectPathY = new GeneralPath();
+    x0 += marginX;
+    x1 += marginX;
+    selectPathX.moveTo(x0, y0);
+    selectPathX.curveTo(x0 + 100, y0, x1 - 100, y1, x1, y1);
+    x0 -= marginX * 2;
+    x1 -= marginX * 2;
+    selectPathX.lineTo(x1, y1);
+    selectPathX.curveTo(x1 - 100, y1, x0 + 100, y0, x0, y0);
+    selectPathX.closePath();
+    x0 += marginX;
+    x1 += marginX;
+    y0 += marginY;
+    y1 += marginY;
+    selectPathY.moveTo(x0, y0);
+    selectPathY.curveTo(x0 + 100, y0, x1 - 100, y1, x1, y1);
+    y0 -= marginY * 2;
+    y1 -= marginY * 2;
+    selectPathY.lineTo(x1, y1);
+    selectPathY.curveTo(x1 - 100, y1, x0 + 100, y0, x0, y0);
+    selectPathY.closePath();
+    return selectPathX.contains(p) || selectPathY.contains(p);
   }
 
   private void setupGeneral()
@@ -151,8 +191,12 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   }
 
   @Override
-  public void mouseClicked(MouseEvent arg0)
+  public void mouseClicked(MouseEvent e)
   {
+    if (selectedLink_ != null && e.getButton() == MouseEvent.BUTTON3)
+    {
+      unlink(selectedLink_.getValue());
+    }
   }
 
   @Override
@@ -233,6 +277,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     PortHandler port2 = links_.get(port);
     if (port2 != null)
     {
+      pool_.unlink(port.getWrapped(), links_.get(port).getWrapped());
       links_.remove(port);
     }
     else
@@ -240,24 +285,27 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
       port2 = links_.inverse().get(port);
       if (port2 != null)
       {
+        pool_.unlink(port2.getWrapped(), links_.get(port2).getWrapped());
         links_.remove(port2);
       }
     }
   }
 
-  private ModulePool                      pool_;
+  private Map.Entry<PortHandler, PortHandler> selectedLink_;
 
-  private Image                           background_;
+  private ModulePool                          pool_;
 
-  private Point                           dropPosition_;
+  private Image                               background_;
 
-  private boolean                         linking_;
+  private Point                               dropPosition_;
 
-  private Point                           linkStart_;
+  private boolean                             linking_;
 
-  private Point                           linkCurrent_;
+  private Point                               linkStart_;
 
-  private PortHandler                     portStart_;
+  private Point                               linkCurrent_;
 
-  private BiMap<PortHandler, PortHandler> links_;
+  private PortHandler                         portStart_;
+
+  private BiMap<PortHandler, PortHandler>     links_;
 }
