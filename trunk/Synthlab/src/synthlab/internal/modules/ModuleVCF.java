@@ -11,7 +11,6 @@ public class ModuleVCF extends BasicModule
   //output signal
   private double  valueOut;
   
-  //
   private final int frameRate_;
   private final double maxVolume = 1;
   private final double minVolume = -1;
@@ -28,8 +27,8 @@ public class ModuleVCF extends BasicModule
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
     addInput(new BasicPort("iCutOff", 100, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.HERTZ, new Port.ValueRange(100, 5000)));
-    addInput(new BasicPort("iResonance", 0, Port.ValueType.DISCRETE,
-        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 3.0)));
+    addInput(new BasicPort("iResonance", 0.0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 6.0)));
 
     // OutPut port
     addOutput(new BasicPort("oLowPass", 0, Port.ValueType.CONTINUOUS,
@@ -77,7 +76,8 @@ public class ModuleVCF extends BasicModule
                     
                     double cutOff = getInput("iCutOff").getValues().getDouble();
                    
-                    double resonance = Math.pow(10.0, getInput("iResonance").getValues().getDouble() / 10.0);
+                    //decibels = 20*log(Vout/Vin)
+                    double resonance = Math.pow(10.0, getInput("iResonance").getValues().getDouble() / 20.0)-1.0;
 
                     final double rc = 1.0 / (4.0 * Math.PI * cutOff);
                     final double alpha = (1.0 / frameRate_)/ (1.0 / frameRate_ + rc);
@@ -88,13 +88,13 @@ public class ModuleVCF extends BasicModule
                     double highPass = sigalIn - lowPass;
                     double bandPass = bandPassPole + alpha * (highPass - bandPassPole);
                     bandPassPole = bandPass;
-                    double notch = sigalIn - bandPass;
                     
                     lowPass += bandPass * resonance;
                     highPass += bandPass * resonance;
                     bandPass += bandPass * resonance;
-                    notch +=notch*resonance;
   
+                    final double notch = sigalIn - bandPass;
+                    
                     
                     setValue(lowPass);
                     getOutput("oLowPass").getValues().putDouble(valueOut);
