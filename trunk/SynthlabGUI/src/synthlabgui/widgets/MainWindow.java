@@ -1,15 +1,27 @@
 package synthlabgui.widgets;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 
-public class MainWindow extends JFrame
+import synthlab.internal.Audio;
+
+public class MainWindow extends JFrame implements WindowListener
 {
   private static final long serialVersionUID = 1910008960712226631L;
+  
+  private JMenuBar            menuBar_;
 
+  private ModuleRegistryPanel moduleRegistryPanel_;
+
+  private ModulePoolPanel     modulePoolPanel_;
+
+  
   public MainWindow()
   {
     super();
@@ -31,7 +43,7 @@ public class MainWindow extends JFrame
   {
     setTitle("Synthlab GUI");
     setSize(1000, 800);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    addWindowListener(this);
     setVisible(true);
   }
 
@@ -73,9 +85,38 @@ public class MainWindow extends JFrame
     setJMenuBar(menuBar_);
   }
 
-  private JMenuBar            menuBar_;
+ 
 
-  private ModuleRegistryPanel moduleRegistryPanel_;
-
-  private ModulePoolPanel     modulePoolPanel_;
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+    
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+    
+    @Override
+    public void windowClosing(WindowEvent e) {
+        Audio.stopLine();
+        Audio.closeLine();
+        System.out.println("Au revoir:)");
+        System.exit(0);
+    }
+    
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
+    
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+    
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+    
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+    
 }
