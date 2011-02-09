@@ -7,11 +7,18 @@ import synthlab.internal.BasicPort;
 
 public class ModuleVCF extends BasicModule
 {
-  private int          frameCount_;
-  private double       valueOut;
-
+  
+  //output signal
+  private double  valueOut;
+  
+  //
+  private final int frameRate_;
   private final double maxVolume = 1;
   private final double minVolume = -1;
+  
+  // for remenber precent computed value 
+  private double       lowPassPole  = 0.0;
+  private double       bandPassPole = 0.0;
 
   public ModuleVCF()
   {
@@ -22,7 +29,7 @@ public class ModuleVCF extends BasicModule
     addInput(new BasicPort("iCutOff", 100, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.HERTZ, new Port.ValueRange(100, 5000)));
     addInput(new BasicPort("iResonance", 0, Port.ValueType.DISCRETE,
-        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 10.0)));
+        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 3.0)));
 
     // OutPut port
     addOutput(new BasicPort("oLowPass", 0, Port.ValueType.CONTINUOUS,
@@ -34,6 +41,8 @@ public class ModuleVCF extends BasicModule
     addOutput(new BasicPort("oNotch", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
+    frameRate_ = 44100;
+    
   }
 
   @Override
@@ -63,29 +72,41 @@ public class ModuleVCF extends BasicModule
 
                   for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
                   {
+                    
+                    double sigalIn = getInput("iSignal").getValues().getDouble();
+                    
+                    double cutOff = getInput("iCutOff").getValues().getDouble();
+                   
+                    double resonance = Math.pow(10.0, getInput("iResonance").getValues().getDouble() / 10.0);
 
-                    double val = getInput("iSignal").getValues().getDouble();
-                    double cutoff = getInput("iCutOff").getValues().getDouble();
-                    double reso = getInput("iResonance").getValues()
-                        .getDouble();
-
-                    // TODO
-                    // --->oLowPass algo
-                    setValue(1);
+                    final double rc = 1.0 / (4.0 * Math.PI * cutOff);
+                    final double alpha = (1.0 / frameRate_)/ (1.0 / frameRate_ + rc);
+                    
+                    double lowPass = lowPassPole + alpha * (sigalIn - lowPassPole);
+                    lowPassPole = lowPass;
+                    
+                    double highPass = sigalIn - lowPass;
+                    double bandPass = bandPassPole + alpha * (highPass - bandPassPole);
+                    bandPassPole = bandPass;
+                    double notch = sigalIn - bandPass;
+                    
+                    lowPass += bandPass * resonance;
+                    highPass += bandPass * resonance;
+                    bandPass += bandPass * resonance;
+                    notch +=notch*resonance;
+  
+                    
+                    setValue(lowPass);
                     getOutput("oLowPass").getValues().putDouble(valueOut);
-                    // TODO
-                    // --->oHighPass algo
-                    setValue(1);
+
+                    setValue(highPass);
                     getOutput("oHighPass").getValues().putDouble(valueOut);
-                    // TODO
-                    // --->oBandPass algo
-                    setValue(1);
+                    
+                    setValue(bandPass);
                     getOutput("oBandPass").getValues().putDouble(valueOut);
-                    // TODO
-                    // --->oNotch algo
-                    setValue(1);
+
+                    setValue(notch);
                     getOutput("oNotch").getValues().putDouble(valueOut);
-                    frameCount_ = ++frameCount_ % 44100;
                   }
                 }
               }
