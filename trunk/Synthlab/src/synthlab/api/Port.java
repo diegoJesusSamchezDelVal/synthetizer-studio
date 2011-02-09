@@ -28,8 +28,10 @@ public interface Port
   {
     CONTINUOUS,
     DISCRETE,
-    INCONFIGURABLE
+    KEYBOARD,
+    INCONFIGURABLE    
   }
+  
   public static enum ValueUnit
   {
     HERTZ,

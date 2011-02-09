@@ -84,10 +84,10 @@ public class ModuleVCO extends BasicModule
                 out = currentPositionInPercent > 0.5 ? 1.0 : -1.0;
               }
               else
-              {
+             {
                 assert (false);
               }
-
+              System.out.println(frequency);
               getOutput("oSignal").getValues().putDouble(out);
               
               currentPositionInPeriod_ +=  1.0 ;
