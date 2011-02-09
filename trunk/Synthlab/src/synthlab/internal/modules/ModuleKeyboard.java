@@ -33,7 +33,7 @@ public class ModuleKeyboard extends BasicModule
         for (int i = 0; i < Scheduler.SamplingBufferSize; ++i) {
             // 0 ~ 23
            double n = getInput("iSignal").getValues().getDouble();
-           double volt = n / 24 * 16;
+           double volt = n / 24 * 2;
             
             
             getOutput("oSignal").getValues().putDouble(volt);
