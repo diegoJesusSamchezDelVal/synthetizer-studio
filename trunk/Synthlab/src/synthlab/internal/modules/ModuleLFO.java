@@ -15,7 +15,7 @@ public class ModuleLFO extends BasicModule
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1)));
 
     frameCount_ = 0;
-    frameRate_ = (44100*8);
+    frameRate_ = 44100;
   }
 
   @Override
@@ -34,7 +34,7 @@ public class ModuleLFO extends BasicModule
         out = (Math.sin(positionInPeriod  * 2. * Math.PI)+1.)/2.;
 
         getOutput("oSignal").getValues().putDouble(out);
-        frameCount_ = ++frameCount_ % (44100*8);
+        frameCount_ = ++frameCount_ % 44100;
       }
       getOutput("oSignal").getValues().clear();
     }

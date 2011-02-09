@@ -59,20 +59,16 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     add(m);
     m.setBounds(dropPosition_.x - 100, dropPosition_.y - 20, m.getBounds().width, m.getBounds().height);
   }
-  
-  /**
-   * Cette méthode enlève le module donné en paramètre et débranche tous les câbles qui sont lui connectés.
-   * @param module le module à enlever
-   * */
-  public void removeModuel(Module module)
+
+  public void removeModule(Module module)
   {
-      for(PortHandler ph : module.getPorts()) {
-	 unlink(ph);
-      }	 
-      pool_.unregister(module.getWrapped());
-      remove(module);
-      
-      repaint();
+    for (PortHandler ph : module.getPorts())
+    {
+      unlink(ph);
+    }
+    pool_.unregister(module.getWrapped());
+    remove(module);
+    repaint();
   }
 
   public void paint(Graphics g)
@@ -101,7 +97,6 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
   private void drawLinks(Graphics g)
   {
-    // TODO insane hack to display hard-coded links
     for (Map.Entry<PortHandler, PortHandler> entry : links_.entrySet())
     {
       drawLink(g, (int) (entry.getKey().getBounds().getX() + entry.getKey().getParent().getBounds().getX()),
@@ -232,19 +227,22 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     pool_.link(output.getWrapped(), input.getWrapped());
     links_.put(output, input);
   }
-  
-  public void unlink(PortHandler port) {
-      PortHandler port2 = links_.get(port);
-      if(port2 != null) {
-	  pool_.unlink(port.getWrapped(), port2.getWrapped());
-	  links_.remove(port);
-      } else {
-	  port2 = links_.inverse().get(port);
-	  if(port2 != null) {
-	      pool_.unlink(port.getWrapped(), port2.getWrapped());
-	      links_.remove(port2);
-	  }
-      }     
+
+  public void unlink(PortHandler port)
+  {
+    PortHandler port2 = links_.get(port);
+    if (port2 != null)
+    {
+      links_.remove(port);
+    }
+    else
+    {
+      port2 = links_.inverse().get(port);
+      if (port2 != null)
+      {
+        links_.remove(port2);
+      }
+    }
   }
 
   private ModulePool                      pool_;

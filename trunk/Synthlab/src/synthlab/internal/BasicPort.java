@@ -19,6 +19,7 @@ public class BasicPort implements Port
     values_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize
         * (Double.SIZE / 8));
     setValues(value);
+    initialValue_ = value;
   }
 
   @Override
@@ -49,6 +50,11 @@ public class BasicPort implements Port
         values_.putDouble(value);
       values_.clear();
     }
+  }
+
+  public void resetValue()
+  {
+    setValues(initialValue_);
   }
 
   @Override
@@ -119,6 +125,7 @@ public class BasicPort implements Port
     return range_;
   }
 
+  private double     initialValue_;
   private boolean    linked_;
   private String     name_;
   private ByteBuffer values_;

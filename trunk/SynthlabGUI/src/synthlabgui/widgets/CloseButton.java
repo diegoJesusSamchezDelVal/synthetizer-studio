@@ -91,7 +91,7 @@ public class CloseButton extends JPanel implements MouseListener, MouseMotionLis
     mousePressed = false;
     repaint();
     if(this.contains(e.getPoint()))
-	    poolPanel.removeModuel(module);
+	    poolPanel.removeModule(module);
   }
 
   @Override

@@ -20,6 +20,8 @@ public interface ModulePool
 
   public void unlink(Port p1, Port p2);
   
+  public void unlinkAll(Module module);
+  
   public boolean linked(Port p1, Port p2);
   
   public BiMap<Port,Port> getLinks();

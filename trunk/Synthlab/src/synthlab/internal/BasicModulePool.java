@@ -36,7 +36,7 @@ public class BasicModulePool implements ModulePool
   @Override
   public void unregister(Module module)
   {
-    // TODO should remove all links ?
+    unlinkAll(module);
     synchronized (this)
     {
       if (!contains(module))
@@ -92,42 +92,51 @@ public class BasicModulePool implements ModulePool
   }
 
   @Override
+  public void unlinkAll( Module module )
+  {
+    for ( Port p : module.getOutputs() )
+      unlink( p, links_.get(p) );
+    for ( Port p : module.getInputs() )
+      unlink( links_.inverse().get(p), p );
+  }
+  
+  @Override
   public void unlink(Port p1, Port p2)
   {
     // Check which port is the output and which one is the input
-    Port output;
     Port input;
+    Port output;
 
-    if (p1.getModule().getInputs().contains(p1))
+    // Sanity check
+    if (p1 == null || p2 == null)
+      return;
+
+    if (p1.isInput() && p2.isOutput())
     {
-      if (p2.getModule().getInputs().contains(p2))
-      {
-        // Error, both ports are inputs
-        return;
-      }
-      else
-      {
-        output = p2;
-        input = p1;
-      }
+      input = p1;
+      output = p2;
+    }
+    else if (p1.isOutput() && p2.isInput())
+    {
+      input = p2;
+      output = p1;
     }
     else
     {
-      if (p2.getModule().getOutputs().contains(p2))
-      {
-        // Error, both ports are outputs
-        return;
-      }
-      else
-      {
-        output = p1;
-        input = p2;
-      }
+      // Error, both ports are inputs or outputs
+      return;
     }
 
+    // Update ports statuses
     output.setLinked(false);
     input.setLinked(false);
+    
+    // Remove the link
     links_.remove(output);
+    
+    // Restore default port value
+    output.resetValue();
+    input.resetValue();
   }
 
   @Override

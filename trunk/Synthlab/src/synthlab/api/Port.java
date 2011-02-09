@@ -10,7 +10,7 @@ public interface Port
   // --- Value
   public void setValues(ByteBuffer value);
   public void setValues(double value);
-  
+  public void resetValue();
   public ByteBuffer getValues();
   
   // --- Input/Output
