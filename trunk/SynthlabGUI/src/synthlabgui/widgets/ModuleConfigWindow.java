@@ -24,6 +24,8 @@ public class ModuleConfigWindow extends JDialog {
 
     private Module module_;
 
+    private HashMap<String, AbstractConfigPanel> knobList = new HashMap<String, AbstractConfigPanel>();
+
     private void initUnitList() {
 	unitList.put(Port.ValueUnit.AMPLITUDE, "");
 	unitList.put(Port.ValueUnit.PERCENTAGE, "%");
@@ -54,6 +56,7 @@ public class ModuleConfigWindow extends JDialog {
 	    if (knob != null) {
 		knob.setPort(p);
 		add((JPanel) knob);
+		knobList.put(p.getName(), knob);
 	    }
 	}
 
@@ -64,6 +67,25 @@ public class ModuleConfigWindow extends JDialog {
 	setLocation(point);
 	setResizable(false);
 	pack();
+    }
+
+    /**
+     * Met a jour et affiche la dialog de configuration à un point donné en
+     * paramètre.
+     * 
+     * @param point
+     *            le point en haut a gauche de la fenetre
+     * */
+    public void show(Point point) {
+	for (Port p : module_.getInputs()) {
+	    String name = p.getName();
+	    AbstractConfigPanel knob = knobList.get(name);
+	    if (knob != null)
+		knob.setState(!p.isLinked());
+
+	}
+	setLocation(point);
+	setVisible(true);
     }
 
     public void paintComponent(Graphics gc) {
