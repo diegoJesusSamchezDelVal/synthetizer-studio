@@ -15,10 +15,12 @@ public class ModuleKeyboard extends BasicModule
       super("Keyboard");
       
       addInput(new BasicPort("iSignal", 0, Port.ValueType.KEYBOARD,
-          Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+          Port.ValueUnit.VOLT, new Port.ValueRange(-1, 1)));
+      addInput(new BasicPort("iOctave", -1, Port.ValueType.DISCRETE,
+          Port.ValueUnit.VOLT, new Port.ValueRange(0, 7, 7)));
       
       addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-          Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
+          Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));      
      
     }
 
@@ -28,12 +30,16 @@ public class ModuleKeyboard extends BasicModule
       synchronized (getInput("iSignal"))
       {
         getInput("iSignal").getValues().clear();
+        getInput("iOctave").getValues().clear();
         getOutput("oSignal").getValues().clear();
        
         for (int i = 0; i < Scheduler.SamplingBufferSize; ++i) {
             // 0 ~ 23
            double n = getInput("iSignal").getValues().getDouble();
-           double volt = n / 24 * 2;
+           double octave = getInput("iOctave").getValues().getDouble();
+           double volt = 0.0;
+           if(n >= 0)
+             volt = n / 24 * 2 + octave;
             
             
             getOutput("oSignal").getValues().putDouble(volt);
