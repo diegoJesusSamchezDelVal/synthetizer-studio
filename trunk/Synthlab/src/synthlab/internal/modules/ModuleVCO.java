@@ -23,9 +23,11 @@ public class ModuleVCO extends BasicModule
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
 
-    frameCount_ = 0;
+  //  frameCount_ = 0;
     frameRate_ = 44100;
     initialFrequency_ = 32.7; // Octave:0, Note:Do , with Hz
+    
+    currentPositionInPeriod_ = 0.0;
   }
 
   @Override
@@ -44,6 +46,7 @@ public class ModuleVCO extends BasicModule
             getInput("iConstant").getValues().clear();
             getOutput("oSignal").getValues().clear();
 
+            
             for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
             {
               double out = 0;
@@ -51,20 +54,19 @@ public class ModuleVCO extends BasicModule
               double ifreq = getInput("iFrequency").getValues().getDouble();
               double iconst = getInput("iConstant").getValues().getDouble();
 
-              double positionInPeriod = (double) frameCount_
-                  / (double) frameRate_;
+             // double positionInPeriod = (double) frameCount_
+               //   / (double) frameRate_;
               double frequency = Math.pow(2, ifreq + iconst)
                   * initialFrequency_;
 
               double framePerPeriod_ = (double) frameRate_ / frequency;
-              double currentPositionInPercent = (frameCount_ % framePerPeriod_)
-                  / framePerPeriod_;
+              double currentPositionInPercent = currentPositionInPeriod_/framePerPeriod_;
 
               if (ishape >= SHAPE_SAWTOOTH)
               {
-                out = 2.0 * frameCount_ / framePerPeriod_ - 1.0;
+                out = 2*currentPositionInPeriod_ / framePerPeriod_ - 1.0;
               }
-              else if (ishape >= SHAPE_TRIANGLE)
+              else if (ishape >= SHAPE_TRIANGLE && ishape < SHAPE_SAWTOOTH)
               {
                 if (currentPositionInPercent < 0.25)
                   out = 4.0 * currentPositionInPercent;
@@ -73,14 +75,13 @@ public class ModuleVCO extends BasicModule
                 else
                   out = 4.0 * currentPositionInPercent - 4.0;
               }
-              else if (ishape >= SHAPE_SINE)
+              else if (ishape >= SHAPE_SINE && ishape < SHAPE_TRIANGLE)
               {
-                out = Math.sin(positionInPeriod * frequency * 2. * Math.PI);
+                out = Math.sin(currentPositionInPercent * 2. * Math.PI);
               }
-              else if (ishape >= SHAPE_PULSE)
+              else if (ishape >= SHAPE_PULSE && ishape < SHAPE_SINE)
               {
-                out = (Math.sin(positionInPeriod * frequency * 2. * Math.PI)) >= 0 ? 1.
-                    : -1;
+                out = currentPositionInPercent > 0.5 ? 1.0 : -1.0;
               }
               else
               {
@@ -88,7 +89,12 @@ public class ModuleVCO extends BasicModule
               }
 
               getOutput("oSignal").getValues().putDouble(out);
-              frameCount_ = ++frameCount_ % 44100;
+              
+              currentPositionInPeriod_ +=  1.0 ;
+              if(currentPositionInPeriod_ >= framePerPeriod_)
+                currentPositionInPeriod_ -= framePerPeriod_;
+              
+             // frameCount_ = ++frameCount_ % 44100;
             }
           }
         }
@@ -101,7 +107,8 @@ public class ModuleVCO extends BasicModule
   public static final double SHAPE_SINE     = 0.25;
   public static final double SHAPE_PULSE    = 0.00;
 
-  private int                frameCount_;
+ // private int                frameCount_;
   private int                frameRate_;
   private double             initialFrequency_;
+  private double       currentPositionInPeriod_;
 }
