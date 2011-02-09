@@ -12,6 +12,7 @@ public class BasicScheduler implements Scheduler
     pool_ = null;
     links_ = null;
     playThread_ = new PlayThread();
+    playThread_.setPriority(Thread.MAX_PRIORITY);
   }
 
   @Override
@@ -22,6 +23,7 @@ public class BasicScheduler implements Scheduler
       return;
 
     playThread_ = new PlayThread();
+    playThread_.setPriority(Thread.MAX_PRIORITY);
     running_ = true;
     playThread_.start();
   }
