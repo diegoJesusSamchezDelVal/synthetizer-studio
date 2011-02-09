@@ -14,8 +14,6 @@ public class ModuleMixer extends BasicModule
   private double       input3;
   private double       input4;
   
-  private int          frameCount_;
-  
   private final double maxVolume = 1;
   private final double minVolume = -1;
   
@@ -100,8 +98,6 @@ public class ModuleMixer extends BasicModule
                           getOutput("oSignal").getValues().putDouble(maxVolume);
                         else if(valueOut<minVolume)
                           getOutput("oSignal").getValues().putDouble(minVolume);
-                        
-                        frameCount_ = ++frameCount_ % 44100;
                       }
                     }
                   }
