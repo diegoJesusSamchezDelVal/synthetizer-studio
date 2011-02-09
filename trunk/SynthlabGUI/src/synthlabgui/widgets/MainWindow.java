@@ -2,26 +2,23 @@ package synthlabgui.widgets;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
-
 import synthlab.internal.Audio;
 
 public class MainWindow extends JFrame implements WindowListener
 {
-  private static final long serialVersionUID = 1910008960712226631L;
-  
+  private static final long   serialVersionUID = 1910008960712226631L;
+
   private JMenuBar            menuBar_;
 
   private ModuleRegistryPanel moduleRegistryPanel_;
 
   private ModulePoolPanel     modulePoolPanel_;
 
-  
   public MainWindow()
   {
     super();
@@ -85,38 +82,42 @@ public class MainWindow extends JFrame implements WindowListener
     setJMenuBar(menuBar_);
   }
 
- 
+  @Override
+  public void windowActivated(WindowEvent e)
+  {
+  }
 
-    @Override
-    public void windowActivated(WindowEvent e) {
-    }
-    
-    @Override
-    public void windowClosed(WindowEvent e) {
-    }
-    
-    @Override
-    public void windowClosing(WindowEvent e) {
-        Audio.stopLine();
-        Audio.closeLine();
-        System.out.println("Au revoir:)");
-        System.exit(0);
-    }
-    
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-    }
-    
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-    }
-    
-    @Override
-    public void windowIconified(WindowEvent e) {
-    }
-    
-    @Override
-    public void windowOpened(WindowEvent e) {
-    }
-    
+  @Override
+  public void windowClosed(WindowEvent e)
+  {
+  }
+
+  @Override
+  public void windowClosing(WindowEvent e)
+  {
+    Audio.stopLine();
+    Audio.closeLine();
+    System.out.println("Au revoir:)");
+    System.exit(0);
+  }
+
+  @Override
+  public void windowDeactivated(WindowEvent e)
+  {
+  }
+
+  @Override
+  public void windowDeiconified(WindowEvent e)
+  {
+  }
+
+  @Override
+  public void windowIconified(WindowEvent e)
+  {
+  }
+
+  @Override
+  public void windowOpened(WindowEvent e)
+  {
+  }
 }

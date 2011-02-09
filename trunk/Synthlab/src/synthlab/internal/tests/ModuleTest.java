@@ -5,7 +5,6 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 import synthlab.api.*;
-import synthlab.internal.*;
 import synthlab.internal.modules.*;
 
 public class ModuleTest extends TestCase
