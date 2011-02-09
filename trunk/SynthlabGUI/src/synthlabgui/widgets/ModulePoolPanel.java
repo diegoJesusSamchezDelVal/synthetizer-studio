@@ -187,6 +187,7 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   public void mouseMoved(MouseEvent e)
   {
     linkCurrent_ = e.getPoint();
+    
     repaint();
   }
 

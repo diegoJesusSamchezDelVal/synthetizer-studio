@@ -24,6 +24,8 @@ public class Module extends JPanel implements MouseListener,
     private static final long serialVersionUID = -5287018845570600845L;
 
     private ModulePoolPanel poolPanel;
+    
+    private static Color highlightColor = new Color(50, 150, 255, 200); 
 
     public Module(synthlab.api.Module module, ModulePoolPanel parent) {
 	super();
@@ -117,7 +119,10 @@ public class Module extends JPanel implements MouseListener,
 	// Wrapping rounded rectangle
 	int maximumPortNumber = Math.max(module_.getInputs().size(), module_
 		.getOutputs().size());
-	g.setColor(Color.white);
+	if(!mouseOver)
+	    g.setColor(Color.white);
+	else
+	    g.setColor(highlightColor);
 	g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
 	g.setColor(Color.black);
 	g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
@@ -166,13 +171,7 @@ public class Module extends JPanel implements MouseListener,
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Double clicked = open settings panel for this module
-	if (e.getClickCount() == 2) {
-	    /*
-	     * // Check if there are at least 1 input port to play with boolean
-	     * hasFreeInputs = false; for (Port p : module_.getInputs()) { if
-	     * (!p.isLinked()) { hasFreeInputs = true; break; } } if
-	     * (hasFreeInputs) {
-	     */
+	if (e.getClickCount() == 2) {	  
 	    if (configWindow == null)
 		configWindow = new ModuleConfigWindow(module_,
 			(JFrame) getRootPane().getParent(), new Point(0, 0));
@@ -206,11 +205,15 @@ public class Module extends JPanel implements MouseListener,
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e) {	
+	mouseOver = true;
+	poolPanel.repaint();
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e) {	
+	mouseOver = false;
+	poolPanel.repaint();
     }
 
     @Override
@@ -232,8 +235,14 @@ public class Module extends JPanel implements MouseListener,
     private int wide = 200;
 
     private ModuleConfigWindow configWindow;
+    
+    private boolean mouseOver = false;
 
     private ArrayList<PortHandler> ports = new ArrayList<PortHandler>();
     // Test
     // private ModuleConfigPanel configPanel;
+
+    public void setMouseOver(boolean b) {
+	mouseOver = b;	
+    }
 }
