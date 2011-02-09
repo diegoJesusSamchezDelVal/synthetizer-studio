@@ -13,7 +13,7 @@ public class ModuleOut extends BasicModule
   {
     super("Out");
 
-    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
   }
 
