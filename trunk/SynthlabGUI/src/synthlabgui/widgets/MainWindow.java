@@ -1,5 +1,7 @@
 package synthlabgui.widgets;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
@@ -46,11 +48,14 @@ public class MainWindow extends JFrame implements WindowListener
 
   private void setupMenuBar()
   {
+    // --- Create menu bar
     menuBar_ = new JMenuBar();
+    // --- Create menus
     JMenu menuFile = new JMenu("File");
     JMenu menuEdit = new JMenu("Edit");
     JMenu menuSynth = new JMenu("Synthetizer");
     JMenu menuHelp = new JMenu("Help");
+    // --- Create menu items
     JMenuItem itemFileNew = new JMenuItem("New");
     JMenuItem itemFileOpen = new JMenuItem("Open");
     JMenuItem itemFileSave = new JMenuItem("Save");
@@ -63,6 +68,9 @@ public class MainWindow extends JFrame implements WindowListener
     JMenuItem itemSynthAdd = new JMenuItem("Add");
     JMenuItem itemSynthRemove = new JMenuItem("Remove");
     JMenuItem itemHelpAbout = new JMenuItem("About");
+    // --- Bind actions to menu items
+    itemFileQuit.addActionListener(new QuitActionListener());
+    // --- Add menu items
     menuFile.add(itemFileNew);
     menuFile.add(itemFileOpen);
     menuFile.add(itemFileSave);
@@ -75,13 +83,46 @@ public class MainWindow extends JFrame implements WindowListener
     menuSynth.add(itemSynthAdd);
     menuSynth.add(itemSynthRemove);
     menuHelp.add(itemHelpAbout);
+    // --- Add menus
     menuBar_.add(menuFile);
     menuBar_.add(menuEdit);
     menuBar_.add(menuSynth);
     menuBar_.add(menuHelp);
+    // --- Add menu bar
     setJMenuBar(menuBar_);
   }
 
+  public void closeWindow()
+  {
+    Audio.stopLine();
+    Audio.closeLine();
+    System.out.println("Au revoir:)");
+    System.exit(0);
+  }
+
+  // ====================================================================
+  // ACTION LISTENERS
+  // --------------------------------------------------------------------
+  // These listeners will use the public MainWindow interface to handle
+  // the incoming events. Same for window events & all. This allow us to
+  // share actions between events.
+  // ====================================================================
+  private class QuitActionListener implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      closeWindow();
+    }
+  }
+
+  // ====================================================================
+  // WINDOW LISTENERS
+  // --------------------------------------------------------------------
+  // These listeners will use the public MainWindow interface to handle
+  // the incoming events. Same for menu items & all. This allow us to
+  // share actions between events.
+  // ====================================================================
   @Override
   public void windowActivated(WindowEvent e)
   {
@@ -95,10 +136,7 @@ public class MainWindow extends JFrame implements WindowListener
   @Override
   public void windowClosing(WindowEvent e)
   {
-    Audio.stopLine();
-    Audio.closeLine();
-    System.out.println("Au revoir:)");
-    System.exit(0);
+    closeWindow();
   }
 
   @Override
