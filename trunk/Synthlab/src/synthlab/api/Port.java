@@ -27,7 +27,8 @@ public interface Port
   public static enum ValueType
   {
     CONTINUOUS,
-    DISCRETE
+    DISCRETE,
+    NON_CONFIGURABLE
   }
   public static enum ValueUnit
   {
