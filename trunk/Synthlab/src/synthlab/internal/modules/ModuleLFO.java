@@ -12,7 +12,7 @@ public class ModuleLFO extends BasicModule
     super("LFO");
 
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1),"Low frequency sinusoidal wave (period 1s)"));
 
     frameCount_ = 0;
     frameRate_ = 44100;

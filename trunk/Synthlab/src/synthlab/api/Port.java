@@ -8,6 +8,9 @@ public abstract class Port extends Observable
   // --- Name
   public abstract String getName();
   
+  // --- Description
+  public abstract String getDescription();
+  
   // --- Value
   public abstract void setValues(ByteBuffer value);
   public abstract void setValues(double value);

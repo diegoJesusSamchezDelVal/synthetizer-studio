@@ -14,19 +14,19 @@ public class ModuleEnvelope extends BasicModule
     
     //add input port
     addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
     addInput(new BasicPort("Attack", 0.0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100)));
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100),"N/A"));
     addInput(new BasicPort("Decay", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100)));
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100),"N/A"));
     addInput(new BasicPort("Sustain", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100)));
+        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),"N/A"));
     addInput(new BasicPort("Relase", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100)));
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,100),"N/A"));
     
     //add output port
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
   }
 
   @Override

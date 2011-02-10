@@ -12,12 +12,12 @@ public class ModuleKeyboard extends BasicModule
     super("Keyboard");
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.KEYBOARD,
-        Port.ValueUnit.VOLT, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.VOLT, new Port.ValueRange(-1, 1),"The fraction of volt/octave representing the note"));
     addInput(new BasicPort("iOctave", -1, Port.ValueType.DISCRETE,
-        Port.ValueUnit.VOLT, new Port.ValueRange(0, 7, 7)));
+        Port.ValueUnit.VOLT, new Port.ValueRange(0, 7, 7),"Octave modulation input following the 1v/octave convention"));
 
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.VOLT, new Port.ValueRange(0, 8)));
+        Port.ValueUnit.VOLT, new Port.ValueRange(0, 8),"Output note voltage following the 1v/ocatave convention"));
 
   }
 

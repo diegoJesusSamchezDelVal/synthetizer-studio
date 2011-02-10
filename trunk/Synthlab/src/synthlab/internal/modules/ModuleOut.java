@@ -14,7 +14,7 @@ public class ModuleOut extends BasicModule
     super("Out");
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound waveto be sent to the sound card"));
 
     data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
   }

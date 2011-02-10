@@ -8,7 +8,7 @@ import synthlab.api.Scheduler;
 public class BasicPort extends Port
 {
   public BasicPort(String name, double value, ValueType type, ValueUnit unit,
-      ValueRange range)
+      ValueRange range, String description)
   {
     module_ = null;
     name_ = name;
@@ -16,6 +16,7 @@ public class BasicPort extends Port
     type_ = type;
     unit_ = unit;
     range_ = range;
+    description_ = description;
     values_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize
         * (Double.SIZE / 8));
     setValues(value);
@@ -129,6 +130,13 @@ public class BasicPort extends Port
     return range_;
   }
 
+  @Override
+  public String getDescription()
+  {
+    return description_;
+  }
+
+  private String     description_;
   private double     initialValue_;
   private boolean    linked_;
   private String     name_;

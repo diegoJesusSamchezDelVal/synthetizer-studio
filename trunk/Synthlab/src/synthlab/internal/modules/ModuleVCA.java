@@ -26,13 +26,13 @@ public class ModuleVCA extends BasicModule
     // port In (input)(Gain)
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave"));
     addInput(new BasicPort("iGain", 0.5, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1)));
+        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1),"Gain (volume) amplitude modifier"));
 
     // port out (output)
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1)));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Output sound wave whose amplitude was modified"));
 
     // init a 0
     volume = 0.0;
