@@ -1,5 +1,7 @@
 package synthlab.internal;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,14 @@ public abstract class BasicModule implements Module
     for (Port input : inputs_.values())
       result.add(input);
 
+    Collections.sort(result, new Comparator<Port>()
+    {
+      public int compare(Port p1, Port p2)
+      {
+        return p1.getName().compareTo(p2.getName());
+      }
+    });
+
     return result;
   }
 
@@ -128,6 +138,14 @@ public abstract class BasicModule implements Module
     for (Port output : outputs_.values())
       result.add(output);
 
+    Collections.sort(result, new Comparator<Port>()
+    {
+      public int compare(Port p1, Port p2)
+      {
+        return p1.getName().compareTo(p2.getName());
+      }
+    });
+
     return result;
   }
 
@@ -140,7 +158,7 @@ public abstract class BasicModule implements Module
   {
     return outputs_.containsKey(name);
   }
-  
+
   protected String            name_;
   protected Map<String, Port> inputs_;
   protected Map<String, Port> outputs_;
