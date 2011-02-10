@@ -17,11 +17,26 @@ import synthlabgui.widgets.configPanel.keyboard.KeyboardPanel;
 import synthlabgui.widgets.configPanel.knob.NumberKnobPanel;
 import synthlabgui.widgets.configPanel.knob.WaveShapeChooserPanel;
 
+/**
+ * Un dialog contenant tous les composants de configuration pour un module donné
+ * en paramètre.
+ * */
 public class ModuleConfigWindow extends JDialog {
+
 	private static final long serialVersionUID = -2827881534087119283L;
 
+	/**
+	 * hashmap cotenant tous les string des noms des unité de mesure. *
+	 * 
+	 * @see Port.ValueUnit
+	 * */
 	public static HashMap<Port.ValueUnit, String> unitList = new HashMap<Port.ValueUnit, String>();
 
+	/**
+	 * model abstract de module
+	 * 
+	 * @see Module
+	 * */
 	private Module module_;
 
 	private HashMap<String, AbstractConfigPanel> knobList = new HashMap<String, AbstractConfigPanel>();
@@ -43,13 +58,14 @@ public class ModuleConfigWindow extends JDialog {
 		module_ = module;
 		AbstractConfigPanel knob;
 		for (Port p : module_.getInputs()) {
-			if (p.getValueType() == Port.ValueType.DISCRETE && p.getValueRange().count == 4) {
-			    knob = new WaveShapeChooserPanel(p.getName());
+			if (p.getValueType() == Port.ValueType.DISCRETE
+					&& p.getValueRange().count == 4) {
+				knob = new WaveShapeChooserPanel(p.getName());
 			} else if (p.getValueType() == Port.ValueType.DISCRETE) {
-			    double min = p.getValueRange().minimum;
+				double min = p.getValueRange().minimum;
 				double max = p.getValueRange().maximum;
-			    knob = new NumberKnobPanel(p.getName(), min, max, unitList
-					.get(p.getValueUnit()), "0", !p.isLinked(), false);
+				knob = new NumberKnobPanel(p.getName(), min, max, unitList
+						.get(p.getValueUnit()), "0", !p.isLinked(), false);
 			} else if (p.getValueType() == Port.ValueType.CONTINUOUS) {
 				double min = p.getValueRange().minimum;
 				double max = p.getValueRange().maximum;
