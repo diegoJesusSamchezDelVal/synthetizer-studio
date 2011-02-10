@@ -99,7 +99,7 @@ public class Keyboard extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 			Key key = (Key) e.getSource();
 			((JPanel) e.getSource()).setBackground(key.getColor());
-			notifyListeners(new KeyboardEvent((Key) e.getSource(), -1));
+			notifyListeners(new KeyboardEvent((Key) e.getSource(), 0));
 			repaint();
 		}
 	}

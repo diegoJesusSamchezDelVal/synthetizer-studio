@@ -1,9 +1,19 @@
 package synthlabgui.widgets.configPanel;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -57,8 +67,19 @@ public class ModuleConfigWindow extends JDialog {
 	public ModuleConfigWindow(synthlab.api.Module module, JFrame parent,
 			Point point) {
 		super(parent, true);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setModal(false);
+		setAlwaysOnTop(true);
+		setLayout(new BorderLayout());
+		JPanel contentPanel = new JPanel(
+				new FlowLayout(FlowLayout.CENTER, 5, 5));
+		add(contentPanel, BorderLayout.CENTER);
+
 		setTitle(module.getName());
+
+		getRootPane().setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		setUndecorated(true);
+		setDefaultLookAndFeelDecorated(false);
+
 		initUnitList();
 		module_ = module;
 		AbstractConfigPanel knob;
@@ -66,18 +87,46 @@ public class ModuleConfigWindow extends JDialog {
 			knob = createPanel(p);
 			if (knob != null) {
 				knob.setPort(p);
-				add((JPanel) knob);
+				contentPanel.add((JPanel) knob);
 				knobList.put(p.getName(), knob);
 			}
 		}
 
 		if (getContentPane().getComponentCount() == 0) {
-			add(new JLabel("No configuration for this module."));
+			contentPanel.add(new JLabel("No configuration for this module."));
 		}
 
 		setLocation(point);
 		setResizable(false);
 		pack();
+
+		addTitleBar();
+	}
+
+	private void addTitleBar() {
+		JPanel titleBar = new JPanel(null);
+		// titleBar.setBackground(Color.lightGray);
+		// titleBar.setBorder(BorderFactory.createLineBorder(Color.black));
+
+		Dimension dim = new Dimension(getWidth(), 10);
+		titleBar.setMinimumSize(dim);
+		titleBar.setPreferredSize(dim);
+		titleBar.setSize(dim);
+		InternalMouseListener mouseListener = new InternalMouseListener();
+		titleBar.addMouseListener(mouseListener);
+		titleBar.addMouseMotionListener(mouseListener);
+		add(titleBar, BorderLayout.NORTH);
+
+		JLabel title = new JLabel(module_.getName());
+		title.setLocation(getWidth() / 2 - 10, 3);
+		titleBar.add(title);
+
+		CloseButton cb = new CloseButton();
+		cb.setLocation(getWidth() - cb.getWidth() - 6, 2);
+		titleBar.add(cb);
+
+		setSize(getWidth(), getHeight() + titleBar.getHeight());
+
 	}
 
 	/**
@@ -143,4 +192,154 @@ public class ModuleConfigWindow extends JDialog {
 		setVisible(true);
 	}
 
+	public void unshow() {
+		setVisible(false);
+	}
+
+	private class CloseButton extends JPanel implements MouseListener,
+			MouseMotionListener {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -7952186173963083283L;
+
+		private boolean mouseOver = false;
+
+		private boolean mousePressed = false;
+
+		private Color normalColor = Color.black;
+
+		private Color mouseOverColor = Color.red;
+
+		private int scale = 1;
+
+		public CloseButton() {
+
+			Dimension dim = new Dimension(8, 8);
+			setMinimumSize(dim);
+			setMaximumSize(dim);
+			setSize(dim);
+			setLayout(null);
+			setOpaque(false);
+			setVisible(true);
+			addMouseListener(this);
+			addMouseMotionListener(this);
+		}
+
+		public void paint(Graphics gc) {
+
+			// Enable anti-aliasing
+			RenderingHints renderHints = new RenderingHints(
+					RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
+			renderHints.put(RenderingHints.KEY_RENDERING,
+					RenderingHints.VALUE_RENDER_QUALITY);
+			((Graphics2D) gc).setRenderingHints(renderHints);
+
+			if (mouseOver)
+				gc.setColor(mouseOverColor);
+			else
+				gc.setColor(normalColor);
+			if (!mousePressed) {
+				gc.drawLine(0, 0, getWidth() - 1, getHeight() - 1);
+				gc.drawLine(0, getHeight() - 1, getWidth() - 1, 0);
+			} else {
+				gc.drawLine(0 + scale, 0 + scale, getWidth() - 1 - scale,
+						getHeight() - 1 - scale);
+				gc.drawLine(0 + scale, getHeight() - 1 - scale, getWidth()
+						- scale - 1, 0 + scale);
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			mouseOver = true;
+			repaint();
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			mouseOver = false;
+			repaint();
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			mousePressed = true;
+			repaint();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			mousePressed = false;
+			repaint();
+			if (this.contains(e.getPoint()))
+				unshow();
+
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+		}
+
+	}
+
+	private class InternalMouseListener implements MouseListener,
+			MouseMotionListener {
+
+		Point start;
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			start = e.getPoint();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			int x = getLocation().x;
+			int y = getLocation().y;
+			setLocation(x + e.getPoint().x - start.x, y + e.getPoint().y
+					- start.y);
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
 }
