@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import synthlab.internal.Audio;
 
@@ -21,8 +22,7 @@ public class MainWindow extends JFrame implements WindowListener
 
   private ModulePoolPanel     modulePoolPanel_;
 
-  private InformationPanel    informationPanel_;
-
+  // private InformationPanel informationPanel_;
   public MainWindow()
   {
     super();
@@ -35,11 +35,11 @@ public class MainWindow extends JFrame implements WindowListener
   {
     moduleRegistryPanel_ = new ModuleRegistryPanel();
     modulePoolPanel_ = new ModulePoolPanel();
-    informationPanel_ = new InformationPanel(new Oscilloscope());
-    JSplitPane splitter2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, informationPanel_, modulePoolPanel_);
+    // informationPanel_ = new InformationPanel(new Oscilloscope());
+    JSplitPane splitter2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JPanel(), modulePoolPanel_);
     JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moduleRegistryPanel_, splitter2);
     splitter1.setDividerLocation(250);
-    splitter2.validate();
+    // splitter2.validate();
     getContentPane().add(splitter1);
   }
 
@@ -104,11 +104,10 @@ public class MainWindow extends JFrame implements WindowListener
     System.exit(0);
   }
 
-  public InformationPanel getInformationPanel()
-  {
-    return informationPanel_;
-  }
-
+  // public InformationPanel getInformationPanel()
+  // {
+  // return informationPanel_;
+  // }
   // ====================================================================
   // ACTION LISTENERS
   // --------------------------------------------------------------------

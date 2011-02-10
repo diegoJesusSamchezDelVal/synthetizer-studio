@@ -80,7 +80,8 @@ public class BasicScheduler implements Scheduler
       Audio.openLine();
       Audio.startLine();
 
-      long start= System.currentTimeMillis();;
+      long start = System.currentTimeMillis();
+      ;
 
       // TODO should add mutexes here
       while (running_)
@@ -89,15 +90,16 @@ public class BasicScheduler implements Scheduler
         while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 0))
           ;
         start = System.currentTimeMillis();
-        
-        System.out.println(tasks_.size());
+
         // Execute all tasks
         synchronized (pool_)
         {
           for (Module module : tasks_)
-           // poolModuleCompute.execute(new Handler(module));
-          
-          //poolModuleCompute.shutdown();//arrete d'accepter les nouvelles taches et terminent celles en cours d'execution
+            module.compute();
+          // poolModuleCompute.execute(new Handler(module));
+
+          // poolModuleCompute.shutdown();//arrete d'accepter les nouvelles
+          // taches et terminent celles en cours d'execution
           // Propagate all outputs to inputs
           for (Map.Entry<Port, Port> link : links_.entrySet())
             link.getValue().setValues(link.getKey().getValues());
@@ -109,23 +111,26 @@ public class BasicScheduler implements Scheduler
     }
   }
 
-  class Handler implements Runnable {
-    private Module module;
-    Handler(Module module) { this.module =module; }
-    public void run() {
-      //module.compute();
-      System.out.println(module.getName()+" hello");
-    }}
-  
-  
-  
-  
-  
+  class Handler implements Runnable
+  {
+    private Module module_;
+
+    Handler(Module module)
+    {
+      module_ = module;
+    }
+
+    public void run()
+    {
+      // module.compute();
+    }
+  }
+
   private ModulePool        pool_;
   private List<Module>      tasks_;
   private BiMap<Port, Port> links_;
   private boolean           running_;
   private PlayThread        playThread_;
-  private ExecutorService poolModuleCompute;
-  private ExecutorService poolModulePropagate;
+  private ExecutorService   poolModuleCompute;
+  private ExecutorService   poolModulePropagate;
 }
