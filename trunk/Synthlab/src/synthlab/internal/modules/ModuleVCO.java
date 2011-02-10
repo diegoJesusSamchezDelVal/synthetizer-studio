@@ -62,7 +62,7 @@ public class ModuleVCO extends BasicModule
               double framePerPeriod_ = (double) frameRate_ / frequency;
               double currentPositionInPercent = currentPositionInPeriod_/framePerPeriod_;
 
-              if (ishape >= SHAPE_SAWTOOTH)
+              if (ishape >= SHAPE_SAWTOOTH && ishape <1)
               {
                 out = 2*currentPositionInPeriod_ / framePerPeriod_ - 1.0;
               }
