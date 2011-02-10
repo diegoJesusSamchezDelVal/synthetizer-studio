@@ -14,15 +14,36 @@ import synthlabgui.widgets.configPanel.AbstractConfigPanel;
 
 public class NumberKnobPanel extends JPanel implements KnobListener,
 		AbstractConfigPanel {
+
+	/**
+	 * @param title
+	 *            le titre de panneau
+	 * 
+	 * @param min
+	 *            valeur minimale
+	 * @param max
+	 *            valeur maximale
+	 * @param unit
+	 *            l'unité de mesure à afficher
+	 * @param pattern
+	 *            pattern des chiffres
+	 * 
+	 * @param enable
+	 *            vrai si ce panneau est active et dèsative sinon
+	 * @param continuous
+	 *            vrai pour générer les valeurs continus et discrètes sison
+	 * */
 	public NumberKnobPanel(String title, double min, double max, String unit,
-			String pattern, boolean enable, boolean continous) {
+			String pattern, boolean enable, boolean continuous) {
+
 		this.title = title;
 		maxValue = max;
 		minValue = min;
 		this.unit = unit;
 		this.pattern = pattern;
 		enabled = enable;
-		this.continous = continous;
+		this.continous = continuous;
+
 		setLayout(null);
 		setMinimumSize(size);
 		setPreferredSize(size);
@@ -74,13 +95,13 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	}
 
 	private double computeValue(int rawValue) {
-		
+
 		if (continous) {
-		    double piece = (maxValue - minValue) / 10000;
-		    return minValue + piece * rawValue;
+			double piece = (maxValue - minValue) / 10000;
+			return minValue + piece * rawValue;
 		} else {
-		    int piece = (int) (10000.0 / (maxValue - minValue));
-		    return rawValue / piece;
+			int piece = (int) (10000.0 / (maxValue - minValue));
+			return rawValue / piece;
 		}
 	}
 
@@ -125,7 +146,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	private String title;
 
 	private boolean enabled = true;
-	
+
 	private boolean continous = true;
 
 	private Port inputPort;

@@ -1,8 +1,6 @@
 package synthlabgui.widgets.configPanel;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.HashMap;
 
@@ -39,6 +37,9 @@ public class ModuleConfigWindow extends JDialog {
 	 * */
 	private Module module_;
 
+	/**
+	 * Une liste contenant tous les panneaux de configuration
+	 * */
 	private HashMap<String, AbstractConfigPanel> knobList = new HashMap<String, AbstractConfigPanel>();
 
 	private void initUnitList() {
@@ -50,6 +51,18 @@ public class ModuleConfigWindow extends JDialog {
 		unitList.put(Port.ValueUnit.VOLT, "v");
 	}
 
+	/**
+	 * Crée une fenêtre de configuration pour un module.
+	 * 
+	 * @param module
+	 *            Le module abstrait
+	 * 
+	 * @param parent
+	 *            Son fenêtre parent, normalement la fenetre principale
+	 * 
+	 * @param point
+	 *            Location de la fenetre
+	 * */
 	public ModuleConfigWindow(synthlab.api.Module module, JFrame parent,
 			Point point) {
 		super(parent, true);
@@ -58,24 +71,7 @@ public class ModuleConfigWindow extends JDialog {
 		module_ = module;
 		AbstractConfigPanel knob;
 		for (Port p : module_.getInputs()) {
-			if (p.getValueType() == Port.ValueType.DISCRETE
-					&& p.getValueRange().count == 4) {
-				knob = new WaveShapeChooserPanel(p.getName());
-			} else if (p.getValueType() == Port.ValueType.DISCRETE) {
-				double min = p.getValueRange().minimum;
-				double max = p.getValueRange().maximum;
-				knob = new NumberKnobPanel(p.getName(), min, max, unitList
-						.get(p.getValueUnit()), "0", !p.isLinked(), false);
-			} else if (p.getValueType() == Port.ValueType.CONTINUOUS) {
-				double min = p.getValueRange().minimum;
-				double max = p.getValueRange().maximum;
-				knob = new NumberKnobPanel(p.getName(), min, max, unitList
-						.get(p.getValueUnit()), "0.0", !p.isLinked(), true);
-			} else if (p.getValueType() == Port.ValueType.KEYBOARD) {
-				knob = new KeyboardPanel();
-			} else {
-				knob = null;
-			}
+			knob = createPanel(p);
 			if (knob != null) {
 				knob.setPort(p);
 				add((JPanel) knob);
@@ -90,6 +86,36 @@ public class ModuleConfigWindow extends JDialog {
 		setLocation(point);
 		setResizable(false);
 		pack();
+	}
+
+	/**
+	 * Cette méthode vérifie le type du port et crée un panneau de configuration
+	 * correspondant.
+	 * 
+	 * @param port
+	 *            le port à configurer
+	 * */
+	private AbstractConfigPanel createPanel(Port port) {
+		AbstractConfigPanel knob;
+		if (port.getValueType() == Port.ValueType.DISCRETE
+				&& port.getValueRange().count == 4) {
+			knob = new WaveShapeChooserPanel(port.getName());
+		} else if (port.getValueType() == Port.ValueType.DISCRETE) {
+			double min = port.getValueRange().minimum;
+			double max = port.getValueRange().maximum;
+			knob = new NumberKnobPanel(port.getName(), min, max, unitList
+					.get(port.getValueUnit()), "0", !port.isLinked(), false);
+		} else if (port.getValueType() == Port.ValueType.CONTINUOUS) {
+			double min = port.getValueRange().minimum;
+			double max = port.getValueRange().maximum;
+			knob = new NumberKnobPanel(port.getName(), min, max, unitList
+					.get(port.getValueUnit()), "0.0", !port.isLinked(), true);
+		} else if (port.getValueType() == Port.ValueType.KEYBOARD) {
+			knob = new KeyboardPanel();
+		} else {
+			knob = null;
+		}
+		return knob;
 	}
 
 	/**
@@ -111,8 +137,4 @@ public class ModuleConfigWindow extends JDialog {
 		setVisible(true);
 	}
 
-	public void paintComponent(Graphics gc) {
-		gc.setColor(Color.white);
-		gc.fillRect(0, 0, getWidth(), getHeight());
-	}
 }
