@@ -1,12 +1,14 @@
 package synthlabgui.widgets.configPanel;
 
+import java.util.Observer;
+
 import synthlab.api.Port;
 
 /**
  * Interface des panneaux de configuration. Tous les composants de configuration
  * doivent implementer cette interface.
  * */
-public interface AbstractConfigPanel {
+public interface AbstractConfigPanel extends Observer {
 
 	/**
 	 * Connecte au port qui va configurer.

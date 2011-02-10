@@ -4,8 +4,8 @@ import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import synthlab.api.Module;
 import synthlab.api.Port;
-import synthlabgui.widgets.configPanel.knob.NumberKnobPanel;
-import synthlabgui.widgets.configPanel.knob.WaveShapeChooserPanel;
+import synthlabgui.widgets.configPanel.knob.numberKnob.NumberKnobPanel;
+import synthlabgui.widgets.configPanel.knob.waveChooser.WaveShapeChooserPanel;
 
 public class ModuleConfigPanel extends JPanel
 {

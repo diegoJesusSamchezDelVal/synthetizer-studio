@@ -1,6 +1,8 @@
-package synthlabgui.widgets.configPanel.knob;
+package synthlabgui.widgets.configPanel.knob.numberKnob;
 
 import java.awt.Point;
+
+import synthlabgui.widgets.configPanel.knob.AbstractKnob;
 
 public class NumberKnob extends AbstractKnob {
 	public NumberKnob() {

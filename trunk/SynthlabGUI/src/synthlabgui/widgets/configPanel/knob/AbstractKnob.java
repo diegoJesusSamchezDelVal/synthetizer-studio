@@ -147,4 +147,12 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
 	 * Liste des écouteurs
 	 * */
 	protected ArrayList<KnobListener> listeners = new ArrayList<KnobListener>();
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		value = value;
+	}
 }

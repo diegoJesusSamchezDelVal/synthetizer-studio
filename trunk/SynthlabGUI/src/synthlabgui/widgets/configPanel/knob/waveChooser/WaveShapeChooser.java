@@ -1,9 +1,11 @@
-package synthlabgui.widgets.configPanel.knob;
+package synthlabgui.widgets.configPanel.knob.waveChooser;
 
 import java.awt.FlowLayout;
 import java.awt.Point;
 
 import javax.swing.JFrame;
+
+import synthlabgui.widgets.configPanel.knob.AbstractKnob;
 
 public class WaveShapeChooser extends AbstractKnob {
 	public WaveShapeChooser() {
@@ -57,5 +59,21 @@ public class WaveShapeChooser extends AbstractKnob {
 		f.setVisible(true);
 		WaveShapeChooser k = new WaveShapeChooser();
 		f.add(k);
+	}
+
+	/**
+	 * @param value
+	 * 
+	 * */
+	public void setPosition(double value) {
+		if (0 <= value && value < 1)
+			pointer = new Point(centerPoint.x - RADIUS, centerPoint.y);
+		else if (1 <= value && value < 2)
+			pointer = new Point(centerPoint.x, centerPoint.y - RADIUS);
+		else if (2 <= value && value < 3)
+			pointer = new Point(centerPoint.x + RADIUS, centerPoint.y);
+		else
+			pointer = new Point(centerPoint.x, centerPoint.y + RADIUS);
+		repaint();
 	}
 }

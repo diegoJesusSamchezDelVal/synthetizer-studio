@@ -1,5 +1,7 @@
 package synthlabgui.widgets.configPanel.keyboard;
 
+import java.util.Observable;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -51,6 +53,10 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel,
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(400, 400);
 		f.setVisible(true);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
 	}
 
 }

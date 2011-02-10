@@ -1,4 +1,4 @@
-package synthlabgui.widgets.configPanel.knob;
+package synthlabgui.widgets.configPanel.knob.numberKnob;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,11 +6,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.text.DecimalFormat;
+import java.util.Observable;
 
 import javax.swing.JPanel;
 
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.AbstractConfigPanel;
+import synthlabgui.widgets.configPanel.knob.AbstractKnob;
+import synthlabgui.widgets.configPanel.knob.KnobEvent;
+import synthlabgui.widgets.configPanel.knob.KnobListener;
 
 public class NumberKnobPanel extends JPanel implements KnobListener,
 		AbstractConfigPanel {
@@ -53,7 +57,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 		add(knob);
 		knob.setLocation((size.width - AbstractKnob.size.width) / 2,
 				numberDisplaySize + TITLE_HEIGHT + 11);
-		value = computeValue(knob.value);
+		value = computeValue(knob.getValue());
 	}
 
 	public void paintComponent(Graphics gc) {
@@ -115,7 +119,10 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 
 	public void setPort(Port port) {
 		inputPort = port;
-		notifyPort(value);
+		if (port != null) {
+			port.addObserver(this);
+			update(port, null);
+		}
 	}
 
 	public void setState(boolean enabled) {
@@ -150,4 +157,9 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	private boolean continous = true;
 
 	private Port inputPort;
+
+	@Override
+	public void update(Observable o, Object arg) {
+		value = ((Port) o).getValues().getDouble(0);
+	}
 }
