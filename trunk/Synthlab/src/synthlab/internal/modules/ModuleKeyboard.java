@@ -26,25 +26,26 @@ public class ModuleKeyboard extends BasicModule
   {
     synchronized (getInput("iSignal"))
     {
-      getInput("iSignal").getValues().clear();
-      getInput("iOctave").getValues().clear();
-      getOutput("oSignal").getValues().clear();
-
-      for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+      synchronized (getInput("iOctave"))
       {
-        // 0 ~ 23
-        double n = getInput("iSignal").getValues().getDouble();
-        double octave = getInput("iOctave").getValues().getDouble();
-        double volt = 0.0;
-        if (n >= 0)
-          volt = n / 24 * 2 + octave;
-
-        getOutput("oSignal").getValues().putDouble(volt);
-   //     frameCount_ = ++frameCount_ % frameRate_;
+        getInput("iSignal").getValues().clear();
+        getInput("iOctave").getValues().clear();
+        getOutput("oSignal").getValues().clear();
+  
+        for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+        {
+          // 0 ~ 23
+          double n = getInput("iSignal").getValues().getDouble();
+          double octave = getInput("iOctave").getValues().getDouble();
+          double volt = 0.0;
+          if (n >= 0)
+            volt = n / 24 * 2 + octave;
+  
+          getOutput("oSignal").getValues().putDouble(volt);  
+        }
       }
     }
   }
 
-  //private int frameCount_ = 0;
-  //private int frameRate_  = 44100;
+ 
 }
