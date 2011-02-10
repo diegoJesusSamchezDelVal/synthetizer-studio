@@ -101,11 +101,6 @@ public class Module extends JPanel implements MouseListener,
 		CloseButton cb = new CloseButton(this, poolPanel);
 		cb.setLocation(185, 6);
 		add(cb, 0);
-		// Test
-		// configPanel = new ModuleConfigPanel(module_);
-		// configPanel.setVisible(true);
-		// System.out.print(configPanel.getDisplayHeight());
-		// add(configPanel,0);
 	}
 
 	public void paint(Graphics g) {
@@ -252,8 +247,6 @@ public class Module extends JPanel implements MouseListener,
 
 	private ArrayList<PortHandler> ports = new ArrayList<PortHandler>();
 
-	// Test
-	// private ModuleConfigPanel configPanel;
 	public void setMouseOver(boolean b) {
 		mouseOver = b;
 	}
