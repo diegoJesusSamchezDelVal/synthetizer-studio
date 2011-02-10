@@ -42,15 +42,6 @@ public class ModuleConfigWindow extends JDialog {
 	 * */
 	private HashMap<String, AbstractConfigPanel> knobList = new HashMap<String, AbstractConfigPanel>();
 
-	private void initUnitList() {
-		unitList.put(Port.ValueUnit.AMPLITUDE, "");
-		unitList.put(Port.ValueUnit.PERCENTAGE, "%");
-		unitList.put(Port.ValueUnit.DECIBELS, "db");
-		unitList.put(Port.ValueUnit.HERTZ, "Hz");
-		unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
-		unitList.put(Port.ValueUnit.VOLT, "v");
-	}
-
 	/**
 	 * Crée une fenêtre de configuration pour un module.
 	 * 
@@ -67,6 +58,7 @@ public class ModuleConfigWindow extends JDialog {
 			Point point) {
 		super(parent, true);
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setTitle(module.getName());
 		initUnitList();
 		module_ = module;
 		AbstractConfigPanel knob;
@@ -116,6 +108,20 @@ public class ModuleConfigWindow extends JDialog {
 			knob = null;
 		}
 		return knob;
+	}
+
+	/**
+	 * Initialisation de tous les unités de mesure
+	 * 
+	 * @see Port.ValueUnit
+	 * */
+	private void initUnitList() {
+		unitList.put(Port.ValueUnit.AMPLITUDE, "");
+		unitList.put(Port.ValueUnit.PERCENTAGE, "%");
+		unitList.put(Port.ValueUnit.DECIBELS, "db");
+		unitList.put(Port.ValueUnit.HERTZ, "Hz");
+		unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
+		unitList.put(Port.ValueUnit.VOLT, "v");
 	}
 
 	/**
