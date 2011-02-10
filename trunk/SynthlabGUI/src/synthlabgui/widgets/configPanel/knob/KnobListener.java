@@ -1,6 +1,14 @@
 package synthlabgui.widgets.configPanel.knob;
 
-public interface KnobListener
-{
-  public void knobTurned(KnobEvent e);
+/**
+ * Interface pour des écouteurs de règlage
+ * */
+public interface KnobListener {
+
+	/**
+	 * @param event
+	 *            événement contenant la valeur de règlage
+	 * */
+	public void knobTurned(KnobEvent event);
+
 }

@@ -1,7 +1,7 @@
 package synthlabgui.widgets.configPanel.knob;
 
 /**
- * Un événement
+ * Un événement de règlage
  * */
 public class KnobEvent {
 	public KnobEvent(AbstractKnob knob, int value) {

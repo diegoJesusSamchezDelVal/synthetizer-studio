@@ -4,7 +4,16 @@ import java.awt.Point;
 
 import synthlabgui.widgets.configPanel.knob.AbstractKnob;
 
+/**
+ * Composant de règlage tournable
+ * */
 public class NumberKnob extends AbstractKnob {
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Vrai s'il ne peut être tourné qu'entre certaines angles.
+	 * */
+	private boolean hasBlock = true;
+
 	public NumberKnob() {
 		super();
 	}
@@ -56,10 +65,6 @@ public class NumberKnob extends AbstractKnob {
 			}
 		}
 	}
-
-	private static final long serialVersionUID = 1L;
-
-	private boolean hasBlock = true;
 
 	@Override
 	protected int computeValue(double k, Point currentPoint) {
