@@ -79,14 +79,21 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 			gc.setColor(Color.lightGray);
 		gc.fillRect(1, 1, getWidth() - 2, TITLE_HEIGHT - 2);
 		gc.fillRect(1, 1 + TITLE_HEIGHT, getWidth() - 2, numberDisplaySize - 2);
+
 		// dessine le titre
 		gc.setColor(Color.black);
-		gc.drawString(title, 3, 15);
+		// 100 - (g.getFontMetrics().stringWidth(module_.getName()) / 2;
+		gc.drawString(title, (getWidth() - gc.getFontMetrics().stringWidth(
+				title)) / 2, 15);
+
 		// dessine la valeur
 		DecimalFormat df = new DecimalFormat(pattern);
-		String str = df.format(value);
-		gc.drawString(str, 3, 15 + TITLE_HEIGHT);
-		gc.drawString(unit, 36, 15 + TITLE_HEIGHT);
+		String str = df.format(value) + " " + unit;
+
+		gc.drawString(str,
+				(getWidth() - gc.getFontMetrics().stringWidth(str)) / 2,
+				15 + TITLE_HEIGHT);
+
 	}
 
 	@Override
@@ -147,7 +154,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 
 	public static int TITLE_HEIGHT = 20;
 
-	private Dimension size = new Dimension(AbstractKnob.size.width + 20 + 2, 20
+	private Dimension size = new Dimension(AbstractKnob.size.width + 35 + 2, 20
 			+ 2 + AbstractKnob.size.height + TITLE_HEIGHT + numberDisplaySize);
 
 	private String title;
