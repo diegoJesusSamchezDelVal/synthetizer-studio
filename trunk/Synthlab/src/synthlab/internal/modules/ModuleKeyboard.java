@@ -40,11 +40,11 @@ public class ModuleKeyboard extends BasicModule
           volt = n / 24 * 2 + octave;
 
         getOutput("oSignal").getValues().putDouble(volt);
-        frameCount_ = ++frameCount_ % frameRate_;
+   //     frameCount_ = ++frameCount_ % frameRate_;
       }
     }
   }
 
-  private int frameCount_ = 0;
-  private int frameRate_  = 44100;
+  //private int frameCount_ = 0;
+  //private int frameRate_  = 44100;
 }
