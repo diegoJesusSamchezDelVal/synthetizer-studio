@@ -53,7 +53,7 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
     else
       if (mouseOver)
       {
-        g.setColor(Color.green);
+        g.setColor(Color.green.darker());
         g.fillOval(5, 3, 6, 6);
         g.setColor(Color.black);
       }

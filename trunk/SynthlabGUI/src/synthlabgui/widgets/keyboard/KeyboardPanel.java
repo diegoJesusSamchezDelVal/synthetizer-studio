@@ -16,7 +16,6 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel,
 
 	@Override
 	public void notifyPort(double value) {
-		System.out.println("Send " + value);
 		if (inputPort != null)
 			inputPort.setValues(value);
 	}

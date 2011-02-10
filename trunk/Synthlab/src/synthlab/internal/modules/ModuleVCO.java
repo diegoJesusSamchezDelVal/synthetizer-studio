@@ -87,14 +87,11 @@ public class ModuleVCO extends BasicModule
              {
                 assert (false);
               }
-              System.out.println(frequency);
               getOutput("oSignal").getValues().putDouble(out);
               
               currentPositionInPeriod_ +=  1.0 ;
               if(currentPositionInPeriod_ >= framePerPeriod_)
                 currentPositionInPeriod_ -= framePerPeriod_;
-              
-             // frameCount_ = ++frameCount_ % 44100;
             }
           }
         }

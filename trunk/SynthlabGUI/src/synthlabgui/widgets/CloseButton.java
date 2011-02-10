@@ -10,54 +10,54 @@ import javax.swing.JPanel;
 
 public class CloseButton extends JPanel implements MouseListener, MouseMotionListener
 {
-    private ModulePoolPanel poolPanel;
-    
-    private static final long serialVersionUID = -4424643932151754593L;
+  private ModulePoolPanel   poolPanel;
 
-    Module                    module;
+  private static final long serialVersionUID = -4424643932151754593L;
 
-    private Color             normalColor      = Color.black;
+  Module                    module;
 
-    private Color             mouseOverColor   = Color.red;
+  private Color             normalColor      = Color.black;
 
-    private int               scale            = 2;
+  private Color             mouseOverColor   = Color.red;
 
-    boolean                   mouseOver        = false;
+  private int               scale            = 1;
 
-    private boolean           mousePressed     = false;
+  boolean                   mouseOver        = false;
 
-    public CloseButton(Module parent, ModulePoolPanel poolPanel)
+  private boolean           mousePressed     = false;
+
+  public CloseButton(Module parent, ModulePoolPanel poolPanel)
+  {
+    module = parent;
+    this.poolPanel = poolPanel;
+    Dimension dim = new Dimension(8, 8);
+    setMinimumSize(dim);
+    setMaximumSize(dim);
+    setSize(dim);
+    setLayout(null);
+    setOpaque(false);
+    setVisible(true);
+    addMouseListener(this);
+    addMouseMotionListener(this);
+  }
+
+  public void paint(Graphics gc)
+  {
+    if (mouseOver)
+      gc.setColor(mouseOverColor);
+    else
+      gc.setColor(normalColor);
+    if (!mousePressed)
     {
-        module = parent;
-        this.poolPanel = poolPanel;
-        Dimension dim = new Dimension(12, 12);
-        setMinimumSize(dim);
-        setMaximumSize(dim);
-        setSize(dim);
-        setLayout(null);
-        setOpaque(false);
-        setVisible(true);
-        addMouseListener(this);
-        addMouseMotionListener(this);
+      gc.drawLine(0, 0, getWidth() - 1, getHeight() - 1);
+      gc.drawLine(0, getHeight() - 1, getWidth() - 1, 0);
     }
-
-      public void paint(Graphics gc)
-      {
-            if (mouseOver)
-        	gc.setColor(mouseOverColor);
-            else
-        	gc.setColor(normalColor);
-            if (!mousePressed)
-            {
-        	gc.drawLine(0, 0, getWidth() - 1, getHeight() - 1);
-        	gc.drawLine(0, getHeight() - 1, getWidth() - 1, 0);
-            }
-            else
-            {
-        	gc.drawLine(0 + scale, 0 + scale, getWidth() - 1 - scale, getHeight() - 1 - scale);
-        	gc.drawLine(0 + scale, getHeight() - 1 - scale, getWidth() - scale - 1, 0 + scale);
-            }
-      }
+    else
+    {
+      gc.drawLine(0 + scale, 0 + scale, getWidth() - 1 - scale, getHeight() - 1 - scale);
+      gc.drawLine(0 + scale, getHeight() - 1 - scale, getWidth() - scale - 1, 0 + scale);
+    }
+  }
 
   @Override
   public void mouseClicked(MouseEvent e)
@@ -90,8 +90,8 @@ public class CloseButton extends JPanel implements MouseListener, MouseMotionLis
   {
     mousePressed = false;
     repaint();
-    if(this.contains(e.getPoint()))
-	    poolPanel.removeModule(module);
+    if (this.contains(e.getPoint()))
+      poolPanel.removeModule(module);
   }
 
   @Override
@@ -103,6 +103,4 @@ public class CloseButton extends JPanel implements MouseListener, MouseMotionLis
   public void mouseMoved(MouseEvent arg0)
   {
   }
-
-  
 }
