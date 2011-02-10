@@ -2,6 +2,8 @@ package synthlab.internal;
 
 import com.google.common.collect.BiMap;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+
 import synthlab.api.*;
 
 public class BasicScheduler implements Scheduler
@@ -87,13 +89,15 @@ public class BasicScheduler implements Scheduler
         while ((System.currentTimeMillis() - start) < (1000. / (44100. / Scheduler.SamplingBufferSize) - 0))
           ;
         start = System.currentTimeMillis();
-
+        
+        System.out.println(tasks_.size());
         // Execute all tasks
         synchronized (pool_)
         {
           for (Module module : tasks_)
-            module.compute();
-
+           // poolModuleCompute.execute(new Handler(module));
+          
+          //poolModuleCompute.shutdown();//arrete d'accepter les nouvelles taches et terminent celles en cours d'execution
           // Propagate all outputs to inputs
           for (Map.Entry<Port, Port> link : links_.entrySet())
             link.getValue().setValues(link.getKey().getValues());
@@ -105,9 +109,23 @@ public class BasicScheduler implements Scheduler
     }
   }
 
+  class Handler implements Runnable {
+    private Module module;
+    Handler(Module module) { this.module =module; }
+    public void run() {
+      //module.compute();
+      System.out.println(module.getName()+" hello");
+    }}
+  
+  
+  
+  
+  
   private ModulePool        pool_;
   private List<Module>      tasks_;
   private BiMap<Port, Port> links_;
   private boolean           running_;
   private PlayThread        playThread_;
+  private ExecutorService poolModuleCompute;
+  private ExecutorService poolModulePropagate;
 }
