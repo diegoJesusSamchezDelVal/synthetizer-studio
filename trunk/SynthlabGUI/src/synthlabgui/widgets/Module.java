@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import synthlab.api.Port;
+import synthlabgui.widgets.configPanel.ModuleConfigWindow;
 
 public class Module extends JPanel implements MouseListener, MouseMotionListener
 {

@@ -1,4 +1,4 @@
-package synthlabgui.widgets.keyboard;
+package synthlabgui.widgets.configPanel.keyboard;
 
 public interface KeyboardListener
 {

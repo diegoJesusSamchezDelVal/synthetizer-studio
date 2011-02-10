@@ -1,4 +1,4 @@
-package synthlabgui.widgets;
+package synthlabgui.widgets.configPanel;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -13,10 +13,9 @@ import javax.swing.JPanel;
 
 import synthlab.api.Module;
 import synthlab.api.Port;
-import synthlabgui.widgets.configPanel.AbstractConfigPanel;
-import synthlabgui.widgets.keyboard.KeyboardPanel;
-import synthlabgui.widgets.knob.WaveShapeChooserPanel;
-import synthlabgui.widgets.knob.NumberKnobPanel;
+import synthlabgui.widgets.configPanel.keyboard.KeyboardPanel;
+import synthlabgui.widgets.configPanel.knob.NumberKnobPanel;
+import synthlabgui.widgets.configPanel.knob.WaveShapeChooserPanel;
 
 public class ModuleConfigWindow extends JDialog {
 	private static final long serialVersionUID = -2827881534087119283L;

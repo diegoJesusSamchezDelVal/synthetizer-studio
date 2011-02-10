@@ -1,4 +1,4 @@
-package synthlabgui.widgets.keyboard;
+package synthlabgui.widgets.configPanel.keyboard;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

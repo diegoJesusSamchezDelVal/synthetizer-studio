@@ -1,12 +1,11 @@
-package synthlabgui.widgets;
+package synthlabgui.widgets.configPanel;
 
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import synthlab.api.Module;
 import synthlab.api.Port;
-import synthlabgui.widgets.configPanel.AbstractConfigPanel;
-import synthlabgui.widgets.knob.WaveShapeChooserPanel;
-import synthlabgui.widgets.knob.NumberKnobPanel;
+import synthlabgui.widgets.configPanel.knob.NumberKnobPanel;
+import synthlabgui.widgets.configPanel.knob.WaveShapeChooserPanel;
 
 public class ModuleConfigPanel extends JPanel
 {

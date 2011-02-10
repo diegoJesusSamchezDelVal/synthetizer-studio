@@ -1,4 +1,4 @@
-package synthlabgui.widgets.knob;
+package synthlabgui.widgets.configPanel.knob;
 
 public interface KnobListener
 {
