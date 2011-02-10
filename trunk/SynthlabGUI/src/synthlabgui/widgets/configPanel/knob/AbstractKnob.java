@@ -153,6 +153,6 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
 	}
 
 	public void setValue(int value) {
-		value = value;
+		this.value = value;
 	}
 }
