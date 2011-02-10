@@ -4,9 +4,9 @@ import java.awt.FlowLayout;
 import java.awt.Point;
 import javax.swing.JFrame;
 
-public class FunctionKnob extends AbstractKnob
+public class WaveShapeChooser extends AbstractKnob
 {
-  public FunctionKnob()
+  public WaveShapeChooser()
   {
     super();
   }
@@ -67,7 +67,7 @@ public class FunctionKnob extends AbstractKnob
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.setSize(400, 400);
     f.setVisible(true);
-    FunctionKnob k = new FunctionKnob();
+    WaveShapeChooser k = new WaveShapeChooser();
     f.add(k);
   }
 }

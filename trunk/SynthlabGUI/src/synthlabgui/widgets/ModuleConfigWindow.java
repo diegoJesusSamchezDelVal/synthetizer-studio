@@ -15,7 +15,7 @@ import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.AbstractConfigPanel;
 import synthlabgui.widgets.keyboard.KeyboardPanel;
-import synthlabgui.widgets.knob.FunctionKnobPanel;
+import synthlabgui.widgets.knob.WaveShapeChooserPanel;
 import synthlabgui.widgets.knob.NumberKnobPanel;
 
 public class ModuleConfigWindow extends JDialog {
@@ -45,7 +45,7 @@ public class ModuleConfigWindow extends JDialog {
 		AbstractConfigPanel knob;
 		for (Port p : module_.getInputs()) {
 			if (p.getValueType() == Port.ValueType.DISCRETE && p.getValueRange().count == 4) {
-			    knob = new FunctionKnobPanel(p.getName());
+			    knob = new WaveShapeChooserPanel(p.getName());
 			} else if (p.getValueType() == Port.ValueType.DISCRETE) {
 			    double min = p.getValueRange().minimum;
 				double max = p.getValueRange().maximum;

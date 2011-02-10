@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.AbstractConfigPanel;
 
-public class FunctionKnobPanel extends JPanel implements KnobListener,
+public class WaveShapeChooserPanel extends JPanel implements KnobListener,
 	AbstractConfigPanel {
-    public FunctionKnobPanel(String title) {
+    public WaveShapeChooserPanel(String title) {
 	this(title, null, null, null, null);
 	icon0 = new ImageIcon("res/image/knob/0.png");
 	icon1 = new ImageIcon("res/image/knob/1.png");
@@ -22,14 +22,14 @@ public class FunctionKnobPanel extends JPanel implements KnobListener,
 	icon3 = new ImageIcon("res/image/knob/3.png");
     }
 
-    public FunctionKnobPanel(String title, ImageIcon icon0, ImageIcon icon1,
-	    ImageIcon icon2, ImageIcon icon3) {
+    public WaveShapeChooserPanel(String title, ImageIcon icon0,
+	    ImageIcon icon1, ImageIcon icon2, ImageIcon icon3) {
 	this.title = title;
 	setLayout(null);
 	setMinimumSize(dim);
 	setPreferredSize(dim);
 	setSize(dim);
-	knob = new FunctionKnob();
+	knob = new WaveShapeChooser();
 	knob.addKnobListener(this);
 	add(knob);
 	knob.setLocation(imgSize, imgSize + NumberKnobPanel.TITLE_HEIGHT);
@@ -82,7 +82,7 @@ public class FunctionKnobPanel extends JPanel implements KnobListener,
     @Override
     public void knobTurned(KnobEvent e) {
 	value = e.getValue();
-	notifyPort(value);
+	notifyPort(((double) value) / 4);
     }
 
     private static final long serialVersionUID = 1L;
@@ -99,7 +99,7 @@ public class FunctionKnobPanel extends JPanel implements KnobListener,
 
     private ImageIcon icon3;
 
-    private FunctionKnob knob;
+    private WaveShapeChooser knob;
 
     private String title;
 
@@ -113,6 +113,5 @@ public class FunctionKnobPanel extends JPanel implements KnobListener,
 
     @Override
     public void setState(boolean enabled) {
-
     }
 }

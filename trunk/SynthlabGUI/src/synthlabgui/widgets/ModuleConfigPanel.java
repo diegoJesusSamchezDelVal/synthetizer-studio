@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.AbstractConfigPanel;
-import synthlabgui.widgets.knob.FunctionKnobPanel;
+import synthlabgui.widgets.knob.WaveShapeChooserPanel;
 import synthlabgui.widgets.knob.NumberKnobPanel;
 
 public class ModuleConfigPanel extends JPanel
@@ -19,7 +19,7 @@ public class ModuleConfigPanel extends JPanel
     for (Port p : module.getInputs())
     {
       if (p.getName().equals("iShape")) // TODO just pour test.
-        knob = new FunctionKnobPanel(p.getName());
+        knob = new WaveShapeChooserPanel(p.getName());
       else
         knob = new NumberKnobPanel(p.getName(), -1.0, 1.0, "", "0.0", !p.isLinked(), false);
       knob.setPort(p);
