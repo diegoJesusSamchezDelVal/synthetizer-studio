@@ -61,6 +61,7 @@ public class ModuleVCF extends BasicModule
               {
                 synchronized (getOutput("oNotch"))
                 {
+                  //clear all ports
                   getInput("iSignal").getValues().clear();
                   getInput("iCutOff").getValues().clear();
                   getInput("iResonance").getValues().clear();
@@ -71,31 +72,50 @@ public class ModuleVCF extends BasicModule
 
                   for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
                   {
-                    
+                    //get input Signal
                     double sigalIn = getInput("iSignal").getValues().getDouble();
-                    
+                      
+                    //get cutOff Setup
                     double cutOff = getInput("iCutOff").getValues().getDouble();
                    
+                    //get resonance Setup with decibels
                     //decibels = 20*log(Vout/Vin)
                     double resonance = Math.pow(10.0, getInput("iResonance").getValues().getDouble() / 20.0)-1.0;
 
+                    //RC = 1/4*PI*cutOff
                     final double rc = 1.0 / (4.0 * Math.PI * cutOff);
+                    
+                    //Delta T = 1/FrameRate
+                    //alpha = Delta T / Delta T + RC
                     final double alpha = (1.0 / frameRate_)/ (1.0 / frameRate_ + rc);
                     
+                    //PassBas = prePassBas + alpha*(Input - prePassBas)
                     double lowPass = lowPassPole + alpha * (sigalIn - lowPassPole);
+                    
+                    //prePassBas = PassBas
                     lowPassPole = lowPass;
                     
+                    
+                    //PassHaut = Input - PassBas
                     double highPass = sigalIn - lowPass;
+                    
+                    //BandPass = preBandPass+ alpha*(PassHaut - preBandPass)
                     double bandPass = bandPassPole + alpha * (highPass - bandPassPole);
+                    
+                    //preBandPass = BandPass
                     bandPassPole = bandPass;
                     
+                    
+                    //Comput with their resonance
                     lowPass += bandPass * resonance;
                     highPass += bandPass * resonance;
                     bandPass += bandPass * resonance;
   
+                    //Comput notch = Input - BandPass , BandPass computed with resonance
                     final double notch = sigalIn - bandPass;
                     
                     
+                    // setup 4 outPuts
                     setValue(lowPass);
                     getOutput("oLowPass").getValues().putDouble(valueOut);
 
