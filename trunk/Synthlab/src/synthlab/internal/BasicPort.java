@@ -5,7 +5,7 @@ import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
 
-public class BasicPort implements Port
+public class BasicPort extends Port
 {
   public BasicPort(String name, double value, ValueType type, ValueUnit unit,
       ValueRange range)
@@ -39,6 +39,8 @@ public class BasicPort implements Port
       values_.clear();
       values.clear();
     }
+    setChanged();
+    notifyObservers();
   }
 
   public void setValues(double value)
@@ -50,6 +52,8 @@ public class BasicPort implements Port
         values_.putDouble(value);
       values_.clear();
     }
+    setChanged();
+    notifyObservers();
   }
 
   public void resetValue()

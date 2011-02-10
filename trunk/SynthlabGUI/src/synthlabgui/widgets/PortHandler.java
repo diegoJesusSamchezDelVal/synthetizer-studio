@@ -80,6 +80,9 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
   public void mouseEntered(MouseEvent e)
   {
     mouseOver = true;
+    MainWindow window = (MainWindow) getParent().getParent().getParent().getParent().getParent().getParent()
+        .getParent().getParent();
+    window.getInformationPanel().monitor(this);
     repaint();
   }
 

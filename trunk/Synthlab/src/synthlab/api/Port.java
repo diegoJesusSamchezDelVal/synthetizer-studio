@@ -1,27 +1,28 @@
 package synthlab.api;
 
 import java.nio.ByteBuffer;
+import java.util.Observable;
 
-public interface Port
+public abstract class Port extends Observable
 {
   // --- Name
-  public String getName();
+  public abstract String getName();
   
   // --- Value
-  public void setValues(ByteBuffer value);
-  public void setValues(double value);
-  public void resetValue();
-  public ByteBuffer getValues();
+  public abstract void setValues(ByteBuffer value);
+  public abstract void setValues(double value);
+  public abstract void resetValue();
+  public abstract ByteBuffer getValues();
   
   // --- Input/Output
-  public boolean isInput();
+  public abstract boolean isInput();
   
-  public boolean isOutput();
+  public abstract boolean isOutput();
   
   // --- Status
-  public boolean isLinked();
+  public abstract boolean isLinked();
   
-  public void setLinked( boolean linked );
+  public abstract void setLinked( boolean linked );
   
   // --- Meta data
   public static enum ValueType
@@ -59,12 +60,12 @@ public interface Port
     public double maximum;
     public int count;
   }
-  public ValueType getValueType();
-  public ValueUnit getValueUnit();
-  public ValueRange getValueRange();
+  public abstract ValueType getValueType();
+  public abstract ValueUnit getValueUnit();
+  public abstract ValueRange getValueRange();
   
   // --- Module
-  public Module getModule();
+  public abstract Module getModule();
   
-  public void setModule(Module module);
+  public abstract void setModule(Module module);
 }

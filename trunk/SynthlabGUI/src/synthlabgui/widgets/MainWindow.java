@@ -21,6 +21,8 @@ public class MainWindow extends JFrame implements WindowListener
 
   private ModulePoolPanel     modulePoolPanel_;
 
+  private InformationPanel    informationPanel_;
+
   public MainWindow()
   {
     super();
@@ -33,9 +35,12 @@ public class MainWindow extends JFrame implements WindowListener
   {
     moduleRegistryPanel_ = new ModuleRegistryPanel();
     modulePoolPanel_ = new ModulePoolPanel();
-    JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moduleRegistryPanel_, modulePoolPanel_);
-    splitter.setDividerLocation(250);
-    getContentPane().add(splitter);
+    informationPanel_ = new InformationPanel(new Oscilloscope());
+    JSplitPane splitter2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, informationPanel_, modulePoolPanel_);
+    JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moduleRegistryPanel_, splitter2);
+    splitter1.setDividerLocation(250);
+    splitter2.validate();
+    getContentPane().add(splitter1);
   }
 
   private void setupGeneral()
@@ -97,6 +102,11 @@ public class MainWindow extends JFrame implements WindowListener
     Audio.stopLine();
     Audio.closeLine();
     System.exit(0);
+  }
+
+  public InformationPanel getInformationPanel()
+  {
+    return informationPanel_;
   }
 
   // ====================================================================
