@@ -24,21 +24,21 @@ public class ModuleVCF extends BasicModule
     super("VCF");
     // Input port
     addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave"));
     addInput(new BasicPort("iCutOff", 100, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.HERTZ, new Port.ValueRange(100, 5000),"N/A"));
+        Port.ValueUnit.HERTZ, new Port.ValueRange(100, 5000),"Frequence cutoff setup"));
     addInput(new BasicPort("iResonance", 0.0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 6.0),"N/A"));
+        Port.ValueUnit.DECIBELS, new Port.ValueRange(0.0, 6.0),"Decibels add for the volume"));
 
     // OutPut port
     addOutput(new BasicPort("oLowPass", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Pass lower signals then cutoff"));
     addOutput(new BasicPort("oHighPass", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Pass higher signals then cutoff"));
     addOutput(new BasicPort("oBandPass", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Passes signals with frequencies of a certain range"));
     addOutput(new BasicPort("oNotch", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"N/A"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Signals with frequencies of a certain range banned, others pass"));
 
     frameRate_ = 44100;
     
