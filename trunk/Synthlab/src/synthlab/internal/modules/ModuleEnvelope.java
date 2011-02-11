@@ -68,7 +68,9 @@ public class ModuleEnvelope extends BasicModule
                   getInput("iRelase").getValues().clear();
                   getOutput("oSignal").getValues().clear();
                   
+                  double out = 0;
                   
+                  double exGate = getInput("iExternalGate").getValues().getDouble();
                   double gate = getInput("iGate").getValues().getDouble();
                   boolean actived = (gate>0.5);
                   
@@ -93,9 +95,8 @@ public class ModuleEnvelope extends BasicModule
                        default:
                          break;                      
                       }
-                    }
-                 
-                  double out = 0;
+                    }               
+  
                   for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
                   {
                     switch(currentState){
@@ -103,14 +104,37 @@ public class ModuleEnvelope extends BasicModule
                         out = -1.0;
                         break;
                       case ATTACK:
+                        out = 2 * currentSimple / attackInSimple - 1.0;
+                        currentSimple =currentSimple + 1.0;
+                        if(currentSimple >= attackInSimple)
+                        {
+                          currentState = State.DECAY;
+                          currentSimple = 0.0;
+                        }
                         break;
                       case DECAY:
+                        out = currentSimple * (2.0 * sustainLevel - 2.0)/decayInSimple + 1.0;
+                        currentSimple = currentSimple + 1.0;
+                        if(currentSimple >= decayInSimple)
+                        {
+                          currentState = State.SUSTAIN;
+                          currentSimple = 0.0;
+                        }
                         break;
                       case SUSTAIN:
+                        out = 2.0 * sustainLevel - 1.0;
                         break;
                       case RELASE:
+                        out = currentSimple * -2.0 * sustainLevel / relaseInSimple + 2.0 * sustainLevel - 1.0;
+                        currentSimple = currentSimple + 1.0;
+                        if(currentSimple >= relaseInSimple)
+                        {
+                          currentState = State.IDLE;
+                          currentSimple = 0.0;
+                        }
                         break;
                       default:
+                        out = -1.0;
                         break;
                     }
                   }
