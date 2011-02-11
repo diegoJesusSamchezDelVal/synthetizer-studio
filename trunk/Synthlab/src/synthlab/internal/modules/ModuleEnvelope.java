@@ -18,7 +18,7 @@ public class ModuleEnvelope extends BasicModule
   
   private State currentState;
   
-  private final int frameRate_ = 44100;
+  //private final int frameRate_ = 44100;
   
   public ModuleEnvelope()
   {
@@ -72,7 +72,7 @@ public class ModuleEnvelope extends BasicModule
                   
                   double exGate = getInput("iExternalGate").getValues().getDouble();
                   double gate = getInput("iGate").getValues().getDouble();
-                  boolean actived = (gate>0.5);
+                  boolean actived = ( exGate>0.5 || gate>0.5);
                   
                   if(actived){
                     switch(currentState){
