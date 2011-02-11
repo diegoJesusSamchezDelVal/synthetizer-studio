@@ -16,7 +16,7 @@ public class ModuleEnvelope extends BasicModule
   
   private double currentSimple;
   
-  private State currentState;
+  private State currentState = State.IDLE;
   
   //private final int frameRate_ = 44100;
   
@@ -34,7 +34,7 @@ public class ModuleEnvelope extends BasicModule
     addInput(new BasicPort("iDecay", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,10000), name_));
     addInput(new BasicPort("iSustain", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1), name_));
+        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100), name_));
     addInput(new BasicPort("iRelase", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,10000), name_));
     
@@ -113,7 +113,7 @@ public class ModuleEnvelope extends BasicModule
                         }
                         break;
                       case DECAY:
-                        out = currentSimple * (2.0 * sustainLevel - 2.0)/decayInSimple + 1.0;
+                        out = currentSimple * (2.0 *  (sustainLevel/100) - 2.0)/decayInSimple + 1.0;
                         currentSimple = currentSimple + 1.0;
                         if(currentSimple >= decayInSimple)
                         {
@@ -122,10 +122,10 @@ public class ModuleEnvelope extends BasicModule
                         }
                         break;
                       case SUSTAIN:
-                        out = 2.0 * sustainLevel - 1.0;
+                        out = 2.0 * (sustainLevel/100) - 1.0;
                         break;
                       case RELASE:
-                        out = currentSimple * -2.0 * sustainLevel / relaseInSimple + 2.0 * sustainLevel - 1.0;
+                        out = currentSimple * -2.0 *  (sustainLevel/100) / relaseInSimple + 2.0 *  (sustainLevel/100) - 1.0;
                         currentSimple = currentSimple + 1.0;
                         if(currentSimple >= relaseInSimple)
                         {
