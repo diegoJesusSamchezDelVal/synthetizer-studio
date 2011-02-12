@@ -9,5 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/Synthlab/guava-r08.jar"/>
+	<classpathentry kind="lib" path="flanagan.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

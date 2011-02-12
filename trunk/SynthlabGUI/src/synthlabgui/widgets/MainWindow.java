@@ -9,6 +9,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import synthlab.internal.Audio;
 
 public class MainWindow extends JFrame implements WindowListener
@@ -35,10 +37,26 @@ public class MainWindow extends JFrame implements WindowListener
   {
     moduleRegistryPanel_ = new ModuleRegistryPanel();
     modulePoolPanel_ = new ModulePoolPanel();
-    informationPanel_ = new InformationPanel(new Oscilloscope());
+    informationPanel_ = new InformationPanel(new Oscilloscope(), new Spectrometer());
     JSplitPane splitter2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, informationPanel_, modulePoolPanel_);
+    splitter2.setDividerSize(22);
+    splitter2.setUI(new BasicSplitPaneUI() {
+      @Override
+      public BasicSplitPaneDivider createDefaultDivider()
+      {
+        return new VerticalDivider(this);
+      }
+    });
     JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moduleRegistryPanel_, splitter2);
     splitter1.setDividerLocation(250);
+    splitter1.setDividerSize(22);
+    splitter1.setUI(new BasicSplitPaneUI() {
+      @Override
+      public BasicSplitPaneDivider createDefaultDivider()
+      {
+        return new HorizontalDivider(this);
+      }
+    });
     splitter2.validate();
     getContentPane().add(splitter1);
   }

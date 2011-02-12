@@ -17,7 +17,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
 import java.util.Map;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import synthlab.api.ModuleFactory;
@@ -163,7 +162,6 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
   private void setupGeneral()
   {
-    setBorder(BorderFactory.createLineBorder(Color.black));
     setLayout(null);
     setBackground(Color.white);
     addMouseListener(this);

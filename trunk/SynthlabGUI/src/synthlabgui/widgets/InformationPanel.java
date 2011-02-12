@@ -1,7 +1,13 @@
 package synthlabgui.widgets;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -16,6 +22,8 @@ public class InformationPanel extends JPanel
 
   private Oscilloscope      oscilloscope_;
 
+  private Spectrometer      spectrometer_;
+
   private JLabel            lblNameV;
 
   private JLabel            lblUnitV;
@@ -26,16 +34,18 @@ public class InformationPanel extends JPanel
 
   private JLabel            lblDescriptionV;
 
-  public InformationPanel(Oscilloscope o)
+  public InformationPanel(Oscilloscope o, Spectrometer s)
   {
     super();
     oscilloscope_ = o;
+    spectrometer_ = s;
     setupGeneral();
   }
 
   public void monitor(PortHandler p)
   {
     oscilloscope_.monitor(p);
+    spectrometer_.monitor(p);
     lblNameV.setText(p.getWrapped().getName());
     lblUnitV.setText(p.getWrapped().getValueUnit().toString());
     lblTypeV.setText(p.getWrapped().getValueType().toString());
@@ -49,9 +59,12 @@ public class InformationPanel extends JPanel
   {
     setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    setOpaque(false);
     setVisible(true);
     add(oscilloscope_);
+    add(spectrometer_);
     JPanel rightPanel = new JPanel();
+    rightPanel.setOpaque(false);
     rightPanel.setLayout(new SpringLayout());
     JLabel lblName = new JLabel("Port name:");
     JLabel lblUnit = new JLabel("Port unit:");
@@ -81,6 +94,32 @@ public class InformationPanel extends JPanel
     add(rightPanel);
     add(Box.createHorizontalGlue());
     makeCompactGrid(rightPanel, 5, 2, 6, 6, 6, 6);
+    oscilloscope_.setBounds(10, 10, (int) oscilloscope_.getBounds().getWidth(), (int) oscilloscope_.getBounds()
+        .getHeight());
+    spectrometer_.setBounds((int) oscilloscope_.getBounds().getWidth(), (int) oscilloscope_.getBounds().getHeight(),
+        (int) spectrometer_.getBounds().getWidth(), (int) spectrometer_.getBounds().getHeight());
+  }
+
+  public void paint(Graphics g)
+  {
+    // Enable anti-aliasing
+    RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    renderHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    ((Graphics2D) g).setRenderingHints(renderHints);
+    Graphics2D g2 = (Graphics2D) g;
+    // back cg
+    g2.setColor(new Color(237, 237, 237));
+    g2.fillRect(0, 0, getWidth(), getHeight());
+    // Inner bg
+    GradientPaint background = new GradientPaint(new Point(0, 0), new Color(255, 255, 255), new Point(0, getHeight()),
+        new Color(230, 230, 230));
+    g2.setPaint(background);
+    g2.fillRoundRect(5, 5, getWidth() - 15, getHeight() - 11, 10, 10);
+    // Outer bg
+    g2.setColor(new Color(150, 150, 150));
+    g2.drawRoundRect(5, 5, getWidth() - 15, getHeight() - 11, 10, 10);
+    // Paint inner components
+    paintComponents(g);
   }
 
   public static void makeCompactGrid(Container parent, int rows, int cols, int initialX, int initialY, int xPad,

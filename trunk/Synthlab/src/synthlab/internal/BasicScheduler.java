@@ -2,7 +2,6 @@ package synthlab.internal;
 
 import com.google.common.collect.BiMap;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 
 import synthlab.api.*;
 
@@ -111,26 +110,9 @@ public class BasicScheduler implements Scheduler
     }
   }
 
-  class Handler implements Runnable
-  {
-    private Module module_;
-
-    Handler(Module module)
-    {
-      module_ = module;
-    }
-
-    public void run()
-    {
-      // module.compute();
-    }
-  }
-
   private ModulePool        pool_;
   private List<Module>      tasks_;
   private BiMap<Port, Port> links_;
   private boolean           running_;
   private PlayThread        playThread_;
-  private ExecutorService   poolModuleCompute;
-  private ExecutorService   poolModulePropagate;
 }
