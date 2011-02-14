@@ -253,6 +253,11 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     repaint();
   }
 
+  public PortHandler getPortStart()
+  {
+    return portStart_;
+  }
+
   public void endDrag(Module module, PortHandler port)
   {
     linking_ = false;

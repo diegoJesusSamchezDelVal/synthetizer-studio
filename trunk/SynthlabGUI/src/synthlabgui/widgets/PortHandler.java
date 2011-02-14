@@ -57,14 +57,31 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
         g.fillOval(5, 3, 6, 6);
         g.setColor(Color.black);
       }
-    if (((ModulePoolPanel) getParent().getParent()).isLinking() && !port_.isLinked())
+    ModulePoolPanel poolPanel = ((ModulePoolPanel) getParent().getParent());
+    PortHandler selectedPort = poolPanel.getPortStart();
+    // There is a possible match
+    if (poolPanel.isLinking()
+        && !port_.isLinked()
+        && ((selectedPort.getWrapped().isInput() && port_.isOutput()) || (selectedPort.getWrapped().isOutput() && port_
+            .isInput())))
     {
-      ((Graphics2D) g).setStroke(new BasicStroke(2));
-      g.setColor(Color.green.darker());
+      // This is a perfect match (unit & type match perfectly)
+      if ((selectedPort.getWrapped().getValueType() == getWrapped().getValueType())
+          && (selectedPort.getWrapped().getValueUnit() == getWrapped().getValueUnit()))
+      {
+        g.setColor(Color.green.darker().darker().darker());
+      }
+      // This is an imperfect match (unit and type does not match perfectly)
+      else
+      {
+        g.setColor(Color.green.darker());
+      }
+      ((Graphics2D) g).setStroke(new BasicStroke(1.5f));
       g.drawOval(5, 3, 6, 6);
       ((Graphics2D) g).setStroke(new BasicStroke(1));
       g.setColor(Color.black);
     }
+    // Normal display
     else
     {
       g.drawOval(5, 3, 6, 6);
