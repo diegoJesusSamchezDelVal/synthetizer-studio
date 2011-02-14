@@ -100,7 +100,7 @@ public class InformationPanel extends JPanel
         (int) spectrometer_.getBounds().getWidth(), (int) spectrometer_.getBounds().getHeight());
   }
 
-  public void paint(Graphics g)
+  public void paintComponent(Graphics g)
   {
     // Enable anti-aliasing
     RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -118,8 +118,6 @@ public class InformationPanel extends JPanel
     // Outer bg
     g2.setColor(new Color(150, 150, 150));
     g2.drawRoundRect(5, 5, getWidth() - 15, getHeight() - 11, 10, 10);
-    // Paint inner components
-    paintComponents(g);
   }
 
   public static void makeCompactGrid(Container parent, int rows, int cols, int initialX, int initialY, int xPad,
