@@ -80,7 +80,7 @@ public class ModuleEnvelope extends BasicModule
                   attackInSimple = frameRate_ * getInput("iAttack").getValues().getDouble();
                   decayInSimple = frameRate_ * getInput("iDecay").getValues().getDouble();
                   releaseInSimple = frameRate_ * getInput("iRelease").getValues().getDouble();
-                  sustainLevel = getInput("iSustain").getValues().getDouble();
+                  sustainLevel = getInput("iSustain").getValues().getDouble()/100;
                   
                   
                   if(actived){
@@ -122,7 +122,7 @@ public class ModuleEnvelope extends BasicModule
                         }
                         break;
                       case DECAY:
-                        out = currentSimple * (2.0 *  (sustainLevel/100) - 2.0)/decayInSimple + 1.0;
+                        out = currentSimple * (2.0 *  (sustainLevel) - 2.0)/decayInSimple + 1.0;
                         currentSimple = currentSimple + 1.0;
                         if(currentSimple >= decayInSimple)
                         {
@@ -131,10 +131,10 @@ public class ModuleEnvelope extends BasicModule
                         }
                         break;
                       case SUSTAIN:
-                        out = 2.0 * (sustainLevel/100) - 1.0;
+                        out = 2.0 * (sustainLevel) - 1.0;
                         break;
                       case RELASE:
-                        out = currentSimple * -2.0 *  (sustainLevel/100) / releaseInSimple + 2.0 *  (sustainLevel/100) - 1.0;
+                        out = currentSimple * -2.0 *  (sustainLevel) / releaseInSimple + 2.0 *  (sustainLevel) - 1.0;
                         currentSimple = currentSimple + 1.0;
                         if(currentSimple >= releaseInSimple)
                         {
