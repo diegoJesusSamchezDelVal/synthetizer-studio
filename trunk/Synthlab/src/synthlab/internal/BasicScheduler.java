@@ -14,13 +14,14 @@ public class BasicScheduler implements Scheduler
     links_ = null;
     playThread_ = new PlayThread();
     playThread_.setPriority(Thread.MAX_PRIORITY);
+    running_ = false;
   }
 
   @Override
   public void play(int count)
   {
     // Sanity check
-    if (pool_ == null || tasks_ == null || links_ == null)
+    if (pool_ == null || tasks_ == null || links_ == null || running_)
       return;
 
     playThread_ = new PlayThread();
@@ -32,7 +33,11 @@ public class BasicScheduler implements Scheduler
   @Override
   public void stop()
   {
+    if ( !running_ || playThread_==null )
+      return;
+    
     running_ = false;
+    
     try
     {
       playThread_.join();

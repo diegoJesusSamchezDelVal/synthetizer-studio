@@ -71,4 +71,7 @@ public abstract class Port extends Observable
   public abstract Module getModule();
   
   public abstract void setModule(Module module);
+  
+  //--- Cloneable
+  public abstract Port clone() throws CloneNotSupportedException;
 }

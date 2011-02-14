@@ -5,9 +5,12 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+import synthlab.api.Scheduler;
 import synthlabgui.widgets.buttons.MiniButton;
 
 public class VerticalDivider extends BasicSplitPaneDivider
@@ -27,6 +30,8 @@ public class VerticalDivider extends BasicSplitPaneDivider
     MiniButton sound = new MiniButton(new ImageIcon("sound.png").getImage(), true);
     add(mute);
     add(sound);
+    mute.addActionListener(new PauseScheduler());
+    sound.addActionListener(new ResumeScheduler());
   }
 
   public void paint(Graphics g)
@@ -44,5 +49,40 @@ public class VerticalDivider extends BasicSplitPaneDivider
     g2.drawLine(0, 10, getWidth(), 10);
     // draw components (buttons)
     paintComponents(g);
+  }
+
+  public void pauseScheduler()
+  {
+    Scheduler scheduler = ((MainWindow) getParent().getParent().getParent().getParent().getParent().getParent())
+        .getPoolPanel().getScheduler();
+    scheduler.stop();
+  }
+
+  public void resumeScheduler()
+  {
+    Scheduler scheduler = ((MainWindow) getParent().getParent().getParent().getParent().getParent().getParent())
+        .getPoolPanel().getScheduler();
+    scheduler.play(0);
+  }
+
+  // ====================================================================
+  // ACTION LISTENERS
+  // ====================================================================
+  private class PauseScheduler implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      pauseScheduler();
+    }
+  }
+
+  private class ResumeScheduler implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      resumeScheduler();
+    }
   }
 }

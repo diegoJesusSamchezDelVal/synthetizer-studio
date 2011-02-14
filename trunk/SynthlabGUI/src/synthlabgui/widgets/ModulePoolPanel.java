@@ -36,9 +36,9 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     super();
     setupGeneral();
     pool_ = ModulePoolFactory.createDefault();
-    Scheduler s = SchedulerFactory.createDefault();
-    s.setPool(pool_);
-    s.play(0);
+    scheduler_ = SchedulerFactory.createDefault();
+    scheduler_.setPool(pool_);
+    scheduler_.play(0);
     setTransferHandler(new ModuleTransferHandler());
     try
     {
@@ -288,6 +288,13 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
       }
     }
   }
+
+  public Scheduler getScheduler()
+  {
+    return scheduler_;
+  }
+
+  private Scheduler                           scheduler_;
 
   private Map.Entry<PortHandler, PortHandler> selectedLink_;
 

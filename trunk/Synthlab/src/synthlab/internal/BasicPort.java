@@ -141,6 +141,12 @@ public class BasicPort extends Port
   {
     return getName() + " ( " + getValueUnit() + " )";
   }
+  
+  //--- Cloneable
+  public Port clone() throws CloneNotSupportedException
+  {
+    return new BasicPort( name_, initialValue_, type_, unit_, range_, description_ );
+  }
 
   private String     description_;
   private double     initialValue_;

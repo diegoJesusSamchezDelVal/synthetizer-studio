@@ -61,8 +61,11 @@ public class BasicScriptModule extends BasicModule
   {
     BasicScriptModule module = new BasicScriptModule( getName() );
     
-    module.addInputs( this.getInputs() );
-    module.addOutputs( this.getOutputs() );
+    for ( Port p : getInputs() )
+      module.addInput( p.clone() );
+    
+    for ( Port p : getOutputs() )
+      module.addOutput( p.clone() );
     
     module.setScript( this.getScript() );
     
