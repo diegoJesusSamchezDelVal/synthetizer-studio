@@ -1,14 +1,11 @@
 package synthlab.internal;
 
-import java.nio.ByteBuffer;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
-import synthlab.internal.modules.ModuleEnvelope;
 
 public class BasicScriptModule extends BasicModule
 {
