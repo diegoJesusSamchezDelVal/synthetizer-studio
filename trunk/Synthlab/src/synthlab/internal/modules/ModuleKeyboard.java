@@ -18,6 +18,8 @@ public class ModuleKeyboard extends BasicModule
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8),"Output note voltage following the 1v/ocatave convention"));
 
+    addOutput(new BasicPort("oActive", 0, Port.ValueType.DISCRETE,
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1), "Active control signal"));
   }
 
   @Override
@@ -30,17 +32,21 @@ public class ModuleKeyboard extends BasicModule
         getInput("iSignal").getValues().clear();
         getInput("iOctave").getValues().clear();
         getOutput("oSignal").getValues().clear();
+        getOutput("oActive").getValues().clear();
   
         for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
         {
           // 0 ~ 23
           double n = getInput("iSignal").getValues().getDouble();
           double octave = getInput("iOctave").getValues().getDouble();
-          double volt = 0.0;
-          if (n >= 0)
-            volt = n / 24 * 2 + octave;
-  
-          getOutput("oSignal").getValues().putDouble(volt);  
+          double volt = 0.0;          
+          if(n >= 0.0) {
+              volt = n / 24 * 2 + octave;             
+              getOutput("oActive").getValues().putDouble(1);
+          } else {           
+            getOutput("oActive").getValues().putDouble(0);
+          }
+          getOutput("oSignal").getValues().putDouble(volt);
         }
       }
     }
