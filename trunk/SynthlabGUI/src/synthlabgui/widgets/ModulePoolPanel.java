@@ -18,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import synthlab.api.ModuleFactory;
 import synthlab.api.ModulePool;
@@ -304,6 +305,30 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     {
       i = input;
       o = output;
+    }
+    if (o.getWrapped().isLinked())
+    {
+      String message = "The port \"" + o.getWrapped().getName()
+          + "\" is already linked to an other port.\nRemove this previous link?";
+      int result = JOptionPane.showConfirmDialog(this, message, "Linking problem", JOptionPane.YES_NO_OPTION);
+      if (result == JOptionPane.NO_OPTION)
+        return;
+      else
+      {
+        unlink(o);
+      }
+    }
+    if (i.getWrapped().isLinked())
+    {
+      String message = "The port \"" + i.getWrapped().getName()
+          + "\" is already linked to an other port.\nRemove this previous link?";
+      int result = JOptionPane.showConfirmDialog(this, message, "Linking problem", JOptionPane.YES_NO_OPTION);
+      if (result == JOptionPane.NO_OPTION)
+        return;
+      else
+      {
+        unlink(i);
+      }
     }
     pool_.link(o.getWrapped(), i.getWrapped());
     links_.put(o, i);
