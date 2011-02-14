@@ -1,5 +1,6 @@
 package synthlab.internal.modules;
 
+import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
@@ -108,5 +109,11 @@ public class ModuleMixer extends BasicModule
         }
       }
     }  
+  }
+  
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    return new ModuleMixer();
   }
 }

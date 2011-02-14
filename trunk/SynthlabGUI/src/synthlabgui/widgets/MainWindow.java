@@ -127,6 +127,16 @@ public class MainWindow extends JFrame implements WindowListener
     return informationPanel_;
   }
 
+  public ModuleRegistryPanel getRegistryPanel()
+  {
+    return moduleRegistryPanel_;
+  }
+
+  public ModulePoolPanel getPoolPanel()
+  {
+    return modulePoolPanel_;
+  }
+
   // ====================================================================
   // ACTION LISTENERS
   // --------------------------------------------------------------------

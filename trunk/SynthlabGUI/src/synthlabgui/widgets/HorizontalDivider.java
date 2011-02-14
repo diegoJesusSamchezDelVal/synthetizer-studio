@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -28,6 +30,7 @@ public class HorizontalDivider extends BasicSplitPaneDivider
     config.setBounds(0, 500 - 44, (int) config.getBounds().getWidth(), (int) config.getBounds().getHeight());
     add(library);
     add(config);
+    config.addActionListener(new NewScriptModule());
   }
 
   public void paint(Graphics g)
@@ -45,5 +48,28 @@ public class HorizontalDivider extends BasicSplitPaneDivider
     g2.drawLine(10, 0, 10, getHeight());
     // draw components (buttons)
     paintComponents(g);
+  }
+
+  public void newScriptModule()
+  {
+    ScriptModuleDialog dialog = new ScriptModuleDialog(
+        (MainWindow) (getParent().getParent().getParent().getParent().getParent()));
+    synthlab.api.Module module = dialog.getModule();
+    if (module != null)
+    {
+      System.out.println(getParent().toString());
+    }
+  }
+
+  // ====================================================================
+  // ACTION LISTENERS
+  // ====================================================================
+  private class NewScriptModule implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      newScriptModule();
+    }
   }
 }

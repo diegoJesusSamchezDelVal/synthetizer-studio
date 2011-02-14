@@ -1,7 +1,6 @@
 package synthlab.internal.modules;
 
 import synthlab.api.*;
-import synthlab.api.Port;
 import synthlab.internal.*;
 
 public class ModuleKeyboard extends BasicModule
@@ -47,5 +46,9 @@ public class ModuleKeyboard extends BasicModule
     }
   }
 
- 
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    return new ModuleKeyboard();
+  }
 }

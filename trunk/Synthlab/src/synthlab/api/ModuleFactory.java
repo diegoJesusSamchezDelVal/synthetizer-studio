@@ -1,12 +1,28 @@
 package synthlab.api;
 
+import java.util.List;
+
+import synthlab.internal.BasicScriptModule;
+
 
 public class ModuleFactory
 {
-  public static Module createFromDescription(String description)
+  public static Module createFromScript(String name, List<Port> inputs, List<Port> outputs, String script)
   {
-    //TODO
-    return null;
+    if ( name.isEmpty() || script.isEmpty() )
+      return null;
+    
+    BasicScriptModule module = new BasicScriptModule(name);
+    
+    for ( Port p : inputs )
+      module.addInput(p);
+    
+    for ( Port p : outputs )
+      module.addOutput(p);
+    
+    module.setScript(script);
+    
+    return module;
   }
   
   public static Module createFromXML(String filename)
@@ -25,9 +41,9 @@ public class ModuleFactory
   {
     try
     {
-      return m.getClass().newInstance();
+      return m.clone();
     }
-    catch (Exception e)
+    catch (CloneNotSupportedException e)
     {
       e.printStackTrace();
     }

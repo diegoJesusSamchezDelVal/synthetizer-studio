@@ -37,6 +37,12 @@ public class ModuleOut extends BasicModule
       getInput("iSignal").getValues().clear();
     }
   }
+  
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    return new ModuleOut();
+  }
 
   AudioInputStream stream_;
   DataLine.Info    lineInfo_;

@@ -1,5 +1,6 @@
 package synthlab.internal.modules;
 
+import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
@@ -97,6 +98,12 @@ public class ModuleVCO extends BasicModule
         }
       }
     }
+  }
+  
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    return new ModuleVCO();
   }
 
   public static final double SHAPE_SAWTOOTH = 0.75;

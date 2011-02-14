@@ -158,6 +158,12 @@ public abstract class BasicModule implements Module
   {
     return outputs_.containsKey(name);
   }
+  
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    throw new CloneNotSupportedException("Cannot clone BasicModule: abstract class");
+  }
 
   protected String            name_;
   protected Map<String, Port> inputs_;

@@ -36,4 +36,7 @@ public interface Module
   
   // --- Computation
   public void compute();
+  
+  // --- Cloneable
+  public Module clone() throws CloneNotSupportedException;
 }

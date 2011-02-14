@@ -2,6 +2,7 @@ package synthlab.internal.modules;
 
 import javax.sql.rowset.spi.SyncFactory;
 
+import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
@@ -146,8 +147,12 @@ public class ModuleEnvelope extends BasicModule
           }
         }
       }
-    }
-    
+    } 
   }
-
+  
+  @Override
+  public Module clone() throws CloneNotSupportedException
+  {
+    return new ModuleEnvelope();
+  }
 }

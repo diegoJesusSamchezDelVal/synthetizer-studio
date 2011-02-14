@@ -135,6 +135,12 @@ public class BasicPort extends Port
   {
     return description_;
   }
+  
+  @Override
+  public String toString()
+  {
+    return getName() + " ( " + getValueUnit() + " )";
+  }
 
   private String     description_;
   private double     initialValue_;

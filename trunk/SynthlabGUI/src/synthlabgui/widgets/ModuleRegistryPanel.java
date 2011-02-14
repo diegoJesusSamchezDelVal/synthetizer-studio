@@ -28,16 +28,17 @@ public class ModuleRegistryPanel extends JPanel
   public ModuleRegistryPanel()
   {
     super();
+    // Create the module registry
     registry_ = ModuleRegistryFactory.createDefault();
-    // TODO insane hack to hard code some prototypes in the registry
-    registry_.register(new ModuleLFO());
-    registry_.register(new ModuleVCO());
-    registry_.register(new ModuleVCA());
-    registry_.register(new ModuleMixer());
-    registry_.register(new ModuleVCF());
-    registry_.register(new ModuleOut());
-    registry_.register(new ModuleKeyboard());
-    refresh();
+    // Add default modules
+    add(Box.createRigidArea(new Dimension(0, 20)));
+    addModule(new ModuleLFO());
+    addModule(new ModuleVCO());
+    addModule(new ModuleVCA());
+    addModule(new ModuleMixer());
+    addModule(new ModuleVCF());
+    addModule(new ModuleOut());
+    addModule(new ModuleKeyboard());
     setupGeneral();
   }
 
@@ -48,13 +49,12 @@ public class ModuleRegistryPanel extends JPanel
     setVisible(true);
   }
 
-  public void refresh()
+  public void addModule(synthlab.api.Module module)
   {
-    add(Box.createRigidArea(new Dimension(0, 20)));
-    for (synthlab.api.Module prototype : registry_.getModules())
-    {
-      add(new ModulePrototype(prototype));
-    }
+    registry_.register(module);
+    add(new ModulePrototype(module));
+    validate();
+    repaint();
   }
 
   public void paint(Graphics g)
