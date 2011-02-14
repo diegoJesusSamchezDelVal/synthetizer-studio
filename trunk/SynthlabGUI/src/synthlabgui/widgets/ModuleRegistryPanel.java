@@ -13,6 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import synthlab.api.ModuleRegistry;
 import synthlab.api.ModuleRegistryFactory;
+import synthlab.internal.modules.ModuleEnvelope;
 import synthlab.internal.modules.ModuleKeyboard;
 import synthlab.internal.modules.ModuleLFO;
 import synthlab.internal.modules.ModuleMixer;
@@ -37,6 +38,7 @@ public class ModuleRegistryPanel extends JPanel
     addModule(new ModuleVCA());
     addModule(new ModuleMixer());
     addModule(new ModuleVCF());
+    addModule(new ModuleEnvelope());
     addModule(new ModuleOut());
     addModule(new ModuleKeyboard());
     setupGeneral();
