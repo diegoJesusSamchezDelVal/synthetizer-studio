@@ -30,7 +30,7 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel, Keyboa
   }
 
   @Override
-  public void keyPressed(KeyboardEvent e)
+  public void keyActionPerformed(KeyboardEvent e)
   {
     value = e.getValue();
     notifyPort(value);
