@@ -12,7 +12,7 @@ public class ModuleEnvelope extends BasicModule
 {
 
   private enum State {IDLE,ATTACK,DECAY,SUSTAIN,RELASE}
-  private double attackInSimple,decayInSimple,relaseInSimple;
+  private double attackInSimple,decayInSimple,releaseInSimple;
   private double sustainLevel;
   
   private final double frameRate_ = 44100;
@@ -38,12 +38,12 @@ public class ModuleEnvelope extends BasicModule
         Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,10000), "Decay time controlor"));
     addInput(new BasicPort("iSustain", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100), "Sustain percentage controlor"));
-    addInput(new BasicPort("iRelase", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iRelease", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0,10000), "Relase time controlor"));
     
     //add output port
-    addOutput(new BasicPort("oFrequence", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1), "Frequence output"));
+    addOutput(new BasicPort("oFrequency", 0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1), "Frequency output"));
   }
 
   @Override
@@ -59,17 +59,17 @@ public class ModuleEnvelope extends BasicModule
           {
             synchronized (getInput("iSustain"))
             {
-              synchronized (getInput("iRelase"))
+              synchronized (getInput("iRelease"))
               {
-                synchronized (getOutput("oFrequence"))
+                synchronized (getOutput("oFrequency"))
                 {
                   getInput("iExternalGate").getValues().clear();
                   getInput("iGate").getValues().clear();
                   getInput("iAttack").getValues().clear();
                   getInput("iDecay").getValues().clear();
                   getInput("iSustain").getValues().clear();
-                  getInput("iRelase").getValues().clear();
-                  getOutput("oFrequence").getValues().clear();
+                  getInput("iRelease").getValues().clear();
+                  getOutput("oFrequency").getValues().clear();
                   
                   double out = 0;
                   
@@ -79,7 +79,7 @@ public class ModuleEnvelope extends BasicModule
                   
                   attackInSimple = frameRate_ * getInput("iAttack").getValues().getDouble();
                   decayInSimple = frameRate_ * getInput("iDecay").getValues().getDouble();
-                  relaseInSimple = frameRate_ * getInput("iRelease").getValues().getDouble();
+                  releaseInSimple = frameRate_ * getInput("iRelease").getValues().getDouble();
                   sustainLevel = getInput("iSustain").getValues().getDouble();
                   
                   
@@ -134,9 +134,9 @@ public class ModuleEnvelope extends BasicModule
                         out = 2.0 * (sustainLevel/100) - 1.0;
                         break;
                       case RELASE:
-                        out = currentSimple * -2.0 *  (sustainLevel/100) / relaseInSimple + 2.0 *  (sustainLevel/100) - 1.0;
+                        out = currentSimple * -2.0 *  (sustainLevel/100) / releaseInSimple + 2.0 *  (sustainLevel/100) - 1.0;
                         currentSimple = currentSimple + 1.0;
-                        if(currentSimple >= relaseInSimple)
+                        if(currentSimple >= releaseInSimple)
                         {
                           currentState = State.IDLE;
                           currentSimple = 0.0;
@@ -146,7 +146,7 @@ public class ModuleEnvelope extends BasicModule
                         out = -1.0;
                         break;
                     }
-                    getOutput("oFrequence").getValues().putDouble(out);
+                    getOutput("oFrequency").getValues().putDouble(out);
                   }
                 }
               }
