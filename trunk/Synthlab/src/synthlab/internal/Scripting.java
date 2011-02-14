@@ -9,6 +9,8 @@ public class Scripting
   {
     if ( javascriptEngine_ == null )
     {
+      // Retrieve a javascript interpreter (JRE 1.6 should contain Mozilla Rhino
+      // by default)
       engineManager_ = new ScriptEngineManager();
       javascriptEngine_ = engineManager_.getEngineByName("JavaScript");
     }

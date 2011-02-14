@@ -13,6 +13,7 @@ public class BasicScheduler implements Scheduler
     pool_ = null;
     links_ = null;
     playThread_ = new PlayThread();
+    // We need rocket speed priority ;)
     playThread_.setPriority(Thread.MAX_PRIORITY);
     running_ = false;
   }
@@ -20,10 +21,12 @@ public class BasicScheduler implements Scheduler
   @Override
   public void play(int count)
   {
-    // Sanity check
+    // Sanity chec: check that we are not already playing
     if (pool_ == null || tasks_ == null || links_ == null || running_)
       return;
 
+    // Create a new thread to start scheduling the modules.
+    // This is required since the play() method should not be blocking!
     playThread_ = new PlayThread();
     playThread_.setPriority(Thread.MAX_PRIORITY);
     running_ = true;
@@ -33,13 +36,16 @@ public class BasicScheduler implements Scheduler
   @Override
   public void stop()
   {
+    // Check if we are not already stopped
     if ( !running_ || playThread_==null )
       return;
     
+    // This will cleanly make the playthread loop to stop
     running_ = false;
     
     try
     {
+      // Wait patiently for our play thread to end cleanly
       playThread_.join();
     }
     catch (Exception e)
@@ -51,6 +57,7 @@ public class BasicScheduler implements Scheduler
   @Override
   public void reorder()
   {
+    //TODO: This is no longer useful and should be removed
     // Following is a topological sort. When we encounter a cycle, we group all
     // nodes in the same layer and resume the sort.
     tasks_ = pool_.getModules();
@@ -81,11 +88,12 @@ public class BasicScheduler implements Scheduler
   {
     public void run()
     {
+      // Open and start an audio data line
       Audio.openLine();
       Audio.startLine();
 
+      // This will be our starting point for scheduling 
       long start = System.currentTimeMillis();
-      ;
 
       // TODO should add mutexes here
       while (running_)
@@ -98,26 +106,44 @@ public class BasicScheduler implements Scheduler
         // Execute all tasks
         synchronized (pool_)
         {
+          // Ask all modules to do their computation
           for (Module module : tasks_)
             module.compute();
-          // poolModuleCompute.execute(new Handler(module));
 
-          // poolModuleCompute.shutdown();//arrete d'accepter les nouvelles
-          // taches et terminent celles en cours d'execution
           // Propagate all outputs to inputs
           for (Map.Entry<Port, Port> link : links_.entrySet())
             link.getValue().setValues(link.getKey().getValues());
         }
       }
 
+      // Stop and close the audio line
       Audio.stopLine();
       Audio.closeLine();
     }
   }
 
+  /**
+   * This is the module pool we were bound to
+   */
   private ModulePool        pool_;
+  
+  /**
+   * This is the list of tasks we have to do (i.e. the list of modules to ask for computation)
+   */
   private List<Module>      tasks_;
+  
+  /**
+   * This is the list of the links we have to propagate
+   */
   private BiMap<Port, Port> links_;
+  
+  /**
+   * Are we currently running ?
+   */
   private boolean           running_;
+  
+  /**
+   * The play thread
+   */
   private PlayThread        playThread_;
 }

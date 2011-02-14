@@ -14,6 +14,20 @@ import synthlab.internal.BasicScriptModule;
 
 public class ModuleFactory
 {
+  /**
+   * This will create a new module from a javascript source string. The module will have the
+   * specified input and output ports. The javascript source can use binding of ByteBuffers to
+   * read and write to its ports.
+   * For instance, if you have a port named "iInput", you can access it in javascript as if you
+   * have a ByteBuffer named iInput (and thus use getDouble() / putDouble() ).
+   * You also have access to the SamplingBufferSize integer constant describing the number of
+   * sample contained in each ByteBuffer (copied from Scheduler.SamplingBufferSize).
+   * @param name the name of the module
+   * @param inputs the list of input ports
+   * @param outputs the list of output ports
+   * @param script the javascript source file
+   * @return a new module, or null if there was an error.
+   */
   public static Module createFromScript(String name, List<Port> inputs,
       List<Port> outputs, String script)
   {
@@ -40,6 +54,13 @@ public class ModuleFactory
     return module;
   }
 
+  /**
+   * This will create a new module from an XML text file. There is a Schema provided to help
+   * you create your own module. The computation done by the module should be in javascript,
+   * following the convention described by createFromScript() static function.
+   * @param filename the file name of the XML file describing the module
+   * @return a new module, or null if there was an error
+   */
   public static Module createFromXML(String filename)
   {
     //TODO Add DTD/Schema validation here. If the XML document is malformed by
@@ -108,12 +129,23 @@ public class ModuleFactory
     return ModuleFactory.createFromScript(moduleName, moduleInputs, moduleOutputs, moduleScript);
   }
 
+  /**
+   * This will create a new module by using decorating an existing class using annotations.
+   * Not implemented yet.
+   * @param object the annotated class to be decorated
+   * @return a new module, or null if there was an error
+   */
   public static Module createFromAnnotated(Object object)
   {
     // TODO
     return null;
   }
 
+  /**
+   * This will return a new instance of a module by deep copying an existing prototype.
+   * @param m the module to copy
+   * @return a new module, or null if there was an error
+   */
   public static Module createFromPrototype(Module m)
   {
     try

@@ -6,8 +6,15 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.AudioFormat.Encoding;
 
+/**
+ * This is a singleton responsible of allocating and storing an audio data line
+ * of the correct format used by the library.
+ */
 public class Audio
 {
+  /**
+   * This will return an audio data line singleton using the appropriate format.
+   */
   public static SourceDataLine getLine()
   {
     if (line_ == null)
@@ -21,7 +28,6 @@ public class Audio
       }
       catch (LineUnavailableException e)
       {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
@@ -29,6 +35,9 @@ public class Audio
     return line_;
   }
 
+  /**
+   * This will open the default audio data line for writing.
+   */
   public static void openLine()
   {
     getLine();
@@ -42,22 +51,38 @@ public class Audio
     }
   }
 
+  /**
+   * This will close the default audio data line.
+   */
   public static void closeLine()
   {
     getLine();
     line_.close();
   }
   
+  /**
+   * This will start playing the audio buffer written in the default data line.
+   */
   public static void startLine()
   {
     getLine().start();
   }
   
+  /**
+   * This will stop playing the audio buffer written in the default data line.
+   */
   public static void stopLine()
   {
     getLine().stop();
   }
 
+  /**
+   * The default data line singleton instance
+   */
   private static SourceDataLine line_   = null;
+  
+  /**
+   * The default format of the audio data line
+   */
   private static AudioFormat    format_ = null;
 }

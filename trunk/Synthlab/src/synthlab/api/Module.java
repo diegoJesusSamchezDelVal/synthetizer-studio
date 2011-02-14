@@ -86,13 +86,31 @@ public interface Module
    */
   public void removeOutputs(List<String> names);
   
+  /**
+   * Retrieve the output port having the specified name. Or null if this port
+   * is not present.
+   * @param name the name of the port we want to retrieve
+   * @return the port having the given name, or null if not present
+   */
   public Port getOutput( String name );
 
+  /**
+   * Retrieve the list of all output ports.
+   * @return the list of all output ports
+   */
   public List<Port> getOutputs();
   
   //================================================ Computation
+  /**
+   * This method is in charge of the actual computation of the module. That is,
+   * the module should read its input ports, and write to its output ports.
+   */
   public void compute();
   
   //================================================ Cloneable
+  /**
+   * This method should return a valid copy of the current module. All ports
+   * should also be copied (deep copy).
+   */
   public Module clone() throws CloneNotSupportedException;
 }

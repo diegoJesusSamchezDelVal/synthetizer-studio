@@ -5,6 +5,9 @@ import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Scheduler;
 
+/**
+ * This is the default implementation of a port
+ */
 public class BasicPort extends Port
 {
   public BasicPort(String name, double value, ValueType type, ValueUnit unit,
@@ -17,6 +20,8 @@ public class BasicPort extends Port
     unit_ = unit;
     range_ = range;
     description_ = description;
+    // Our ByteBuffer should contain Schedler.SamplingBufferSize samples.
+    // Each sample is 8 bytes (i.e. Double.SIZE/8)
     values_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize
         * (Double.SIZE / 8));
     setValues(value);
@@ -32,27 +37,33 @@ public class BasicPort extends Port
   @Override
   public void setValues(ByteBuffer values)
   {
+    // Synchronize the value to prevent race conditions when they are concurrently modified
     synchronized (this)
     {
+      // We clear all the streams to reset their position at 0
       values.clear();
       values_.clear();
       values_.put(values);
       values_.clear();
       values.clear();
     }
+    // Notify our observers that our value has changed!
     setChanged();
     notifyObservers();
   }
 
   public void setValues(double value)
   {
+    // Synchronize the value to prevent race conditions when they are concurrently modified
     synchronized (this)
     {
+      // We clear all the streams to reset their position at 0
       values_.clear();
       for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
         values_.putDouble(value);
       values_.clear();
     }
+    // Notify our observers that our value has changed!
     setChanged();
     notifyObservers();
   }
@@ -87,6 +98,7 @@ public class BasicPort extends Port
     if (getModule() == null || getModule().getInputs() == null)
       return false;
 
+    // Check if we are contained in the inputs of or owner module
     return getModule().getInputs().contains(this);
   }
 
@@ -97,6 +109,7 @@ public class BasicPort extends Port
     if (getModule() == null || getModule().getOutputs() == null)
       return false;
 
+    // Check if we are contained in the outputs of or owner module
     return getModule().getOutputs().contains(this);
   }
 
