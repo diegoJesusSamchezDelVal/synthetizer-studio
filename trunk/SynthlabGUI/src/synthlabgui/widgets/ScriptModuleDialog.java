@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -48,11 +49,12 @@ public class ScriptModuleDialog extends JDialog
   private void setupGeneral()
   {
     setVisible(true);
-    setBounds(0, 0, 400, 500);
-    setSize(400, 500);
-    setPreferredSize(new Dimension(400, 500));
-    setMaximumSize(new Dimension(400, 500));
-    setMinimumSize(new Dimension(400, 500));
+    setBounds(0, 0, 400, 800);
+    setSize(400, 800);
+    setPreferredSize(new Dimension(400, 800));
+    setMaximumSize(new Dimension(400, 800));
+    setMinimumSize(new Dimension(400, 800));
+    setResizable(false);
     setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
     // --- Module meta
     // Module name
@@ -126,9 +128,9 @@ public class ScriptModuleDialog extends JDialog
     add(portMeta);
     // --- Script meta
     JPanel scriptMeta = new JPanel();
-    portMeta.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+    // portMeta.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
     scriptMeta.setBorder(BorderFactory.createTitledBorder("Script configuration"));
-    scriptMeta.setLayout(new GridLayout(0, 2));
+    scriptMeta.setLayout(new GridLayout(0, 1));
     // script text
     JLabel scriptTextLbl = new JLabel("Script content:");
     StyledEditorKit editorKit = new StyledEditorKit() {
@@ -145,9 +147,10 @@ public class ScriptModuleDialog extends JDialog
     scriptText_.setContentType("text/java");
     scriptText_.setEditorKit(new StyledEditorKit());
     scriptText_.setDocument(new SyntaxDocument());
+    scriptText_
+        .setText("// Type in your module computation here (javascript)\n// You have access to all your inputs and outputs as a direct bindings from Java ByteBuffers.\n// You also have access to the SamplingBufferSize variable.\n\n// Example script:\nvar i;\nfor ( i=0; i<SamplingBufferSize; ++i )\n{\n  oSignal.putDouble( iSignal.getDouble() / 2 );\n}\n");
     scriptTextLbl.setLabelFor(scriptText_);
-    scriptMeta.add(scriptTextLbl);
-    scriptMeta.add(scriptText_);
+    scriptMeta.add(new JScrollPane(scriptText_));
     // add script meta
     add(scriptMeta);
     // add buttons
