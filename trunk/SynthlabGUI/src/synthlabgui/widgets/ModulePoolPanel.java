@@ -302,7 +302,6 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     }
     else
     {
-      System.out.println("there");
       i = input;
       o = output;
     }
