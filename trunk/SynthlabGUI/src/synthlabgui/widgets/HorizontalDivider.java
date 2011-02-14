@@ -6,9 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+import synthlab.api.ModuleFactory;
 import synthlabgui.widgets.buttons.MiniButton;
 
 public class HorizontalDivider extends BasicSplitPaneDivider
@@ -31,6 +34,7 @@ public class HorizontalDivider extends BasicSplitPaneDivider
     add(library);
     add(config);
     config.addActionListener(new NewScriptModule());
+    library.addActionListener(new LoadScriptModule());
   }
 
   public void paint(Graphics g)
@@ -61,6 +65,20 @@ public class HorizontalDivider extends BasicSplitPaneDivider
     }
   }
 
+  public void loadScriptModule()
+  {
+    JFileChooser fileDialog = new JFileChooser();
+    if (fileDialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+      return;
+    File file = fileDialog.getSelectedFile();
+    synthlab.api.Module module = ModuleFactory.createFromXML(file.getAbsolutePath());
+    if (module == null)
+      return;
+    ModuleRegistryPanel registryPanel = ((MainWindow) getParent().getParent().getParent().getParent().getParent())
+        .getRegistryPanel();
+    registryPanel.addModule(module);
+  }
+
   // ====================================================================
   // ACTION LISTENERS
   // ====================================================================
@@ -70,6 +88,15 @@ public class HorizontalDivider extends BasicSplitPaneDivider
     public void actionPerformed(ActionEvent e)
     {
       newScriptModule();
+    }
+  }
+
+  private class LoadScriptModule implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      loadScriptModule();
     }
   }
 }
