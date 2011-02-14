@@ -133,9 +133,9 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
         .getBounds().getY() + getBounds().getY()));
     Point end = new Point((int) (e.getPoint().getX() + start.getX()), (int) (e.getY() + start.getY() - 6));
     if (!isInput_)
-      ((ModulePoolPanel) getParent().getParent()).updateDrag((Module) getParent(), this, start, end);
+      ((ModulePoolPanel) getParent().getParent()).updateDrag((Module) getParent(), this, start, end, false);
     else
-      ((ModulePoolPanel) getParent().getParent()).updateDrag((Module) getParent(), this, end, start);
+      ((ModulePoolPanel) getParent().getParent()).updateDrag((Module) getParent(), this, end, start, true);
   }
 
   @Override
