@@ -51,6 +51,10 @@ public class Spectrometer extends JPanel implements Observer
 
   public void monitor(PortHandler p)
   {
+    for (int i = 0; i < data_.length; ++i)
+      data_[i] = 0;
+    for (int i = 0; i < specters_.length; ++i)
+      specters_[i] = 0;
     if (portHandler_ != null)
       portHandler_.getWrapped().deleteObserver(this);
     portHandler_ = p;

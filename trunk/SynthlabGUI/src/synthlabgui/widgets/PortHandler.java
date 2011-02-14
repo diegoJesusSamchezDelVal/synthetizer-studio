@@ -18,9 +18,9 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
 {
   public PortHandler(Port port)
   {
-    setupGeneral();
     port_ = port;
     isInput_ = port_.isInput();
+    setupGeneral();
   }
 
   public void setupGeneral()
@@ -35,6 +35,15 @@ public class PortHandler extends JPanel implements MouseMotionListener, MouseLis
     setLayout(null);
     setOpaque(false);
     setVisible(true);
+    String tipText = new String();
+    tipText += "<html>";
+    tipText += "<b>Name:</b> " + port_.getName() + "<br/>";
+    tipText += "<b>Type:</b> " + port_.getValueType() + "<br/>";
+    tipText += "<b>Unit:</b> " + port_.getValueUnit() + "<br/>";
+    tipText += "<b>Range: </b> [" + port_.getValueRange().minimum + "; " + port_.getValueRange().maximum + "]<br/>";
+    tipText += "<b>Description: </b><br/><i>" + port_.getDescription() + "</i>";
+    tipText += "</html>";
+    setToolTipText(tipText);
   }
 
   @Override

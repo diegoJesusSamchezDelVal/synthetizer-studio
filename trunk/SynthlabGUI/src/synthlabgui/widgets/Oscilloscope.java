@@ -37,6 +37,8 @@ public class Oscilloscope extends JPanel implements Observer
 
   public void monitor(PortHandler p)
   {
+    for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+      data_.putDouble(i * (Double.SIZE / 8), 0);
     if (portHandler_ != null)
       portHandler_.getWrapped().deleteObserver(this);
     portHandler_ = p;
