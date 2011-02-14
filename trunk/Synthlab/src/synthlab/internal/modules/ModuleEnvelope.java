@@ -15,6 +15,8 @@ public class ModuleEnvelope extends BasicModule
   private double attackInSimple,decayInSimple,relaseInSimple;
   private double sustainLevel;
   
+  private final double frameRate_ = 44100;
+  
   private double currentSimple;
   
   private State currentState = State.IDLE;
@@ -74,6 +76,12 @@ public class ModuleEnvelope extends BasicModule
                   double exGate = getInput("iExternalGate").getValues().getDouble();
                   double gate = getInput("iGate").getValues().getDouble();
                   boolean actived = ( exGate>0.5 || gate>0.5);
+                  
+                  attackInSimple = frameRate_ * getInput("iAttack").getValues().getDouble();
+                  decayInSimple = frameRate_ * getInput("iDecay").getValues().getDouble();
+                  relaseInSimple = frameRate_ * getInput("iRelease").getValues().getDouble();
+                  sustainLevel = getInput("iSustain").getValues().getDouble();
+                  
                   
                   if(actived){
                     switch(currentState){
@@ -138,10 +146,9 @@ public class ModuleEnvelope extends BasicModule
                         out = -1.0;
                         break;
                     }
+                    getOutput("oFrequence").getValues().putDouble(out);
                   }
-                  getOutput("oFrequence").getValues().putDouble(out);
                 }
-                
               }
             }
           }
