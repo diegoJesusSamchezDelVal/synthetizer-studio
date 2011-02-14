@@ -29,7 +29,7 @@ public class ModuleVCA extends BasicModule
     addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave"));
     addInput(new BasicPort("iGain", 0.5, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 1),"Gain (volume) amplitude modifier"));
+        Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 2),"Gain (volume) amplitude modifier"));
 
     // port out (output)
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
@@ -58,8 +58,9 @@ public class ModuleVCA extends BasicModule
           for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
           {
             double val = getInput("iSignal").getValues().getDouble(); // Signal
+            
                                                                       // input
-            double gain = getInput("iGain").getValues().getDouble();
+            double gain = getInput("iGain").getValues().getDouble()+1;
             this.setVolume(val * gain);
 
             frameCount_ = ++frameCount_ % 44100;

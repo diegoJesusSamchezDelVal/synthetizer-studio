@@ -22,8 +22,6 @@ public class ModuleEnvelope extends BasicModule
 
   private State        currentState = State.IDLE;
 
-  // private final int frameRate_ = 44100;
-
   public ModuleEnvelope()
   {
     super("Envelope");
@@ -126,7 +124,6 @@ public class ModuleEnvelope extends BasicModule
                   }
                   for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
                   {
-                    System.out.println(out);
                     switch (currentState)
                     {
                       case IDLE:
