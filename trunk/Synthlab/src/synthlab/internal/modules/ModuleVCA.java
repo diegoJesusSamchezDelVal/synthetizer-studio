@@ -58,9 +58,13 @@ public class ModuleVCA extends BasicModule
           for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
           {
             double val = getInput("iSignal").getValues().getDouble(); // Signal
-            
+            double gain = 0.0;
                                                                       // input
-            double gain = getInput("iGain").getValues().getDouble()+1;
+            if(getInput("iGain").isLinked()){
+              gain = getInput("iGain").getValues().getDouble()+1;
+            }else{
+              gain = getInput("iGain").getValues().getDouble()*0.5;
+            }
             this.setVolume(val * gain);
 
             frameCount_ = ++frameCount_ % 44100;
