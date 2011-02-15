@@ -18,6 +18,7 @@ import synthlab.internal.modules.ModuleKeyboard;
 import synthlab.internal.modules.ModuleLFO;
 import synthlab.internal.modules.ModuleMixer;
 import synthlab.internal.modules.ModuleOut;
+import synthlab.internal.modules.ModuleSequencer;
 import synthlab.internal.modules.ModuleVCA;
 import synthlab.internal.modules.ModuleVCF;
 import synthlab.internal.modules.ModuleVCO;
@@ -41,6 +42,7 @@ public class ModuleRegistryPanel extends JPanel
     addModule(new ModuleEnvelope());
     addModule(new ModuleOut());
     addModule(new ModuleKeyboard());
+    addModule(new ModuleSequencer());
     setupGeneral();
   }
 

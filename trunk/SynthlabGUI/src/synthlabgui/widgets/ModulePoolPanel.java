@@ -274,6 +274,8 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
   {
     linking_ = false;
     repaint();
+    if (module == null || port == null)
+      return;
     Component c;
     if (!reversed_)
       c = findComponentAt(linkCurrent_);
