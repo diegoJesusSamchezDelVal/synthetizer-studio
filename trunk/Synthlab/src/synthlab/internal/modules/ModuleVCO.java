@@ -19,7 +19,7 @@ public class ModuleVCO extends BasicModule
     addInput(new BasicPort("iConstant", 4, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8), "Frequency modulation constant following the 1v/octave convention"));
 
-    addInput(new BasicPort("iShape", SHAPE_SINE, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("iShape", SHAPE_SINE, Port.ValueType.WAVE_SHAPE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1, 4), "Shape of the generated sound wave"));
     
     addInput(new BasicPort("iActive", 1, Port.ValueType.DISCRETE,
