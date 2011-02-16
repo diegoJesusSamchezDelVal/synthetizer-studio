@@ -19,6 +19,37 @@ import synthlabgui.widgets.configPanel.knob.KnobListener;
 
 public class NumberKnobPanel extends JPanel implements KnobListener,
 	AbstractConfigPanel {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * valeur actuelle
+     * */
+    private double value;
+
+    private double maxValue;
+
+    private double minValue;
+
+    private String unit;
+
+    private String pattern;
+
+    private NumberKnob knob;
+
+    private int numberDisplaySize = 20;
+
+    public static int TITLE_HEIGHT = 10;
+
+    private Dimension size = new Dimension(AbstractKnob.size.width + 35 + 2, 20
+	    + 2 + AbstractKnob.size.height + TITLE_HEIGHT + numberDisplaySize);
+
+    private String title;
+
+    private boolean continous = true;
+
+    private Port inputPort;
+
     /**
      * @param title
      *            le titre de panneau
@@ -33,7 +64,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
      *            pattern des chiffres
      * 
      * @param enable
-     *            vrai si ce panneau est active et dèsative sinon
+     *            vrai si ce panneau est active et desative sinon
      * @param continuous
      *            vrai pour générer les valeurs continus et discrètes sison
      * */
@@ -44,7 +75,6 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	minValue = min;
 	this.unit = unit;
 	this.pattern = pattern;
-	enabled = enable;
 	this.continous = continuous;
 	setLayout(null);
 	setMinimumSize(size);
@@ -119,40 +149,12 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
     }
 
     public void setState(boolean enabled) {
-	this.enabled = enabled;
+	knob.setActive(enabled);
     }
-
-    private static final long serialVersionUID = 1L;
-
-    private double value;
-
-    private double maxValue;
-
-    private double minValue;
-
-    private String unit;
-
-    private String pattern;
-
-    private NumberKnob knob;
-
-    private int numberDisplaySize = 20;
-
-    public static int TITLE_HEIGHT = 10;
-
-    private Dimension size = new Dimension(AbstractKnob.size.width + 35 + 2, 20
-	    + 2 + AbstractKnob.size.height + TITLE_HEIGHT + numberDisplaySize);
-
-    private String title;
-
-    private boolean enabled = true;
-
-    private boolean continous = true;
-
-    private Port inputPort;
 
     @Override
     public void update(Observable o, Object arg) {
 	value = ((Port) o).getValues().getDouble(0);
+	repaint();
     }
 }

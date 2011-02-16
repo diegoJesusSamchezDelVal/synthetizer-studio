@@ -80,4 +80,10 @@ public class NumberKnob extends AbstractKnob {
 	}
 	return result;
     }
+
+    @Override
+    protected Point computePointer(int value) {
+
+	return centerPoint;
+    }
 }

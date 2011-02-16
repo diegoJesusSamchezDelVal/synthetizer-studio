@@ -36,6 +36,7 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
 
     public void setActive(boolean active) {
 	active_ = active;
+
     }
 
     public void addKnobListener(KnobListener l) {
@@ -136,9 +137,11 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
 
     @Override
     public void mouseDragged(MouseEvent e) {
-	repaint();
-	pointer = computePointer(e.getPoint());
-	notifyListener();
+	if (active_) {
+	    repaint();
+	    pointer = computePointer(e.getPoint());
+	    notifyListener();
+	}
     }
 
     @Override
@@ -150,10 +153,11 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
      * 
      * @param point
      *            La position de la souris
-     * @param le
-     *            Le point de la position de règlage
+     * @return Le point de la position de règlage
      * */
     protected abstract Point computePointer(Point point);
+
+    protected abstract Point computePointer(int value);
 
     /**
      * Calcule la valeur interne en fonction de la position de règlage actuelle.
@@ -204,4 +208,5 @@ public abstract class AbstractKnob extends JPanel implements MouseListener,
     public void setValue(int value) {
 	this.value = value;
     }
+
 }

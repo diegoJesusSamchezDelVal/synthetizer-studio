@@ -2,13 +2,33 @@ package synthlabgui.widgets.configPanel.keyboard;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
 public class Keyboard extends JPanel {
+
+    private static final long serialVersionUID = -4122417491103561122L;
+
+    private ArrayList<KeyboardListener> listeners = new ArrayList<KeyboardListener>();
+
+    private double[] whiteKeyNumbers = { 0, 2, 4, 5, 7, 9, 11 };
+
+    private double[] blackKeyNumbers = { 1, 3, 6, 8, 10 };
+
+    private ArrayList<Key> whiteKeys;
+
+    private ArrayList<Key> blackKeys;
+
+    private Color keyPressedColor = Color.lightGray;
+
+    HashMap<Integer, Key> keyCode = new HashMap<Integer, Key>();
+
     public Keyboard(int nbKeys) {
 	setLayout(null);
 	setBackground(Color.black);
@@ -41,6 +61,27 @@ public class Keyboard extends JPanel {
 		add(key, 0);
 	    }
 	}
+
+	bindKeys();
+	addKeyListener(new InternalKeyListener());
+    }
+
+    private void bindKeys() {
+
+	keyCode.put(KeyEvent.VK_Q, whiteKeys.get(0));
+	keyCode.put(KeyEvent.VK_S, whiteKeys.get(1));
+	keyCode.put(KeyEvent.VK_D, whiteKeys.get(2));
+	keyCode.put(KeyEvent.VK_F, whiteKeys.get(3));
+	keyCode.put(KeyEvent.VK_G, whiteKeys.get(4));
+	keyCode.put(KeyEvent.VK_H, whiteKeys.get(5));
+	keyCode.put(KeyEvent.VK_J, whiteKeys.get(6));
+
+	keyCode.put(KeyEvent.VK_Z, blackKeys.get(0));
+	keyCode.put(KeyEvent.VK_E, blackKeys.get(1));
+	keyCode.put(KeyEvent.VK_T, blackKeys.get(2));
+	keyCode.put(KeyEvent.VK_Y, blackKeys.get(3));
+	keyCode.put(KeyEvent.VK_U, blackKeys.get(4));
+
     }
 
     public void paint(Graphics gc) {
@@ -63,8 +104,6 @@ public class Keyboard extends JPanel {
     }
 
     private class InternalMouseListener implements MouseListener {
-
-	private Color keyPressedColor = Color.lightGray;
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -91,28 +130,81 @@ public class Keyboard extends JPanel {
 		int i = blackKeys.indexOf(e.getSource()) / 5;
 		value = blackKeyNumbers[modulo] + 12 * i;
 	    }
-	    notifyListeners(new KeyboardEvent((Key) e.getSource(), value));
+	    notifyListeners(new KeyboardEvent((Key) e.getSource(), value,
+		    KeyboardEvent.PRESSED));
 	    repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	    Key key = (Key) e.getSource();
-	    ((JPanel) e.getSource()).setBackground(key.getColor());
-	    notifyListeners(new KeyboardEvent((Key) e.getSource(), -1));
+	    ((JPanel) key).setBackground(key.getColor());
+	    double value = 0;
+	    if (e.getSource() instanceof WhiteKey) {
+		int modulo = whiteKeys.indexOf(e.getSource()) % 7;
+		int i = whiteKeys.indexOf(e.getSource()) / 7;
+		value = whiteKeyNumbers[modulo] + 12 * i;
+	    } else {
+		int modulo = blackKeys.indexOf(e.getSource()) % 5;
+		int i = blackKeys.indexOf(e.getSource()) / 5;
+		value = blackKeyNumbers[modulo] + 12 * i;
+	    }
+	    notifyListeners(new KeyboardEvent((Key) e.getSource(), value,
+		    KeyboardEvent.RELEASED));
 	    repaint();
 	}
     }
 
-    private static final long serialVersionUID = -4122417491103561122L;
+    private class InternalKeyListener implements KeyListener {
 
-    private ArrayList<KeyboardListener> listeners = new ArrayList<KeyboardListener>();
+	@Override
+	public void keyPressed(KeyEvent e) {
 
-    private double[] whiteKeyNumbers = { 0, 2, 4, 5, 7, 9, 11 };
+	    Key key = keyCode.get(e.getKeyCode());
+	    if (key != null) {
+		((JPanel) key).setBackground(keyPressedColor);
+		double value = 0;
+		if (key instanceof WhiteKey) {
+		    int modulo = whiteKeys.indexOf(key) % 7;
+		    int i = whiteKeys.indexOf(key) / 7;
+		    value = whiteKeyNumbers[modulo] + 12 * i;
+		} else {
+		    int modulo = blackKeys.indexOf(key) % 5;
+		    int i = blackKeys.indexOf(key) / 5;
+		    value = blackKeyNumbers[modulo] + 12 * i;
+		}
+		notifyListeners(new KeyboardEvent(key, value,
+			KeyboardEvent.PRESSED));
+		repaint();
+	    }
 
-    private double[] blackKeyNumbers = { 1, 3, 6, 8, 10 };
+	}
 
-    ArrayList<Key> whiteKeys;
+	@Override
+	public void keyReleased(KeyEvent e) {
+	    Key key = keyCode.get(e.getKeyCode());
+	    if (key != null) {
 
-    ArrayList<Key> blackKeys;
+		((JPanel) key).setBackground(key.getColor());
+		double value = 0;
+		if (key instanceof WhiteKey) {
+		    int modulo = whiteKeys.indexOf(key) % 7;
+		    int i = whiteKeys.indexOf(key) / 7;
+		    value = whiteKeyNumbers[modulo] + 12 * i;
+		} else {
+		    int modulo = blackKeys.indexOf(key) % 5;
+		    int i = blackKeys.indexOf(key) / 5;
+		    value = blackKeyNumbers[modulo] + 12 * i;
+		}
+		notifyListeners(new KeyboardEvent(key, value,
+			KeyboardEvent.RELEASED));
+		repaint();
+	    }
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+    }
 }
