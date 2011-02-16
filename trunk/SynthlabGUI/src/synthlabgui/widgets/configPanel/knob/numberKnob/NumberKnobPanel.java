@@ -124,7 +124,6 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	int scale = e.getValue();
 	value = computeValue(scale);
 	notifyPort(value);
-	System.out.println(value);
 	repaint(0, 0, getWidth(), 20);
     }
 
