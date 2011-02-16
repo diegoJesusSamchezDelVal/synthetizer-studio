@@ -25,30 +25,31 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
     /**
      * valeur actuelle
      * */
-    private double value;
+    protected double value;
 
-    private double maxValue;
+    protected double maxValue;
 
-    private double minValue;
+    protected double minValue;
 
-    private String unit;
+    protected String unit;
 
-    private String pattern;
+    protected String pattern;
 
-    private NumberKnob knob;
+    protected NumberKnob knob;
 
-    private int numberDisplaySize = 20;
+    protected int numberDisplaySize = 20;
 
     public static int TITLE_HEIGHT = 10;
 
-    private Dimension size = new Dimension(AbstractKnob.size.width + 35 + 2, 20
-	    + 2 + AbstractKnob.size.height + TITLE_HEIGHT + numberDisplaySize);
+    protected Dimension size = new Dimension(AbstractKnob.size.width + 35 + 2,
+	    20 + 2 + AbstractKnob.size.height + TITLE_HEIGHT
+		    + numberDisplaySize);
 
-    private String title;
+    protected String title;
 
-    private boolean continous = true;
+    protected boolean continous = true;
 
-    private Port inputPort;
+    protected Port inputPort;
 
     /**
      * @param title
@@ -65,6 +66,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
      * 
      * @param enable
      *            vrai si ce panneau est active et desative sinon
+     * 
      * @param continuous
      *            vrai pour générer les valeurs continus et discrètes sison
      * */
@@ -103,6 +105,10 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	gc.setFont(new Font("Arial", Font.PLAIN, 11));
 	gc.drawString(title, (int) ((getWidth() - gc.getFontMetrics()
 		.stringWidth(title)) / 2.) - 2, 10);
+	paintValue(gc);
+    }
+
+    protected void paintValue(Graphics gc) {
 	// dessine la valeur
 	DecimalFormat df = new DecimalFormat(pattern);
 	String str = df.format(value) + " " + unit;
@@ -110,7 +116,6 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	gc.setFont(new Font("Arial", Font.PLAIN, 10));
 	gc.drawString(str,
 		(getWidth() - gc.getFontMetrics().stringWidth(str)) / 2, 75);
-
     }
 
     @Override
@@ -119,10 +124,11 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	int scale = e.getValue();
 	value = computeValue(scale);
 	notifyPort(value);
+	System.out.println(value);
 	repaint(0, 0, getWidth(), 20);
     }
 
-    private double computeValue(int rawValue) {
+    protected double computeValue(int rawValue) {
 	if (continous) {
 	    double piece = (maxValue - minValue) / 10000;
 	    return minValue + piece * rawValue;
@@ -135,8 +141,6 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
     public void notifyPort(double value) {
 	if (inputPort != null && !inputPort.isLinked()) {
 	    inputPort.setValues(value);
-	    // System.out.println("Send " + value);
-	    // DecimalFormat df = new DecimalFormat("0.00");
 	}
     }
 

@@ -22,7 +22,7 @@ import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.keyboard.KeyboardPanel;
 import synthlabgui.widgets.configPanel.knob.numberKnob.NumberKnobPanel;
-import synthlabgui.widgets.configPanel.knob.waveChooser.WaveShapeChooserPanel;
+import synthlabgui.widgets.configPanel.knob.waveSelector.WaveSelector;
 
 /**
  * Un dialog contenant tous les composants de configuration pour un module donné
@@ -148,9 +148,10 @@ public class ModuleConfigWindow extends JDialog {
      * */
     private AbstractConfigPanel createPanel(Port port) {
 	AbstractConfigPanel knob;
-	if (port.getValueType() == Port.ValueType.DISCRETE
-		&& port.getValueRange().count == 4) {
-	    knob = new WaveShapeChooserPanel(port.getName());
+	if (port.getValueType() == Port.ValueType.WAVE_SHAPE) {
+	    double min = port.getValueRange().minimum;
+	    double max = port.getValueRange().maximum;
+	    knob = new WaveSelector(port.getName(), min, max, true);
 
 	} else if (port.getValueType() == Port.ValueType.DISCRETE) {
 	    double min = port.getValueRange().minimum;
@@ -210,12 +211,12 @@ public class ModuleConfigWindow extends JDialog {
      * @see Port.ValueUnit
      * */
     private static void initUnitList() {
-        unitList.put(Port.ValueUnit.AMPLITUDE, "");
-        unitList.put(Port.ValueUnit.PERCENTAGE, "%");
-        unitList.put(Port.ValueUnit.DECIBELS, "db");
-        unitList.put(Port.ValueUnit.HERTZ, "Hz");
-        unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
-        unitList.put(Port.ValueUnit.VOLT, "v");
+	unitList.put(Port.ValueUnit.AMPLITUDE, "");
+	unitList.put(Port.ValueUnit.PERCENTAGE, "%");
+	unitList.put(Port.ValueUnit.DECIBELS, "db");
+	unitList.put(Port.ValueUnit.HERTZ, "Hz");
+	unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
+	unitList.put(Port.ValueUnit.VOLT, "v");
     }
 
     private class CloseButton extends JPanel implements MouseListener,

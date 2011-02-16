@@ -83,7 +83,6 @@ public class NumberKnob extends AbstractKnob {
 
     @Override
     protected Point computePointer(int value) {
-
-	return centerPoint;
+	return null;
     }
 }
