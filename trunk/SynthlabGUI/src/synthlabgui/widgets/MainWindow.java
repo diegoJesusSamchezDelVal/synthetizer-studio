@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -47,7 +48,8 @@ public class MainWindow extends JFrame implements WindowListener
         return new VerticalDivider(this);
       }
     });
-    JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, moduleRegistryPanel_, splitter2);
+    JScrollPane scroll_ = new JScrollPane(moduleRegistryPanel_);
+    JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll_, splitter2);
     splitter1.setDividerLocation(250);
     splitter1.setDividerSize(22);
     splitter1.setUI(new BasicSplitPaneUI() {
@@ -93,6 +95,7 @@ public class MainWindow extends JFrame implements WindowListener
     JMenuItem itemHelpAbout = new JMenuItem("About");
     // --- Bind actions to menu items
     itemFileQuit.addActionListener(new QuitActionListener());
+    itemHelpAbout.addActionListener(new AboutActionListener());
     // --- Add menu items
     menuFile.add(itemFileNew);
     menuFile.add(itemFileOpen);
@@ -150,6 +153,15 @@ public class MainWindow extends JFrame implements WindowListener
     public void actionPerformed(ActionEvent e)
     {
       closeWindow();
+    }
+  }
+
+  private class AboutActionListener implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      new AboutView();
     }
   }
 
