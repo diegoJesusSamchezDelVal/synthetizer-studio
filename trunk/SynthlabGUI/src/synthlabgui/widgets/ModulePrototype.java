@@ -68,7 +68,7 @@ public class ModulePrototype extends JPanel implements MouseMotionListener
     setBackground(Color.white);
     int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
     setBounds(0, 0, 200 + 10, maximumPortNumber * 20 + 30 + 10);
-    setSize(200 + 10, maximumPortNumber * 20 + 30 + 10);
+    setPreferredSize(new Dimension(200 + 10, maximumPortNumber * 20 + 30 + 10));
     setMaximumSize(new Dimension(200 + 10, maximumPortNumber * 20 + 30 + 10));
     setMinimumSize(new Dimension(200 + 10, maximumPortNumber * 20 + 30 + 10));
     setTransferHandler(new TransferHandler("ModulePrototype"));

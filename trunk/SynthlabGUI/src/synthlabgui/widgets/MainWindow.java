@@ -84,8 +84,6 @@ public class MainWindow extends JFrame implements WindowListener
     JMenuItem itemFileNew = new JMenuItem("New");
     JMenuItem itemFileOpen = new JMenuItem("Open");
     JMenuItem itemFileSave = new JMenuItem("Save");
-    JMenuItem itemFileSaveAs = new JMenuItem("Save as...");
-    JMenuItem itemFileClose = new JMenuItem("Close");
     JMenuItem itemFileQuit = new JMenuItem("Quit");
     JMenuItem itemEditCopy = new JMenuItem("Copy");
     JMenuItem itemEditCut = new JMenuItem("Cut");
@@ -96,12 +94,11 @@ public class MainWindow extends JFrame implements WindowListener
     // --- Bind actions to menu items
     itemFileQuit.addActionListener(new QuitActionListener());
     itemHelpAbout.addActionListener(new AboutActionListener());
+    itemFileNew.addActionListener(new NewActionListener());
     // --- Add menu items
     menuFile.add(itemFileNew);
-    menuFile.add(itemFileOpen);
-    menuFile.add(itemFileSave);
-    menuFile.add(itemFileSaveAs);
-    menuFile.add(itemFileClose);
+    // menuFile.add(itemFileOpen);
+    // menuFile.add(itemFileSave);
     menuFile.add(itemFileQuit);
     menuEdit.add(itemEditCopy);
     menuEdit.add(itemEditCut);
@@ -111,8 +108,8 @@ public class MainWindow extends JFrame implements WindowListener
     menuHelp.add(itemHelpAbout);
     // --- Add menus
     menuBar_.add(menuFile);
-    menuBar_.add(menuEdit);
-    menuBar_.add(menuSynth);
+    // menuBar_.add(menuEdit);
+    // menuBar_.add(menuSynth);
     menuBar_.add(menuHelp);
     // --- Add menu bar
     setJMenuBar(menuBar_);
@@ -162,6 +159,15 @@ public class MainWindow extends JFrame implements WindowListener
     public void actionPerformed(ActionEvent e)
     {
       new AboutView();
+    }
+  }
+
+  private class NewActionListener implements ActionListener
+  {
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+      setupPanels();
     }
   }
 
