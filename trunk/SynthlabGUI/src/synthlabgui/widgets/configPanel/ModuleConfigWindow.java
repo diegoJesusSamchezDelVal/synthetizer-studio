@@ -64,26 +64,40 @@ public class ModuleConfigWindow extends JDialog {
      * */
     public ModuleConfigWindow(synthlab.api.Module module, JFrame parent,
 	    Point point) {
-	super(parent, true);
+	super();
 	setModal(false);
 	setAlwaysOnTop(true);
 	setLayout(new BorderLayout());
 	JPanel contentPanel = new JPanel(
 		new FlowLayout(FlowLayout.CENTER, 0, 0));
 	add(contentPanel, BorderLayout.CENTER);
-	// setTitle(module.getName());
+
 	setUndecorated(true);
 	setDefaultLookAndFeelDecorated(false);
+
 	initUnitList();
+
 	module_ = module;
 	AbstractConfigPanel knob;
+	KeyboardPanel keyboard = null;
 	for (Port p : module_.getInputs()) {
 	    knob = createPanel(p);
 	    if (knob != null) {
-		knob.setPort(p);
-		contentPanel.add((JPanel) knob);
-		knobList.put(p.getName(), knob);
+		if (knob instanceof KeyboardPanel) {
+		    if (keyboard == null) {
+			keyboard = (KeyboardPanel) knob;
+			knobList.put(p.getName(), keyboard);
+		    }
+		    keyboard.addPort(p);
+		} else {
+		    knob.setPort(p);
+		    contentPanel.add((JPanel) knob);
+		    knobList.put(p.getName(), knob);
+		}
 	    }
+	}
+	if (keyboard != null) {
+	    contentPanel.add(keyboard);
 	}
 	if (getContentPane().getComponentCount() == 0) {
 	    contentPanel.add(new JLabel("No configuration for this module."));
@@ -136,16 +150,19 @@ public class ModuleConfigWindow extends JDialog {
 	if (port.getValueType() == Port.ValueType.DISCRETE
 		&& port.getValueRange().count == 4) {
 	    knob = new WaveShapeChooserPanel(port.getName());
+
 	} else if (port.getValueType() == Port.ValueType.DISCRETE) {
 	    double min = port.getValueRange().minimum;
 	    double max = port.getValueRange().maximum;
 	    knob = new NumberKnobPanel(port.getName(), min, max, unitList
 		    .get(port.getValueUnit()), "0", !port.isLinked(), false);
+
 	} else if (port.getValueType() == Port.ValueType.CONTINUOUS) {
 	    double min = port.getValueRange().minimum;
 	    double max = port.getValueRange().maximum;
 	    knob = new NumberKnobPanel(port.getName(), min, max, unitList
 		    .get(port.getValueUnit()), "0.0", !port.isLinked(), true);
+
 	} else if (port.getValueType() == Port.ValueType.KEYBOARD) {
 	    knob = new KeyboardPanel();
 	} else {
@@ -159,13 +176,23 @@ public class ModuleConfigWindow extends JDialog {
      * 
      * @see Port.ValueUnit
      * */
-    private void initUnitList() {
+    private static void initUnitList() {
 	unitList.put(Port.ValueUnit.AMPLITUDE, "");
 	unitList.put(Port.ValueUnit.PERCENTAGE, "%");
 	unitList.put(Port.ValueUnit.DECIBELS, "db");
 	unitList.put(Port.ValueUnit.HERTZ, "Hz");
 	unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
 	unitList.put(Port.ValueUnit.VOLT, "v");
+    }
+
+    public void refresh() {
+	for (Port p : module_.getInputs()) {
+	    String name = p.getName();
+	    AbstractConfigPanel knob = knobList.get(name);
+	    if (knob != null)
+		knob.setState(!p.isLinked());
+	}
+	repaint();
     }
 
     /**
