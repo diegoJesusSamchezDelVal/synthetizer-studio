@@ -13,7 +13,7 @@ public class ModuleOut extends BasicModule
   {
     super("Out");
 
-    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound waveto be sent to the sound card"));
 
     data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
@@ -32,6 +32,7 @@ public class ModuleOut extends BasicModule
             .getDouble(i * 8) * Short.MAX_VALUE));
       }
 
+      
       Audio.getLine().write(data_.array(), 0, Scheduler.SamplingBufferSize * (Short.SIZE/8));
 
       getInput("iSignal").getValues().clear();

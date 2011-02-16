@@ -13,7 +13,7 @@ public class ModuleVCO extends BasicModule
   {
     super("VCO");
 
-    addInput(new BasicPort("iFrequency", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iFrequency", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.VOLT, new Port.ValueRange(0, 8), "Frequency modulation following the 1v/octave convention"));
 
     addInput(new BasicPort("iConstant", 4, Port.ValueType.CONTINUOUS,

@@ -24,7 +24,7 @@ public class ModuleVCF extends BasicModule
   {
     super("VCF");
     // Input port
-    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave"));
     addInput(new BasicPort("iCutOff", 100, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.HERTZ, new Port.ValueRange(100, 5000),"Frequence cutoff setup"));

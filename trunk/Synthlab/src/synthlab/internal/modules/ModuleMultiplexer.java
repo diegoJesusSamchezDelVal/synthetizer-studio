@@ -12,7 +12,7 @@ public class ModuleMultiplexer extends BasicModule
   {
     super("Hub");
 
-    addInput(new BasicPort("iSignal", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1), "Input signal"));
 
     addOutput(new BasicPort("oSignal1", 0, Port.ValueType.CONTINUOUS,

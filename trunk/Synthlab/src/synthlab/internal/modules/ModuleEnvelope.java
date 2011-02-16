@@ -27,7 +27,7 @@ public class ModuleEnvelope extends BasicModule
     super("Envelope");
 
     // add input port
-    addInput(new BasicPort("iExternalGate", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iExternalGate", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Extern controle for the state of Gate"));
     addInput(new BasicPort("iGate", 0, Port.ValueType.DISCRETE,

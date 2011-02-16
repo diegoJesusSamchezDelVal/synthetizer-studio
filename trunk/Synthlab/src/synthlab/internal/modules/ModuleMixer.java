@@ -22,16 +22,16 @@ public class ModuleMixer extends BasicModule
   {
     super("MIXER");
     // Input1 & his gain
-    addInput(new BasicPort("iInput1", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1),"Input sound wave 1"));
+    addInput(new BasicPort("iInput1", 0, Port.ValueType.INCONFIGURABLE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1),"Input sound wave 1"));
     addInput(new BasicPort("iGain1", 0.5, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),"Gain (volume) modifier for amplitude of sound wave 1"));
     // Input2 & his gain
-    addInput(new BasicPort("iInput2", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
+    addInput(new BasicPort("iInput2", 0, Port.ValueType.INCONFIGURABLE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
     addInput(new BasicPort("iGain2", 0.5, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),"Gain (volume) modifier for amplitude of sound wave 1"));
     // Input3 & his gain
-    addInput(new BasicPort("iInput3", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
+    addInput(new BasicPort("iInput3", 0, Port.ValueType.INCONFIGURABLE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
     addInput(new BasicPort("iGain3", 0.5, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),"Gain (volume) modifier for amplitude of sound wave 1"));
     // Input4 & his gain
-    addInput(new BasicPort("iInput4", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
+    addInput(new BasicPort("iInput4", 0, Port.ValueType.INCONFIGURABLE, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound wave 1"));
     addInput(new BasicPort("iGain4", 0.5, Port.ValueType.CONTINUOUS, Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),"Gain (volume) modifier for amplitude of sound wave 1"));
     
     //Output
