@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.*;
 import javax.sound.sampled.*;
 
@@ -47,7 +48,7 @@ public class ModuleOutToFile extends BasicModule
     
     
     addInput(new BasicPort("Recording", 0, Port.ValueType.DISCRETE,
-        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1),"Record stream data to a wave file"));
+        Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Record stream data to a wave file"));
     
     data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
     
@@ -88,6 +89,7 @@ public class ModuleOutToFile extends BasicModule
       return bytes;         
     }  
   
+  @SuppressWarnings("null")
   @Override
   public void compute()
   {
@@ -100,7 +102,7 @@ public class ModuleOutToFile extends BasicModule
 
         double recording = getInput("Recording").getValues().getDouble();
         
-        if(recording>=0.5){
+        if(recording>=0){
           isrecording = true;
         }else{
           isrecording = false;
@@ -114,24 +116,30 @@ public class ModuleOutToFile extends BasicModule
   
         
         //TODO
-         InputStream input= null;
+         OutputStream output = new ByteArrayOutputStream();
+         try
+        {
+          output.write(data_.array());
+        }
+        catch (IOException e1)
+        {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+         
+   
          
              int toaldatasize=0;  
-             int audiolen;  
+             int audiolen=Scheduler.SamplingBufferSize;  
              byte[] audiochunk=new byte[1024];  
              ByteArrayOutputStream bytebuff=new ByteArrayOutputStream(9600000);    
-             try {  
-                 while(isrecording){  
-                     audiolen=input.read(audiochunk);  
-                     toaldatasize+=audiolen;  
-                      bytebuff.write(audiochunk, 0, audiolen);  
-                 }  
-             } catch (IOException e1) {  
-                 // TODO Auto-generated catch block  
-                 e1.printStackTrace();  
+             while(isrecording){  
+                 
+                 toaldatasize+=audiolen;  
+                  bytebuff.write(audiochunk, 0, audiolen);  
              }  
                
-                 DataSize=revers(intToBytes(toaldatasize));  
+             DataSize=revers(intToBytes(toaldatasize));  
              RIFF_SIZE=revers(intToBytes(toaldatasize+36-8));  
              File wavfile= new File("outWav.wav");  
              FileOutputStream file=null;  
