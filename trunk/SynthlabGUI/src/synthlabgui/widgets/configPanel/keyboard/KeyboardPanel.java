@@ -1,6 +1,7 @@
 package synthlabgui.widgets.configPanel.keyboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 import javax.swing.JFrame;
@@ -22,22 +23,35 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel,
 	add(k);
     }
 
+    private HashMap<Double, Port> ref = new HashMap<Double, Port>();
+    private HashMap<Port, Boolean> available = new HashMap<Port, Boolean>();
+
     @Override
     public void notifyPort(double value) {
-	inputPorts.get(0).setValues(value);
-	/*
-	 * if (!inputPorts.isEmpty()) for (Port p : inputPorts) { if
-	 * (p.getValues().getDouble() == -1.0) { p.getValues().putDouble(value);
-	 * break; } }
-	 */
+	if (!inputPorts.isEmpty()) {
+	    if (!ref.containsKey(value)) {
+		for (Port p : inputPorts) {
+		    if (available.get(p)) {
+			System.out.println("Port " + p.getName() + " link "
+				+ value);
+			available.put(p, false);
+			ref.put(value, p);
+			p.setValues(value);
+			break;
+		    }
+		}
+	    }
+	}
     }
 
     public void releasePort(double value) {
-	/*
-	 * if (!inputPorts.isEmpty()) for (Port p : inputPorts) { if
-	 * (p.getValues().getDouble() == value) { p.getValues().putDouble(-1);
-	 * break; } }
-	 */
+	Port p = ref.get(value);
+	if (p != null) {
+	    System.out.println("Port " + p.getName() + " release " + value);
+	    available.put(p, true);
+	    ref.remove(value);
+	    p.setValues(-1);
+	}
     }
 
     @Override
@@ -47,6 +61,7 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel,
 
     public void addPort(Port port) {
 	inputPorts.add(port);
+	available.put(port, true);
     }
 
     @Override

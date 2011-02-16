@@ -29,6 +29,7 @@ import synthlabgui.widgets.configPanel.knob.waveChooser.WaveShapeChooserPanel;
  * en paramètre.
  * */
 public class ModuleConfigWindow extends JDialog {
+
     private static final long serialVersionUID = -2827881534087119283L;
 
     /**
@@ -171,20 +172,6 @@ public class ModuleConfigWindow extends JDialog {
 	return knob;
     }
 
-    /**
-     * Initialisation de tous les unités de mesure
-     * 
-     * @see Port.ValueUnit
-     * */
-    private static void initUnitList() {
-	unitList.put(Port.ValueUnit.AMPLITUDE, "");
-	unitList.put(Port.ValueUnit.PERCENTAGE, "%");
-	unitList.put(Port.ValueUnit.DECIBELS, "db");
-	unitList.put(Port.ValueUnit.HERTZ, "Hz");
-	unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
-	unitList.put(Port.ValueUnit.VOLT, "v");
-    }
-
     public void refresh() {
 	for (Port p : module_.getInputs()) {
 	    String name = p.getName();
@@ -215,6 +202,20 @@ public class ModuleConfigWindow extends JDialog {
 
     public void unshow() {
 	setVisible(false);
+    }
+
+    /**
+     * Initialisation de tous les unités de mesure
+     * 
+     * @see Port.ValueUnit
+     * */
+    private static void initUnitList() {
+        unitList.put(Port.ValueUnit.AMPLITUDE, "");
+        unitList.put(Port.ValueUnit.PERCENTAGE, "%");
+        unitList.put(Port.ValueUnit.DECIBELS, "db");
+        unitList.put(Port.ValueUnit.HERTZ, "Hz");
+        unitList.put(Port.ValueUnit.MILLISECONDS, "ms");
+        unitList.put(Port.ValueUnit.VOLT, "v");
     }
 
     private class CloseButton extends JPanel implements MouseListener,
