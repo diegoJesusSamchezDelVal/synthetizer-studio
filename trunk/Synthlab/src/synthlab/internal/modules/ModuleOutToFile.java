@@ -155,6 +155,7 @@ public class ModuleOutToFile extends BasicModule
               try
               {
                 fos.write(data_l.array());
+                fos.flush();
               }
               catch (final Exception e)
               {
