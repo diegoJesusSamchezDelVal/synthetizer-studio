@@ -1,7 +1,8 @@
 package synthlabgui.widgets;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -10,8 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import synthlab.internal.Audio;
@@ -52,12 +55,18 @@ public class MainWindow extends JFrame implements WindowListener
     });
     JScrollPane scroll_ = new JScrollPane(moduleRegistryPanel_);
     scroll_.getVerticalScrollBar().setUnitIncrement(50);
-    scroll_.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    scroll_.setBackground(new Color(137, 137, 137));
-    moduleRegistryPanel_.setBackground(new Color(137, 137, 137));
+    scroll_.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll_.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scroll_.setBorder(null);
-    JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll_, splitter2);
+    JPanel temp = new JPanel();
+    temp.setLayout(new BorderLayout());
+    temp.add(scroll_.getVerticalScrollBar(), BorderLayout.WEST);
+    temp.add(scroll_, BorderLayout.EAST);
+    temp.setBackground(new Color(237, 237, 237));
+    temp.setMaximumSize(new Dimension(20, Integer.MAX_VALUE));
+    JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, temp, splitter2);
     splitter1.setDividerLocation(250);
+    splitter1.setEnabled(false);
     splitter1.setDividerSize(22);
     splitter1.setUI(new BasicSplitPaneUI() {
       @Override

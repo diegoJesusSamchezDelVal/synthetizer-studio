@@ -32,7 +32,6 @@ public class ModuleRegistryPanel extends JPanel
     // Create the module registry
     registry_ = ModuleRegistryFactory.createDefault();
     // Add default modules
-    // add(Box.createVerticalStrut(200));
     addModule(new ModuleLFO());
     addModule(new ModuleVCO());
     addModule(new ModuleVCA());
@@ -48,7 +47,7 @@ public class ModuleRegistryPanel extends JPanel
 
   private void setupGeneral()
   {
-    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setVisible(true);
   }
@@ -57,6 +56,8 @@ public class ModuleRegistryPanel extends JPanel
   {
     registry_.register(module);
     add(new ModulePrototype(module));
+    if (getParent() != null)
+      getParent().validate();
     validate();
     repaint();
   }
@@ -79,8 +80,6 @@ public class ModuleRegistryPanel extends JPanel
     // Outer bg
     g2.setColor(new Color(150, 150, 150));
     g2.drawRoundRect(5, 5, getWidth() - 18, getHeight() - 11, 10, 10);
-    // Paint inner components
-    // paintComponents(g);
   }
 
   private ModuleRegistry registry_;

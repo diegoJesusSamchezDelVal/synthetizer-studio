@@ -99,7 +99,7 @@ public class ModuleFactory
     }
     catch (Exception e)
     {
-      e.printStackTrace();
+      JOptionPane.showMessageDialog(null, "There was an error validating your XML module:\n"+e.getMessage()+"\n\nCheck that it is a valid XML file.", "XML Module validation error", JOptionPane.ERROR_MESSAGE);
       return null;
     }
 
