@@ -142,7 +142,7 @@ public class ModuleConfigWindow extends JDialog
     add(titleBar, BorderLayout.NORTH);
     //
     JLabel title = new JLabel(name);
-    title.setLocation(getWidth() / 2 - 20, 0);
+    title.setLocation(getWidth() / 2 - 30, 0);
     title.setVisible(true);
     title.setBackground(Color.black);
     title.setSize(100, 29);
@@ -182,8 +182,8 @@ public class ModuleConfigWindow extends JDialog
         {
           double min = port.getValueRange().minimum;
           double max = port.getValueRange().maximum;
-          knob = new NumberKnobPanel(port.getName(), min, max, unitList.get(port.getValueUnit()), "0.0",
-              !port.isLinked(), true);
+          knob = new NumberKnobPanel(port.getName(), min, max, unitList.get(port.getValueUnit()), "0.0", !port
+              .isLinked(), true);
         }
         else
           if (port.getValueType() == Port.ValueType.KEYBOARD)
