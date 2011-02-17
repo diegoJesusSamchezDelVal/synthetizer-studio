@@ -42,7 +42,7 @@ public class MainWindow extends JFrame implements WindowListener
   private void setupPanels()
   {
     moduleRegistryPanel_ = new ModuleRegistryPanel();
-    modulePoolPanel_ = new ModulePoolPanel();
+    modulePoolPanel_ = new ModulePoolPanel(this);
     informationPanel_ = new InformationPanel(new Oscilloscope(), new Spectrometer());
     JSplitPane splitter2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, informationPanel_, modulePoolPanel_);
     splitter2.setDividerSize(22);

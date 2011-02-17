@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -56,6 +57,7 @@ public class ModuleRegistryPanel extends JPanel
   {
     registry_.register(module);
     add(new ModulePrototype(module));
+    counterTable.put(module.getName(), 1);
     if (getParent() != null)
       getParent().validate();
     validate();
@@ -82,5 +84,18 @@ public class ModuleRegistryPanel extends JPanel
     g2.drawRoundRect(5, 5, getWidth() - 18, getHeight() - 11, 10, 10);
   }
 
-  private ModuleRegistry registry_;
+  private ModuleRegistry           registry_;
+
+  private HashMap<String, Integer> counterTable = new HashMap<String, Integer>();
+
+  public int getCounter(String name)
+  {
+    return counterTable.get(name);
+  }
+
+  public void increaseCounter(String name)
+  {
+    int i = counterTable.get(name) + 1;
+    counterTable.put(name, i);
+  }
 }

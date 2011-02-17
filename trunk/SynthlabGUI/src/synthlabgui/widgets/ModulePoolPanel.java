@@ -32,9 +32,12 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 {
   private static final long serialVersionUID = 1943028163107894975L;
 
-  public ModulePoolPanel()
+  private MainWindow        parentPanel;
+
+  public ModulePoolPanel(MainWindow parent)
   {
     super();
+    this.parentPanel = parent;
     setupGeneral();
     pool_ = ModulePoolFactory.createDefault();
     scheduler_ = SchedulerFactory.createDefault();
@@ -54,9 +57,12 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
 
   public void addModule(Module module)
   {
-    Module m = new Module(ModuleFactory.createFromPrototype(module.getWrapped()), this);
+    synthlab.api.Module model = ModuleFactory.createFromPrototype(module.getWrapped());
+    Module m = new Module(model.getName() + "-" + parentPanel.getRegistryPanel().getCounter(model.getName()), model,
+        this);
     pool_.register(m.getWrapped());
     add(m);
+    parentPanel.getRegistryPanel().increaseCounter(model.getName());
     m.setBounds(dropPosition_.x - 100, dropPosition_.y - 20, m.getBounds().width, m.getBounds().height);
   }
 
@@ -79,8 +85,8 @@ public class ModulePoolPanel extends JPanel implements MouseListener, MouseMotio
     renderHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     ((Graphics2D) g).setRenderingHints(renderHints);
     // Draw background
-    g.drawImage(background_, getWidth() / 2 - background_.getWidth(null) / 2,
-        getHeight() / 2 - background_.getHeight(null) / 2, null);
+    g.drawImage(background_, getWidth() / 2 - background_.getWidth(null) / 2, getHeight() / 2
+        - background_.getHeight(null) / 2, null);
     // Draw links
     drawLinks(g);
     if (linking_)
