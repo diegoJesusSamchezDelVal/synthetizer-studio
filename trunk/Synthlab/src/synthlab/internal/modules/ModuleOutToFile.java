@@ -50,7 +50,7 @@ public class ModuleOutToFile extends BasicModule
 
   public ModuleOutToFile()
   {
-    super("Out");
+    super("Record Out");
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
@@ -206,10 +206,8 @@ public class ModuleOutToFile extends BasicModule
           }
         }
       }
-
       Audio.getLine().write(data_.array(), 0,
           Scheduler.SamplingBufferSize * (Short.SIZE / 8));
-
     }
   }
 
