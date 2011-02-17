@@ -3,7 +3,6 @@ package synthlabgui.widgets.configPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -74,7 +74,8 @@ public class ModuleConfigWindow extends JDialog
     setLayout(new BorderLayout());
     setTitle(name);
     getRootPane().setBorder(BorderFactory.createEtchedBorder());
-    JPanel contentPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    JPanel contentPanel = new JPanel();
+    contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.LINE_AXIS));
     add(contentPanel, BorderLayout.CENTER);
     setUndecorated(true);
     setDefaultLookAndFeelDecorated(false);
@@ -181,8 +182,8 @@ public class ModuleConfigWindow extends JDialog
         {
           double min = port.getValueRange().minimum;
           double max = port.getValueRange().maximum;
-          knob = new NumberKnobPanel(port.getName(), min, max, unitList.get(port.getValueUnit()), "0.0", !port
-              .isLinked(), true);
+          knob = new NumberKnobPanel(port.getName(), min, max, unitList.get(port.getValueUnit()), "0.0",
+              !port.isLinked(), true);
         }
         else
           if (port.getValueType() == Port.ValueType.KEYBOARD)
