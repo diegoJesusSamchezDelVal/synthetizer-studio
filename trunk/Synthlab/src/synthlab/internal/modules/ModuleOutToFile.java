@@ -9,7 +9,6 @@ import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
@@ -47,7 +46,7 @@ public class ModuleOutToFile extends BasicModule
   private File             file        = null;
   private FileOutputStream fos         = null;
 
-  ByteBuffer               data_;
+  ByteBuffer               data_, data_l;
 
   public ModuleOutToFile()
   {
@@ -55,13 +54,14 @@ public class ModuleOutToFile extends BasicModule
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
-        "Input sound waveto be sent to the sound card"));
+        "Input sound wave to be sent to the sound card"));
 
-    addInput(new BasicPort("Recording", 0, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("Recording", -1, Port.ValueType.DISCRETE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Record stream data to a wave file"));
 
     data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
+    data_l = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
 
   }
 
@@ -91,14 +91,13 @@ public class ModuleOutToFile extends BasicModule
   public static byte[] longToBytes(final long num)
   {
     final byte[] bytes = new byte[4];
-    bytes[0] = (byte) (num >> 24);
-    bytes[1] = (byte) ((num >> 16) & 0x000000FF);
-    bytes[2] = (byte) ((num >> 8) & 0x000000FF);
-    bytes[3] = (byte) (num & 0x000000FF);
+    bytes[3] = (byte) ((num >> 24) & 0x000000FF);
+    bytes[2] = (byte) ((num >> 16) & 0x000000FF);
+    bytes[1] = (byte) ((num >> 8) & 0x000000FF);
+    bytes[0] = (byte) (num & 0x000000FF);
     return bytes;
   }
 
-  @SuppressWarnings("null")
   @Override
   public void compute()
   {
@@ -109,16 +108,18 @@ public class ModuleOutToFile extends BasicModule
         getInput("iSignal").getValues().clear();
         getInput("Recording").getValues().clear();
 
-        toRecord = getInput("Recording").getValues().getDouble() >= 0;
+        for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
+        {
+          data_.putShort(i * 2, (short) (getInput("iSignal").getValues()
+              .getDouble(i * 8) * Short.MAX_VALUE));
+          data_l.put(i * 2, data_.get(i * 2 + 1));
+          data_l.put(i * 2 + 1, data_.get(i * 2));
+        }
+
+        toRecord = getInput("Recording").getValues().getDouble() > 0;
 
         if (toRecord)
         {
-          for (int i = 0; i < Scheduler.SamplingBufferSize; ++i)
-          {
-            data_.putShort(i * 2, (short) (getInput("iSignal").getValues()
-                .getDouble(i * 8) * Short.MAX_VALUE));
-          }
-
           if (!isRecording)
           { // Demmarage d'enregistrement
             // Creer un nouveau fichier audio a ecrire
@@ -134,11 +135,12 @@ public class ModuleOutToFile extends BasicModule
             try
             {
               fos = new FileOutputStream(file);
-              final AudioFormat format = new AudioFormat(Encoding.PCM_SIGNED,
-                  44100, Short.SIZE, 1, 2, 44100, true);
+              final AudioFormat format = new AudioFormat(
+                  AudioFormat.Encoding.PCM_SIGNED, 44100, Short.SIZE, 1, 2,
+                  44100, false);
               final AudioInputStream ais = new AudioInputStream(
-                  new ByteArrayInputStream(data_.array()), format,
-                  data_.array().length);
+                  new ByteArrayInputStream(data_l.array()), format,
+                  data_l.array().length);
               AudioSystem.write(ais, AudioFileFormat.Type.WAVE, fos);
               isRecording = true;
             }
@@ -152,13 +154,14 @@ public class ModuleOutToFile extends BasicModule
             {
               try
               {
-                fos.write(data_.array());
+                fos.write(data_l.array());
               }
               catch (final Exception e)
               {
               }
             }
           }
+          data_.clear();
         }
         else
         {
@@ -170,7 +173,7 @@ public class ModuleOutToFile extends BasicModule
             }
             catch (final IOException e)
             {
-              return;
+              e.printStackTrace();
             }
             // A la fin d'enregistrement, corriger la longueur de données dans
             // le fichier.
@@ -207,7 +210,6 @@ public class ModuleOutToFile extends BasicModule
       Audio.getLine().write(data_.array(), 0,
           Scheduler.SamplingBufferSize * (Short.SIZE / 8));
 
-      getInput("iSignal").getValues().clear();
     }
   }
 
