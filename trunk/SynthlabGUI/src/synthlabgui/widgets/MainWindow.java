@@ -1,5 +1,7 @@
 package synthlabgui.widgets;
 
+import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -50,6 +52,10 @@ public class MainWindow extends JFrame implements WindowListener
     });
     JScrollPane scroll_ = new JScrollPane(moduleRegistryPanel_);
     scroll_.getVerticalScrollBar().setUnitIncrement(50);
+    scroll_.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    scroll_.setBackground(new Color(137, 137, 137));
+    moduleRegistryPanel_.setBackground(new Color(137, 137, 137));
+    scroll_.setBorder(null);
     JSplitPane splitter1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll_, splitter2);
     splitter1.setDividerLocation(250);
     splitter1.setDividerSize(22);
@@ -83,8 +89,6 @@ public class MainWindow extends JFrame implements WindowListener
     JMenu menuHelp = new JMenu("Help");
     // --- Create menu items
     JMenuItem itemFileNew = new JMenuItem("New");
-    JMenuItem itemFileOpen = new JMenuItem("Open");
-    JMenuItem itemFileSave = new JMenuItem("Save");
     JMenuItem itemFileQuit = new JMenuItem("Quit");
     JMenuItem itemEditCopy = new JMenuItem("Copy");
     JMenuItem itemEditCut = new JMenuItem("Cut");
@@ -98,8 +102,6 @@ public class MainWindow extends JFrame implements WindowListener
     itemFileNew.addActionListener(new NewActionListener());
     // --- Add menu items
     menuFile.add(itemFileNew);
-    // menuFile.add(itemFileOpen);
-    // menuFile.add(itemFileSave);
     menuFile.add(itemFileQuit);
     menuEdit.add(itemEditCopy);
     menuEdit.add(itemEditCut);
@@ -109,8 +111,6 @@ public class MainWindow extends JFrame implements WindowListener
     menuHelp.add(itemHelpAbout);
     // --- Add menus
     menuBar_.add(menuFile);
-    // menuBar_.add(menuEdit);
-    // menuBar_.add(menuSynth);
     menuBar_.add(menuHelp);
     // --- Add menu bar
     setJMenuBar(menuBar_);
