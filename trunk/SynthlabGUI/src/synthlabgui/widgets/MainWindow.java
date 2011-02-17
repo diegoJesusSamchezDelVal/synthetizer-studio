@@ -67,7 +67,7 @@ public class MainWindow extends JFrame implements WindowListener
   private void setupGeneral()
   {
     setTitle("Synthlab GUI");
-    setSize(1000, 800);
+    setSize(1200, 900);
     addWindowListener(this);
     setVisible(true);
   }
