@@ -44,6 +44,7 @@ public class ModuleOutToFile extends BasicModule
   private boolean          isRecording = false;
   private boolean          toRecord    = false;
   private File             file        = null;
+  private String           path        = "soundFiles/";
   private FileOutputStream fos         = null;
 
   ByteBuffer               data_, data_l;
@@ -91,6 +92,7 @@ public class ModuleOutToFile extends BasicModule
   public static byte[] longToBytes(final long num)
   {
     final byte[] bytes = new byte[4];
+    
     bytes[3] = (byte) ((num >> 24) & 0x000000FF);
     bytes[2] = (byte) ((num >> 16) & 0x000000FF);
     bytes[1] = (byte) ((num >> 8) & 0x000000FF);
@@ -125,10 +127,10 @@ public class ModuleOutToFile extends BasicModule
             // Creer un nouveau fichier audio a ecrire
             synchronized (fileCounter)
             {
-              file = new File("Output" + fileCounter++ + ".wav");
+              file = new File(path+"Output" + fileCounter++ + ".wav");
               while (file != null && file.exists())
               {
-                file = new File("Output" + fileCounter++ + ".wav");
+                file = new File(path+"Output" + fileCounter++ + ".wav");
               }
             }
             // Creer l'entete de fichier audio
