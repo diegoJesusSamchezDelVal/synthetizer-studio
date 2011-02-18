@@ -6,8 +6,20 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of Sequencer 
+ * Product a song!
+ * @author
+ * */
 public class ModuleSequencer extends BasicModule
 {
+  private int    sampleCount_;
+  private double previousNote_;
+  
+  /**
+   * Constructor of Sequencer initial all ports E/S, initial name of module
+   * */
   public ModuleSequencer()
   {
     super("Sequencer");
@@ -26,6 +38,10 @@ public class ModuleSequencer extends BasicModule
     sampleCount_ = 0;
   }
 
+  
+  /**
+   * method compute
+   * */
   @Override
   public void compute()
   {
@@ -76,6 +92,11 @@ public class ModuleSequencer extends BasicModule
       }
     }
   }
+  
+  
+  /**
+   * Method for create a new module of Sequencer
+   * */
 
   @Override
   public Module clone() throws CloneNotSupportedException
@@ -83,7 +104,4 @@ public class ModuleSequencer extends BasicModule
     return new ModuleSequencer();
   }
 
-  private int    sampleCount_;
-
-  private double previousNote_;
 }
