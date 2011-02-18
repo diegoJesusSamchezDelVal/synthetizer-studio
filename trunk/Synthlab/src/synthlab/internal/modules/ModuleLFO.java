@@ -6,8 +6,24 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of LFO
+ * 1 output product low frequency sinusoidal wave signal
+ * @author
+ * */
 public class ModuleLFO extends BasicModule
 {
+  
+
+  private int frameCount_;
+  private int frameRate_;
+  
+  
+  /**
+   * Constructor of LFO initial all ports E/S, initial name of module
+   * initial base Data: frame rate,
+   * */
   public ModuleLFO()
   {
     super("LFO");
@@ -18,6 +34,12 @@ public class ModuleLFO extends BasicModule
     frameCount_ = 0;
     frameRate_ = 44100;
   }
+  
+  
+
+  /**
+   * compute method 
+   * */
 
   @Override
   public void compute()
@@ -41,12 +63,13 @@ public class ModuleLFO extends BasicModule
     }
   }
   
+  /**
+   * Method for create a new module of LFO
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {
     return new ModuleLFO();
   }
 
-  private int frameCount_;
-  private int frameRate_;
 }

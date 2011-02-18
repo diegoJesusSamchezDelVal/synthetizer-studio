@@ -3,8 +3,18 @@ package synthlab.internal.modules;
 import synthlab.api.*;
 import synthlab.internal.*;
 
+/**
+ * Concrete module class of keyboard
+ * 1 parameter octave control in volt manually
+ * support maximum 3 Touch in the same time 
+ * 1 output signal
+ * @author
+ * */
 public class ModuleKeyboard extends BasicModule
 {
+  /**
+   * Constructor of keyboard initial all ports E/S, initial name of module
+   * */
 
   public ModuleKeyboard()
   {
@@ -30,6 +40,10 @@ public class ModuleKeyboard extends BasicModule
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1), "Active control signal"));
   }
 
+
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -80,6 +94,10 @@ public class ModuleKeyboard extends BasicModule
     }
   
   }
+  
+  /**
+   * Method for create a new module of keyboard
+   * */
 
   @Override
   public Module clone() throws CloneNotSupportedException
