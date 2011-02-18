@@ -6,9 +6,16 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of ADSR
+ * Parameters are pass by UI, A,D,R in MilleSconde, S in percentage
+ * Parameters Gate is for manually, ExtermGate for a external control signal
+ * @author Dayou
+ * */
+
 public class ModuleEnvelope extends BasicModule
 {
-
   private enum State
   {
     IDLE, ATTACK, DECAY, SUSTAIN, RELASE
@@ -22,6 +29,10 @@ public class ModuleEnvelope extends BasicModule
 
   private State        currentState = State.IDLE;
 
+  
+  /**
+   * Constructor of ADSR initial all ports E/S, initial name of module
+   * */
   public ModuleEnvelope()
   {
     super("Envelope");
@@ -52,6 +63,10 @@ public class ModuleEnvelope extends BasicModule
         "Frequence output"));
   }
 
+  /**
+   * compute method 
+   * */
+  
   @Override
   public void compute()
   {
@@ -177,6 +192,9 @@ public class ModuleEnvelope extends BasicModule
     }
   }
 
+  /**
+   * Method for create a new module of ADSR
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {

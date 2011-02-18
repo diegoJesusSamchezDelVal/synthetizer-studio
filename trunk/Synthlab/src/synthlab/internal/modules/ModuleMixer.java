@@ -6,6 +6,14 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+/**
+ * Concrete module class of Mixer
+ * 4 signals input 
+ * 4 gain parameters for each input, we can change them manually with UI 
+ * 1 signal output which the son is mixed.
+ * @author Dayou
+ * */
+
 public class ModuleMixer extends BasicModule
 {
   private double       valueOut;
@@ -18,6 +26,10 @@ public class ModuleMixer extends BasicModule
   private final double maxVolume = 1;
   private final double minVolume = -1;
   
+  
+  /**
+   * Constructor of ADSR initial all ports E/S, initial name of module
+   * */
   public ModuleMixer()
   {
     super("MIXER");
@@ -38,6 +50,11 @@ public class ModuleMixer extends BasicModule
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS, Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Output sound wave mixed (averaged) by all inputs/gains"));
   }
 
+  
+  /**
+   * compute method 
+   * */
+  
   @Override
   public void compute()
   {
@@ -111,6 +128,9 @@ public class ModuleMixer extends BasicModule
     }  
   }
   
+  /**
+   * Method for create a new module of Mixer
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {

@@ -6,20 +6,29 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+
+/**
+ * Concrete module class of VCA
+ * 2 parameters , 1 for input signal, 1 for gain of this signal
+ * We can control the parameters gain(volume) manually in UI,or we can do it with a external control signal
+ * @author Dayou
+ * */
+
 public class ModuleVCA extends BasicModule
 {
-
   private double       volume;
   private int          frameCount_;
-
-  // mode
-  // private int mode;
-  // private final int LINEAR = 1;
-  // private final int EXPOL = 2;
 
   private final double maxVolume = 1;
   private final double minVolume = -1;
 
+  
+
+  /**
+   * Constructor of VCA initial all ports E/S, initial name of module
+   * */
+  
   public ModuleVCA()
   {
     super("VCA");
@@ -35,13 +44,15 @@ public class ModuleVCA extends BasicModule
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Output sound wave whose amplitude was modified"));
 
-    // init a 0
+    // init volume a 0
     volume = 0.0;
 
-    // init mode
-    // mode = LINEAR;
   }
 
+  
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -75,11 +86,19 @@ public class ModuleVCA extends BasicModule
       }
     }
   }
+  
+  /**
+   * getter of volume
+   * */
 
   public double getVolume()
   {
     return volume;
   }
+  
+  /**
+   * setter of volume
+   * */
 
   public void setVolume(double vol)
   {
@@ -90,6 +109,11 @@ public class ModuleVCA extends BasicModule
     else if (vol < minVolume)
       volume = minVolume;
   }
+  
+  
+  /**
+   * Method for create a new module of VCA
+   * */
   
   @Override
   public Module clone() throws CloneNotSupportedException

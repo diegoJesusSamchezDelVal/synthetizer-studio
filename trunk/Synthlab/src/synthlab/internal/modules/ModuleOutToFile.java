@@ -19,26 +19,16 @@ import synthlab.internal.Audio;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of RecordToFile
+ * 1 input signal waiting for the recording
+ * Parameters recording is for manually, control if writing or not to a son file
+ * @author Dayou
+ * */
 public class ModuleOutToFile extends BasicModule
 {
-
-  // private static byte[] RIFF="RIFF".getBytes();
-  // private static byte[] RIFF_SIZE=new byte[4];
-  // private static byte[] RIFF_TYPE="WAVE".getBytes();
-  //
-  //
-  // private static byte[] FORMAT="fmt ".getBytes();
-  // private static byte[] FORMAT_SIZE=new byte[4];
-  // private static byte[] FORMATTAG=new byte[2];
-  // private static byte[] CHANNELS=new byte[2];
-  // private static byte[] SamplesPerSec =new byte[4];
-  // private static byte[] AvgBytesPerSec=new byte[4];
-  // private static byte[] BlockAlign =new byte[2];
-  // private static byte[] BitsPerSample =new byte[2];
-  //
-  // private static byte[] DataChunkID="data".getBytes();
-  // private static byte[] DataSize=new byte[4];
-
+  
   private static Integer   fileCounter = 0;
 
   private boolean          isRecording = false;
@@ -49,6 +39,10 @@ public class ModuleOutToFile extends BasicModule
 
   ByteBuffer               data_, data_l;
 
+  
+  /**
+   * Constructor of RecordToFile initial input port, initial the name of module
+   * */
   public ModuleOutToFile()
   {
     super("Record Out");
@@ -100,6 +94,10 @@ public class ModuleOutToFile extends BasicModule
     return bytes;
   }
 
+  
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -213,6 +211,10 @@ public class ModuleOutToFile extends BasicModule
           Scheduler.SamplingBufferSize * (Short.SIZE / 8));
     }
   }
+  
+  /**
+   * Method for create a new module of RecordToFile
+   * */
 
   @Override
   public Module clone() throws CloneNotSupportedException

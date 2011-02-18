@@ -6,6 +6,13 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of VCF
+ * Parameters are cutOff in Hz, manually or externally; resonance in Db, manually add for the output signal
+ * 4 output signals, high pass, low pass, banned pass, Notch.
+ * @author Dayou
+ * */
 public class ModuleVCF extends BasicModule
 {
   
@@ -19,6 +26,10 @@ public class ModuleVCF extends BasicModule
   // for remenber precent computed value 
   private double       lowPassPole  = 0.0;
   private double       bandPassPole = 0.0;
+  
+  /**
+   * Constructor of VCF initial all ports E/S, initial name of module
+   * */
 
   public ModuleVCF()
   {
@@ -45,6 +56,9 @@ public class ModuleVCF extends BasicModule
     
   }
 
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -138,10 +152,17 @@ public class ModuleVCF extends BasicModule
     }
   }
 
+  /**
+   * getter of value
+   * */
   public double getValue()
   {
     return valueOut;
   }
+  
+  /**
+   * setter of value
+   * */
 
   public void setValue(double val)
   {
@@ -153,6 +174,10 @@ public class ModuleVCF extends BasicModule
       valueOut = minVolume;
   }
 
+  
+  /**
+   * Method for create a new module of VCF
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {

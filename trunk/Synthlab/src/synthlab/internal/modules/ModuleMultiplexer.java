@@ -6,8 +6,20 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of Hub
+ * 1 input signal 
+ * 4 output signal just transport the value of input
+ * @author Dayou
+ * */
+
 public class ModuleMultiplexer extends BasicModule
 {
+  
+  /**
+   * Constructor of Hub, initial all ports E/S, initial name of module
+   * */
   public ModuleMultiplexer()
   {
     super("Hub");
@@ -25,6 +37,10 @@ public class ModuleMultiplexer extends BasicModule
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1), "Output signal 4"));
   }
 
+  
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -59,6 +75,9 @@ public class ModuleMultiplexer extends BasicModule
     }
   }
 
+  /**
+   * Method for create a new module of Hub
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {

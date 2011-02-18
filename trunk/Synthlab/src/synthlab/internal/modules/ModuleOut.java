@@ -7,11 +7,22 @@ import synthlab.api.*;
 import synthlab.api.Port;
 import synthlab.internal.*;
 
+
+/**
+ * Concrete module class of Speaker who transport the signal to the son card 
+ * 1 input signal only
+ * @author Dayou
+ * */
+
 public class ModuleOut extends BasicModule
 {
+ 
+  /**
+   * Constructor of Speaker initial input port, initial the name of module
+   * */
   public ModuleOut()
   {
-    super("Out");
+    super("Speaker");
 
     addInput(new BasicPort("iSignal", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),"Input sound waveto be sent to the sound card"));
@@ -19,6 +30,10 @@ public class ModuleOut extends BasicModule
     data_ = ByteBuffer.allocate(Scheduler.SamplingBufferSize * 2);
   }
 
+  
+  /**
+   * compute method 
+   * */
   @Override
   public void compute()
   {
@@ -39,6 +54,9 @@ public class ModuleOut extends BasicModule
     }
   }
   
+  /**
+   * Method for create a new module of Speaker
+   * */
   @Override
   public Module clone() throws CloneNotSupportedException
   {

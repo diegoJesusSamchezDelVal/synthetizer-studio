@@ -7,8 +7,33 @@ import synthlab.api.Port.ValueUnit;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 
+
+/**
+ * Concrete module class of VCO
+ * 4 input signal control manually in UI or externally by connecting signal ,Active for switch this module ON/OFF, 
+ * Constant for K, 
+ * Frequency for fm
+ * Shape for change different wave form
+ * 1 output signal
+ * @author Dayou
+ * */
 public class ModuleVCO extends BasicModule
 {
+  
+
+  public static final double SHAPE_SAWTOOTH = 0.75;
+  public static final double SHAPE_TRIANGLE = 0.50;
+  public static final double SHAPE_SINE     = 0.25;
+  public static final double SHAPE_PULSE    = 0.00;
+
+  private int                frameRate_;
+  private double             initialFrequency_;
+  private double       currentPositionInPeriod_;
+  
+  /**
+   * Constructor of VCO initial all ports E/S, initial name of module
+   * initial base Data: frame rate, frequency
+   * */
   public ModuleVCO()
   {
     super("VCO");
@@ -34,6 +59,11 @@ public class ModuleVCO extends BasicModule
     
     currentPositionInPeriod_ = 0.0;
   }
+  
+
+  /**
+   * compute method 
+   * */
 
   @Override
   public void compute()
@@ -114,19 +144,15 @@ public class ModuleVCO extends BasicModule
     }
   }
   
+  
+  /**
+   * Method for create a new module of VCO
+   * */
+  
   @Override
   public Module clone() throws CloneNotSupportedException
   {
     return new ModuleVCO();
   }
 
-  public static final double SHAPE_SAWTOOTH = 0.75;
-  public static final double SHAPE_TRIANGLE = 0.50;
-  public static final double SHAPE_SINE     = 0.25;
-  public static final double SHAPE_PULSE    = 0.00;
-
- // private int                frameCount_;
-  private int                frameRate_;
-  private double             initialFrequency_;
-  private double       currentPositionInPeriod_;
 }
