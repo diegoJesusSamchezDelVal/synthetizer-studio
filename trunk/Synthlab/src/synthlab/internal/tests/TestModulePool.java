@@ -8,15 +8,21 @@ import synthlab.api.ModulePool;
 import synthlab.api.ModulePoolFactory;
 import synthlab.internal.BasicModule;
 import synthlab.internal.modules.ModuleVCO;
-
+/**
+ * class testModulePool for unit test of pool
+ * */
 public class TestModulePool extends TestCase
 {
-
+/**
+ * constructor
+ * */
   public TestModulePool()
   {
     super();
   }
-
+/**
+ * tested functions: register, unregister, link, unlink, unlinkAll, linked
+ * */
   @Test
   public void testBasicModulePool()
   {

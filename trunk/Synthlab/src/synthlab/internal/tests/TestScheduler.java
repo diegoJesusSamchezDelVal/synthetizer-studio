@@ -8,13 +8,22 @@ import synthlab.api.SchedulerFactory;
 import synthlab.internal.modules.ModuleOut;
 import synthlab.internal.modules.ModuleVCO;
 
+/**
+ * class TestScheduler for unit test of BasicScheduler
+ * */
 public class TestScheduler extends TestCase
 {
+  /**
+   * constructor
+   * */
   public TestScheduler()
   {
     super();
   }
 
+  /**
+   * tested functions: getPool, getTasks, son--> sound card
+   * */
   public void testBasicScheduler()
   {
     final ModulePool pool = ModulePoolFactory.createDefault();

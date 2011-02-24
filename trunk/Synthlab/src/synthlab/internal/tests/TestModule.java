@@ -11,7 +11,9 @@ import synthlab.api.Port.ValueUnit;
 import synthlab.internal.BasicModule;
 import synthlab.internal.BasicPort;
 import synthlab.internal.modules.ModuleVCO;
-
+/**
+ * class testModule for unit test the functions in basicModule
+ * */
 public class TestModule extends TestCase
 {
 
@@ -21,11 +23,18 @@ public class TestModule extends TestCase
   final ValueUnit  unit         = ValueUnit.HERTZ;
   final ValueRange range        = new ValueRange(0.0, 100.0);
 
+  
+  /**
+   * constructor
+   * */
   public TestModule()
   {
     super();
   }
 
+  /**
+   * test function: getInput, getOutput, removeInput, removeOutput
+   * */
   @Test
   public void testPortBasic()
   {

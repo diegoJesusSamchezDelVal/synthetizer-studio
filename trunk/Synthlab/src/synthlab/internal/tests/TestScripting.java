@@ -3,13 +3,22 @@ package synthlab.internal.tests;
 import junit.framework.TestCase;
 import synthlab.internal.BasicScriptModule;
 
+/**
+ * class TestScripting for unit test of BasicScriptModule
+ * */
 public class TestScripting extends TestCase
 {
+  /**
+   * constructor
+   * */
   public TestScripting()
   {
     super();
   }
-
+  
+/**
+ * tested functions:getName, getScript
+ * */
   public void testBasicScriptModule()
   {
     final String scripting = "12345";

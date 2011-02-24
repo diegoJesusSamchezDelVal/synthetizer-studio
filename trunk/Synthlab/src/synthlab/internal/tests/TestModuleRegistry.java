@@ -6,13 +6,23 @@ import synthlab.internal.BasicModuleRegistry;
 import synthlab.internal.modules.ModuleLFO;
 import synthlab.internal.modules.ModuleOut;
 
+
+/**
+ * class testModuleRegistry for the unit test of BasicModuleRegistry
+ * */
 public class TestModuleRegistry extends TestCase
 {
-
+/**
+ * constructor
+ * */
   public TestModuleRegistry()
   {
     super();
   }
+  
+  /**
+   * tested function: registered, register, unregister
+   * */
 
   public void testBasicModuleRegistry()
   {

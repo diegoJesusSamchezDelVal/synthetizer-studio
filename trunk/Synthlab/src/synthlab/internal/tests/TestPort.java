@@ -1,11 +1,8 @@
 package synthlab.internal.tests;
 
 import java.nio.ByteBuffer;
-
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import synthlab.api.Module;
 import synthlab.api.Port;
 import synthlab.api.Port.ValueRange;
@@ -15,6 +12,9 @@ import synthlab.api.Scheduler;
 import synthlab.internal.BasicPort;
 import synthlab.internal.modules.ModuleVCO;
 
+/**
+ * class TestPort for unit test of port
+ * */
 public class TestPort extends TestCase
 {
 
@@ -24,11 +24,18 @@ public class TestPort extends TestCase
   final ValueUnit  unit         = ValueUnit.HERTZ;
   final ValueRange range        = new ValueRange(0.0, 100.0);
 
+  /**
+   * constructor
+   * */
   public TestPort()
   {
     super();
   }
 
+  /**
+   * test BasicPort
+   * tested function:getName,getValueType, getValueType, getValueUnit, getValueRange
+   * */
   @Test
   public void testPortBasic()
   {
@@ -44,6 +51,12 @@ public class TestPort extends TestCase
 
   }
 
+  
+  /**
+   * test Data
+   * tested getValue, setValue, getModule, getInput, getOutput, isLinked
+   *
+   * */
   @Test
   public void testData()
   {
