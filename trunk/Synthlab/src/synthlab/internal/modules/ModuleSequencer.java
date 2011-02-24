@@ -24,7 +24,7 @@ public class ModuleSequencer extends BasicModule
   {
     super("Sequencer");
 
-    addInput(new BasicPort("iTempo", 6, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("iTempo", 50, Port.ValueType.DISCRETE,
         Port.ValueUnit.MILLISECONDS, new Port.ValueRange(1, 100),
         "Octave modulation input following the 1v/octave convention"));
 
@@ -103,5 +103,4 @@ public class ModuleSequencer extends BasicModule
   {
     return new ModuleSequencer();
   }
-
 }

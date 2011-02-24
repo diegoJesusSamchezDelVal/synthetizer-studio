@@ -41,7 +41,7 @@ public class ModuleEnvelope extends BasicModule
     addInput(new BasicPort("iExternalGate", 0, Port.ValueType.INCONFIGURABLE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Extern controle for the state of Gate"));
-    addInput(new BasicPort("iGate", 0, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("iGate", 0, Port.ValueType.SWITCH,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Mannuly switch for Gate"));
     addInput(new BasicPort("iAttack", 1000.0, Port.ValueType.CONTINUOUS,
