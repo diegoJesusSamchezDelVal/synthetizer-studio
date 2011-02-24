@@ -3,11 +3,13 @@ package synthlabgui.widgets.configPanel.keyboard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.AbstractConfigPanel;
 
+/**
+ * A configure component in which contains a keyboard
+ * */
 public class KeyboardPanel extends JPanel implements AbstractConfigPanel, KeyboardListener
 {
   ArrayList<Port>           inputPorts       = new ArrayList<Port>();
@@ -90,18 +92,6 @@ public class KeyboardPanel extends JPanel implements AbstractConfigPanel, Keyboa
   @Override
   public void setState(boolean enabled)
   {
-  }
-
-  // Test la fonctionalite de composant. Merci de ne pas supprimer pour
-  // instant.
-  static public void main(String[] args)
-  {
-    JFrame f = new JFrame();
-    KeyboardPanel k = new KeyboardPanel();
-    f.add(k);
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setSize(400, 400);
-    f.setVisible(true);
   }
 
   @Override

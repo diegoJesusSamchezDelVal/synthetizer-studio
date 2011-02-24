@@ -4,6 +4,9 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+/**
+ * This class represents a white key of keyboard.
+ * */
 public class Key extends JPanel
 {
   private static final long serialVersionUID = -1955536235297058856L;

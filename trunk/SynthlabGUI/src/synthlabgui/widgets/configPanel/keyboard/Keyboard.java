@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
+/**
+ * A keyboard component which represents a keyboard.
+ * */
 public class Keyboard extends JPanel
 {
   private static final long           serialVersionUID = -4122417491103561122L;
@@ -28,6 +31,12 @@ public class Keyboard extends JPanel
 
   HashMap<Integer, Key>               keyCode          = new HashMap<Integer, Key>();
 
+  /**
+   * Constructor
+   * 
+   * @param nbKeys
+   *          number of the keys it contains
+   * */
   public Keyboard(int nbKeys)
   {
     setLayout(null);
@@ -88,16 +97,35 @@ public class Keyboard extends JPanel
     requestFocus(true);
   }
 
+  /**
+   * Add a KeyboardListener
+   * 
+   * @param listener
+   *          the listener to add
+   * */
   public void addKeyboardListener(KeyboardListener listener)
   {
     listeners.add(listener);
   }
 
+  /**
+   * Remove a KeyboardListener
+   * 
+   * @param listener
+   *          the listener to remove
+   * */
   public void removeKeyboardListener(KeyboardListener listener)
   {
     listeners.remove(listener);
   }
 
+  /**
+   * Notify all its listener a KeyboardEvent
+   * 
+   * @param keyboardEvent
+   *          the keyboard event to notify
+   * @see KeyboardEvent
+   * */
   private void notifyListeners(KeyboardEvent keyboardEvent)
   {
     for (KeyboardListener l : listeners)

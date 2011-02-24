@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
+/**
+ * This class represents a white key of keyboard
+ * */
 public class BlackKey extends Key
 {
   public BlackKey()

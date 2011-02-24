@@ -1,38 +1,34 @@
 package synthlabgui.widgets.configPanel;
 
 import java.util.Observer;
-
 import synthlab.api.Port;
 
 /**
- * Interface des panneaux de configuration. Tous les composants de configuration
- * doivent implementer cette interface.
+ * Interface of configure component. All configure component should implement this interface.
  * */
-public interface AbstractConfigPanel extends Observer {
+public interface AbstractConfigPanel extends Observer
+{
+  /**
+   * Reference the port to be configured.
+   * 
+   * @param port
+   *          the port to be configured
+   * */
+  public void setPort(Port port);
 
-	/**
-	 * Connecte au port qui va configurer.
-	 * 
-	 * @param port
-	 *            le port à configurer
-	 * */
-	public void setPort(Port port);
+  /**
+   * Notify its port to change to a new value. Nothing will be sent if this component has not connected to a port.
+   * 
+   * @param value
+   *          value to notify
+   * */
+  public void notifyPort(double value);
 
-	/**
-	 * notifie son port une nouvelle valeur. Rien ne se passe si le composant
-	 * n'est pas connecté à un port.
-	 * 
-	 * @param value
-	 *            nouvelle valeur
-	 * */
-	public void notifyPort(double value);
-
-	/**
-	 * Active ou désactive le composant de configuration. si le composant est
-	 * désactivé, ancune valeur est envoyée à son port.
-	 * 
-	 * @param enabled
-	 *            vrai pour activer et faux pour désactiver
-	 * */
-	public void setState(boolean enabled);
+  /**
+   * enable or disable this component. If the component is disabled, nothing will be sent to its port.
+   * 
+   * @param enabled
+   *          condition of the state
+   * */
+  public void setState(boolean enabled);
 }
