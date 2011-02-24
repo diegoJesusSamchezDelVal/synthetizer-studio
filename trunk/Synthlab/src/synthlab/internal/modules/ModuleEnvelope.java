@@ -44,17 +44,17 @@ public class ModuleEnvelope extends BasicModule
     addInput(new BasicPort("iGate", 0, Port.ValueType.DISCRETE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Mannuly switch for Gate"));
-    addInput(new BasicPort("iAttack", 0.0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 10000),
+    addInput(new BasicPort("iAttack", 1000.0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 2000),
         "Attack time controlor"));
-    addInput(new BasicPort("iDecay", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 10000),
+    addInput(new BasicPort("iDecay", 1000.0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 2000),
         "Decay time controlor"));
-    addInput(new BasicPort("iSustain", 0, Port.ValueType.CONTINUOUS,
+    addInput(new BasicPort("iSustain", 50.0, Port.ValueType.CONTINUOUS,
         Port.ValueUnit.PERCENTAGE, new Port.ValueRange(0, 100),
         "Sustain percentage controlor"));
-    addInput(new BasicPort("iRelease", 0, Port.ValueType.CONTINUOUS,
-        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 10000),
+    addInput(new BasicPort("iRelease", 1000.0, Port.ValueType.CONTINUOUS,
+        Port.ValueUnit.MILLISECONDS, new Port.ValueRange(0, 2000),
         "Relase time controlor"));
 
     // add output port
