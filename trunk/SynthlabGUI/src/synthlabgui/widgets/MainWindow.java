@@ -225,26 +225,11 @@ public class MainWindow extends JFrame implements WindowListener
   @Override
   public void windowDeactivated(WindowEvent e)
   {
-    System.out.println("Desactivated");
-    boolean hasActive = false;
-    for (Component com : modulePoolPanel_.getComponents())
-    {
-      ModuleConfigWindow window = ((Module) com).getConfigWindow();
-      if (window.isActive())
-      {
-        hasActive = true;
-        break;
-      }
-    }
-    System.out.println(hasActive);
-    // hideWindows();
   }
 
   @Override
   public void windowActivated(WindowEvent e)
   {
-    System.out.println("activated");
-    // recoverWindows();
   }
 
   @Override
