@@ -33,7 +33,7 @@ public class TestModule extends TestCase
   }
 
   /**
-   * test function: getInput, getOutput, removeInput, removeOutput
+   * tested functions: getInput, getOutput, removeInput, removeOutput
    * */
   @Test
   public void testPortBasic()
