@@ -135,7 +135,6 @@ public class Switch extends JPanel implements AbstractConfigPanel, ActionListene
   public void update(Observable o, Object arg)
   {
     value = ((Port) o).getValues().getDouble(0);
-    System.out.println(value);
     if (value > 0)
       turnSwitch(true);
     else
