@@ -37,7 +37,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 
     protected NumberKnob knob;
 
-    protected int numberDisplaySize = 20;
+    public static int numberDisplaySize = 20;
 
     public static int TITLE_HEIGHT = 10;
 
@@ -89,6 +89,7 @@ public class NumberKnobPanel extends JPanel implements KnobListener,
 	knob.setLocation((size.width - AbstractKnob.size.width) / 2,
 		TITLE_HEIGHT + 5);
 	value = computeValue(knob.getValue());
+
     }
 
     public void paint(Graphics gc) {

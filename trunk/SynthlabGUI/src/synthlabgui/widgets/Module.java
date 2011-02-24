@@ -12,268 +12,275 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
 import synthlab.api.Port;
 import synthlabgui.widgets.configPanel.ModuleConfigWindow;
 
-public class Module extends JPanel implements MouseListener, MouseMotionListener
-{
-  public Module(String name, synthlab.api.Module module, ModulePoolPanel parent)
-  {
-    super();
-    module_ = module;
-    poolPanel_ = parent;
-    this.name_ = name;
-    setupGeneral();
-    setupShadow();
-    setupPorts();
-    configWindow_ = new ModuleConfigWindow(name, module_, null, new Point(0, 0));
-  }
-
-  public void setupPorts()
-  {
-    setLayout(null);
-    int currentHeight;
-    currentHeight = 30;
-    for (Port p : module_.getInputs())
-    {
-      // Port circle
-      PortHandler ph = new PortHandler(p);
-      ph.setBounds(0, currentHeight, 16, 14);
-      add(ph);
-      ports_.add(ph);
-      currentHeight += 20;
+public class Module extends JPanel implements MouseListener,
+	MouseMotionListener {
+    public Module(String name, synthlab.api.Module module,
+	    ModulePoolPanel parent) {
+	super();
+	module_ = module;
+	poolPanel_ = parent;
+	this.name_ = name;
+	setupGeneral();
+	setupShadow();
+	setupPorts();
+	configWindow_ = new ModuleConfigWindow(name, module_, parent
+		.getParentPanel(), new Point(0, 0));
     }
-    currentHeight = 30;
-    for (Port p : module_.getOutputs())
-    {
-      // Port circle
-      PortHandler ph = new PortHandler(p);
-      add(ph);
-      ports_.add(ph);
-      ph.setBounds(184, currentHeight, (int) ph.getBounds().getWidth(), (int) ph.getBounds().getHeight());
-      currentHeight += 20;
+
+    public void setupPorts() {
+	setLayout(null);
+	int currentHeight;
+	currentHeight = 30;
+	for (Port p : module_.getInputs()) {
+	    // Port circle
+	    PortHandler ph = new PortHandler(p);
+	    ph.setBounds(0, currentHeight, 16, 14);
+	    add(ph);
+	    ports_.add(ph);
+	    currentHeight += 20;
+
+	    // TODO hardcode ici
+	    if (module_.getName() == "Record Out"
+		    && p.getValueType() == Port.ValueType.SWITCH) {
+		setupLED(p);
+	    }
+	}
+	currentHeight = 30;
+	for (Port p : module_.getOutputs()) {
+	    // Port circle
+	    PortHandler ph = new PortHandler(p);
+	    add(ph);
+	    ports_.add(ph);
+	    ph.setBounds(184, currentHeight, (int) ph.getBounds().getWidth(),
+		    (int) ph.getBounds().getHeight());
+	    currentHeight += 20;
+	}
     }
-  }
 
-  public synthlab.api.Module getWrapped()
-  {
-    return module_;
-  }
+    private void setupLED(Port p) {
+	JLed led;
+	led = new JLed();
 
-  private void setupShadow()
-  {
-    // Generate an image containing the low quality wrapping rounded
-    // rectangle
-    int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
-    shadow_ = new BufferedImage(200 + 1 + 20, maximumPortNumber * 20 + 30 + 1 + 20, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g = (Graphics2D) shadow_.getGraphics();
-    g.setBackground(Color.white);
-    g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
-    g.fillRoundRect(3, 3, 200, maximumPortNumber * 20 + 30, 20, 20);
-    g.setColor(Color.white);
-    // Convolve the shadow image using a median kernel
-    int kSize = 5;
-    float[] data = new float[kSize * kSize];
-    float value = (float) (1. / (float) (kSize * kSize));
-    for (int i = 0; i < data.length; i++)
-    {
-      data[i] = value;
+	add(led, 0);
+	led.setLocation(6, 6);
+	led.setVisible(true);
+	p.addObserver(led);
+	System.out.println("Led added.");
     }
-    op_ = new ConvolveOp(new Kernel(kSize, kSize, data));
-  }
 
-  private void setupGeneral()
-  {
-    setBorder(BorderFactory.createLineBorder(Color.black));
-    setBackground(Color.white);
-    int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
-    setBounds(0, 0, 200 + 10, maximumPortNumber * 20 + 30 + 10);
-    addMouseListener(this);
-    addMouseMotionListener(this);
-    startingPosition_ = new Point();
-    CloseButton cb = new CloseButton(this, poolPanel_);
-    cb.setLocation(185, 6);
-    add(cb, 0);
-  }
-
-  public void paint(Graphics g)
-  {
-    // Enable anti-aliasing
-    RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    renderHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-    ((Graphics2D) g).setRenderingHints(renderHints);
-    // Drop shadow
-    ((Graphics2D) g).drawImage(shadow_, op_, 0, 0);
-    // Wrapping rounded rectangle
-    int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
-    if (!mouseOver_)
-      g.setColor(standardColor);
-    else
-      g.setColor(highlightColor);
-    g.fillRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
-    g.setColor(Color.black);
-    g.drawRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
-    // Module name
-    g.drawString(name_, 100 - (g.getFontMetrics().stringWidth(module_.getName()) / 2), 15);
-    // Line under module name
-    g.drawLine(0, 20, 200, 20);
-    // Ports
-    int currentHeight = 40;
-    int stepHeight = 20;
-    // --- Inputs
-    currentHeight = 40;
-    stepHeight = 20;
-    for (Port p : module_.getInputs())
-    {
-      // Port name
-      g.drawString(p.getName(), 15, currentHeight);
-      currentHeight += stepHeight;
+    public synthlab.api.Module getWrapped() {
+	return module_;
     }
-    // --- Outputs
-    currentHeight = 40;
-    stepHeight = 20;
-    for (Port p : module_.getOutputs())
-    {
-      // Port name
-      g.drawString(p.getName(), 200 - 15 - g.getFontMetrics().stringWidth(p.getName()), currentHeight);
-      currentHeight += stepHeight;
+
+    private void setupShadow() {
+	// Generate an image containing the low quality wrapping rounded
+	// rectangle
+	int maximumPortNumber = Math.max(module_.getInputs().size(), module_
+		.getOutputs().size());
+	shadow_ = new BufferedImage(200 + 1 + 20, maximumPortNumber * 20 + 30
+		+ 1 + 20, BufferedImage.TYPE_INT_ARGB);
+	Graphics2D g = (Graphics2D) shadow_.getGraphics();
+	g.setBackground(Color.white);
+	g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
+	g.fillRoundRect(3, 3, 200, maximumPortNumber * 20 + 30, 20, 20);
+	g.setColor(Color.white);
+	// Convolve the shadow image using a median kernel
+	int kSize = 5;
+	float[] data = new float[kSize * kSize];
+	float value = (float) (1. / (float) (kSize * kSize));
+	for (int i = 0; i < data.length; i++) {
+	    data[i] = value;
+	}
+	op_ = new ConvolveOp(new Kernel(kSize, kSize, data));
     }
-    super.paintComponents(g);
-  }
 
-  @Override
-  public void mouseDragged(MouseEvent e)
-  {
-    int x = e.getX() + getBounds().x - startingPosition_.x;
-    int y = e.getY() + getBounds().y - startingPosition_.y;
-    if (x < 0)
-      x = 0;
-    else
-      if (x + getWidth() >= poolPanel_.getWidth())
-        x = poolPanel_.getWidth() - getWidth();
-    if (y < 0)
-      y = 0;
-    else
-      if (y + getHeight() >= poolPanel_.getHeight())
-        y = poolPanel_.getHeight() - getHeight();
-    setBounds(x, y, getBounds().width, getBounds().height);
-    // This will update the module pool links
-    getParent().repaint();
-  }
+    private void setupGeneral() {
+	setBorder(BorderFactory.createLineBorder(Color.black));
+	setBackground(Color.white);
+	int maximumPortNumber = Math.max(module_.getInputs().size(), module_
+		.getOutputs().size());
+	setBounds(0, 0, 200 + 10, maximumPortNumber * 20 + 30 + 10);
+	addMouseListener(this);
+	addMouseMotionListener(this);
+	startingPosition_ = new Point();
 
-  @Override
-  public void mousePressed(MouseEvent e)
-  {
-    startingPosition_ = e.getPoint();
-  }
-
-  @Override
-  public void mouseClicked(MouseEvent e)
-  {
-    // TODO Double clicked = open settings panel for this module
-    if (e.getClickCount() == 2 && module_.getInputs().size() > 0)
-    {
-      if (configWindow_ == null)
-        configWindow_ = new ModuleConfigWindow(name_, module_, (MainWindow) getRootPane().getParent(), new Point(0, 0));
-      configWindow_.show(e.getLocationOnScreen());
+	// close button
+	CloseButton cb = new CloseButton(this, poolPanel_);
+	cb.setLocation(185, 6);
+	add(cb, 0);
     }
-  }
 
-  public Port portAt(int x, int y)
-  {
-    int i;
-    // At input port ?
-    i = 0;
-    for (Port p : module_.getInputs())
-    {
-      if (x >= 2 && y >= 30 + i * 20 && x <= 14 && y <= 30 + i * 20 + 12)
-        return p;
-      ++i;
+    public void paint(Graphics g) {
+	// Enable anti-aliasing
+	RenderingHints renderHints = new RenderingHints(
+		RenderingHints.KEY_ANTIALIASING,
+		RenderingHints.VALUE_ANTIALIAS_ON);
+	renderHints.put(RenderingHints.KEY_RENDERING,
+		RenderingHints.VALUE_RENDER_QUALITY);
+	((Graphics2D) g).setRenderingHints(renderHints);
+	// Drop shadow
+	((Graphics2D) g).drawImage(shadow_, op_, 0, 0);
+	// Wrapping rounded rectangle
+	int maximumPortNumber = Math.max(module_.getInputs().size(), module_
+		.getOutputs().size());
+	if (!mouseOver_)
+	    g.setColor(standardColor);
+	else
+	    g.setColor(highlightColor);
+	g.fillRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
+	g.setColor(Color.black);
+	g.drawRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
+	// Module name
+	g.drawString(name_, 100 - (g.getFontMetrics().stringWidth(
+		module_.getName()) / 2), 15);
+	// Line under module name
+	g.drawLine(0, 20, 200, 20);
+	// Ports
+	int currentHeight = 40;
+	int stepHeight = 20;
+	// --- Inputs
+	currentHeight = 40;
+	stepHeight = 20;
+	for (Port p : module_.getInputs()) {
+	    // Port name
+	    g.drawString(p.getName(), 15, currentHeight);
+	    currentHeight += stepHeight;
+	}
+	// --- Outputs
+	currentHeight = 40;
+	stepHeight = 20;
+	for (Port p : module_.getOutputs()) {
+	    // Port name
+	    g.drawString(p.getName(), 200 - 15 - g.getFontMetrics()
+		    .stringWidth(p.getName()), currentHeight);
+	    currentHeight += stepHeight;
+	}
+	super.paintComponents(g);
     }
-    // At output port ?
-    i = 0;
-    for (Port p : module_.getOutputs())
-    {
-      if (x >= 186 && y >= 30 + i * 20 && x <= 198 && y <= 30 + i * 20 + 12)
-        return p;
-      ++i;
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+	int x = e.getX() + getBounds().x - startingPosition_.x;
+	int y = e.getY() + getBounds().y - startingPosition_.y;
+	if (x < 0)
+	    x = 0;
+	else if (x + getWidth() >= poolPanel_.getWidth())
+	    x = poolPanel_.getWidth() - getWidth();
+	if (y < 0)
+	    y = 0;
+	else if (y + getHeight() >= poolPanel_.getHeight())
+	    y = poolPanel_.getHeight() - getHeight();
+	setBounds(x, y, getBounds().width, getBounds().height);
+	// This will update the module pool links
+	getParent().repaint();
     }
-    return null;
-  }
 
-  @Override
-  public void mouseMoved(MouseEvent e)
-  {
-  }
+    @Override
+    public void mousePressed(MouseEvent e) {
+	startingPosition_ = e.getPoint();
+    }
 
-  @Override
-  public void mouseEntered(MouseEvent e)
-  {
-    mouseOver_ = true;
-    poolPanel_.repaint();
-  }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+	if (e.getClickCount() == 2 && module_.getInputs().size() > 0) {
+	    if (configWindow_ == null)
+		configWindow_ = new ModuleConfigWindow(name_, module_,
+			(MainWindow) getRootPane().getParent(), new Point(0, 0));
+	    configWindow_.show(e.getLocationOnScreen());
+	}
+    }
 
-  @Override
-  public void mouseExited(MouseEvent e)
-  {
-    mouseOver_ = false;
-    poolPanel_.repaint();
-  }
+    public Port portAt(int x, int y) {
+	int i;
+	// At input port ?
+	i = 0;
+	for (Port p : module_.getInputs()) {
+	    if (x >= 2 && y >= 30 + i * 20 && x <= 14 && y <= 30 + i * 20 + 12)
+		return p;
+	    ++i;
+	}
+	// At output port ?
+	i = 0;
+	for (Port p : module_.getOutputs()) {
+	    if (x >= 186 && y >= 30 + i * 20 && x <= 198
+		    && y <= 30 + i * 20 + 12)
+		return p;
+	    ++i;
+	}
+	return null;
+    }
 
-  @Override
-  public void mouseReleased(MouseEvent e)
-  {
-  }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-  public ArrayList<PortHandler> getPorts()
-  {
-    return ports_;
-  }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+	mouseOver_ = true;
+	poolPanel_.repaint();
+    }
 
-  public void setMouseOver(boolean b)
-  {
-    mouseOver_ = b;
-  }
+    @Override
+    public void mouseExited(MouseEvent e) {
+	mouseOver_ = false;
+	poolPanel_.repaint();
+    }
 
-  /**
-   * Appele cette méthode avant de détruire ce module pour détruire tous ces composants correspondants.
-   * */
-  public void close()
-  {
-    if (configWindow_ != null)
-      configWindow_.dispose();
-  }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
-  public ModuleConfigWindow getConfigWindow()
-  {
-    return configWindow_;
-  }
+    public ArrayList<PortHandler> getPorts() {
+	return ports_;
+    }
 
-  private Point                  startingPosition_;
+    public void setMouseOver(boolean b) {
+	mouseOver_ = b;
+    }
 
-  private synthlab.api.Module    module_;
+    /**
+     * Appele cette méthode avant de détruire ce module pour détruire tous ces
+     * composants correspondants.
+     * */
+    public void close() {
+	if (configWindow_ != null)
+	    configWindow_.dispose();
+    }
 
-  private BufferedImage          shadow_;
+    public ModuleConfigWindow getConfigWindow() {
+	return configWindow_;
+    }
 
-  private ConvolveOp             op_;
+    private Point startingPosition_;
 
-  private int                    wide_            = 200;
+    private synthlab.api.Module module_;
 
-  private ModuleConfigWindow     configWindow_;
+    private BufferedImage shadow_;
 
-  private boolean                mouseOver_       = false;
+    private ConvolveOp op_;
 
-  private ArrayList<PortHandler> ports_           = new ArrayList<PortHandler>();
+    private int wide_ = 200;
 
-  private static final long      serialVersionUID = -5287018845570600845L;
+    private ModuleConfigWindow configWindow_;
 
-  private ModulePoolPanel        poolPanel_;
+    private boolean mouseOver_ = false;
 
-  private String                 name_;
+    private ArrayList<PortHandler> ports_ = new ArrayList<PortHandler>();
 
-  private static Color           highlightColor   = new Color(255, 255, 255, 255);
+    private static final long serialVersionUID = -5287018845570600845L;
 
-  private static Color           standardColor    = new Color(255, 255, 255, 255);
+    private ModulePoolPanel poolPanel_;
+
+    private String name_;
+
+    private static Color highlightColor = new Color(255, 255, 255, 255);
+
+    private static Color standardColor = new Color(255, 255, 255, 255);
 }
