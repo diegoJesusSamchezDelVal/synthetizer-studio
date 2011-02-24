@@ -96,6 +96,7 @@ public abstract class Port extends Observable
     DISCRETE,
     KEYBOARD,
     WAVE_SHAPE,
+    SWITCH,
     INCONFIGURABLE    
   }
   /**

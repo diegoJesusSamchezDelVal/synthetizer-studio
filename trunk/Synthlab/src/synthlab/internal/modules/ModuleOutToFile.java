@@ -51,7 +51,7 @@ public class ModuleOutToFile extends BasicModule
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Input sound wave to be sent to the sound card"));
 
-    addInput(new BasicPort("Recording", -1, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("Recording", -1, Port.ValueType.SWITCH,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1),
         "Record stream data to a wave file"));
 

@@ -47,7 +47,7 @@ public class ModuleVCO extends BasicModule
     addInput(new BasicPort("iShape", SHAPE_SINE, Port.ValueType.WAVE_SHAPE,
         Port.ValueUnit.AMPLITUDE, new Port.ValueRange(0, 1, 4), "Shape of the generated sound wave"));
     
-    addInput(new BasicPort("iActive", 1, Port.ValueType.DISCRETE,
+    addInput(new BasicPort("iActive", 1, Port.ValueType.SWITCH,
         ValueUnit.AMPLITUDE, new Port.ValueRange(-1, 1), "Active control signal"));
 
     addOutput(new BasicPort("oSignal", 0, Port.ValueType.CONTINUOUS,
