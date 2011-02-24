@@ -19,22 +19,12 @@ import synthlabgui.widgets.configPanel.ModuleConfigWindow;
 
 public class Module extends JPanel implements MouseListener, MouseMotionListener
 {
-  private static final long serialVersionUID = -5287018845570600845L;
-
-  private ModulePoolPanel   poolPanel;
-
-  private static Color      highlightColor   = new Color(255, 255, 255, 255);
-
-  private static Color      standardColor    = new Color(255, 255, 255, 255);
-
-  private String            name;
-
   public Module(String name, synthlab.api.Module module, ModulePoolPanel parent)
   {
     super();
     module_ = module;
-    poolPanel = parent;
-    this.name = name;
+    poolPanel_ = parent;
+    this.name_ = name;
     setupGeneral();
     setupShadow();
     setupPorts();
@@ -52,7 +42,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
       PortHandler ph = new PortHandler(p);
       ph.setBounds(0, currentHeight, 16, 14);
       add(ph);
-      ports.add(ph);
+      ports_.add(ph);
       currentHeight += 20;
     }
     currentHeight = 30;
@@ -61,7 +51,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
       // Port circle
       PortHandler ph = new PortHandler(p);
       add(ph);
-      ports.add(ph);
+      ports_.add(ph);
       ph.setBounds(184, currentHeight, (int) ph.getBounds().getWidth(), (int) ph.getBounds().getHeight());
       currentHeight += 20;
     }
@@ -103,7 +93,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     addMouseListener(this);
     addMouseMotionListener(this);
     startingPosition_ = new Point();
-    CloseButton cb = new CloseButton(this, poolPanel);
+    CloseButton cb = new CloseButton(this, poolPanel_);
     cb.setLocation(185, 6);
     add(cb, 0);
   }
@@ -118,15 +108,15 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     ((Graphics2D) g).drawImage(shadow_, op_, 0, 0);
     // Wrapping rounded rectangle
     int maximumPortNumber = Math.max(module_.getInputs().size(), module_.getOutputs().size());
-    if (!mouseOver)
+    if (!mouseOver_)
       g.setColor(standardColor);
     else
       g.setColor(highlightColor);
-    g.fillRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
+    g.fillRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
     g.setColor(Color.black);
-    g.drawRoundRect(0, 0, wide, maximumPortNumber * 20 + 30, 10, 10);
+    g.drawRoundRect(0, 0, wide_, maximumPortNumber * 20 + 30, 10, 10);
     // Module name
-    g.drawString(name, 100 - (g.getFontMetrics().stringWidth(module_.getName()) / 2), 15);
+    g.drawString(name_, 100 - (g.getFontMetrics().stringWidth(module_.getName()) / 2), 15);
     // Line under module name
     g.drawLine(0, 20, 200, 20);
     // Ports
@@ -161,13 +151,13 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     if (x < 0)
       x = 0;
     else
-      if (x + getWidth() >= poolPanel.getWidth())
-        x = poolPanel.getWidth() - getWidth();
+      if (x + getWidth() >= poolPanel_.getWidth())
+        x = poolPanel_.getWidth() - getWidth();
     if (y < 0)
       y = 0;
     else
-      if (y + getHeight() >= poolPanel.getHeight())
-        y = poolPanel.getHeight() - getHeight();
+      if (y + getHeight() >= poolPanel_.getHeight())
+        y = poolPanel_.getHeight() - getHeight();
     setBounds(x, y, getBounds().width, getBounds().height);
     // This will update the module pool links
     getParent().repaint();
@@ -186,7 +176,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     if (e.getClickCount() == 2 && module_.getInputs().size() > 0)
     {
       if (configWindow_ == null)
-        configWindow_ = new ModuleConfigWindow(name, module_, (MainWindow) getRootPane().getParent(), new Point(0, 0));
+        configWindow_ = new ModuleConfigWindow(name_, module_, (MainWindow) getRootPane().getParent(), new Point(0, 0));
       configWindow_.show(e.getLocationOnScreen());
     }
   }
@@ -221,15 +211,15 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
   @Override
   public void mouseEntered(MouseEvent e)
   {
-    mouseOver = true;
-    poolPanel.repaint();
+    mouseOver_ = true;
+    poolPanel_.repaint();
   }
 
   @Override
   public void mouseExited(MouseEvent e)
   {
-    mouseOver = false;
-    poolPanel.repaint();
+    mouseOver_ = false;
+    poolPanel_.repaint();
   }
 
   @Override
@@ -239,28 +229,12 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
 
   public ArrayList<PortHandler> getPorts()
   {
-    return ports;
+    return ports_;
   }
-
-  private Point                  startingPosition_;
-
-  private synthlab.api.Module    module_;
-
-  private BufferedImage          shadow_;
-
-  private ConvolveOp             op_;
-
-  private int                    wide      = 200;
-
-  private ModuleConfigWindow     configWindow_;
-
-  private boolean                mouseOver = false;
-
-  private ArrayList<PortHandler> ports     = new ArrayList<PortHandler>();
 
   public void setMouseOver(boolean b)
   {
-    mouseOver = b;
+    mouseOver_ = b;
   }
 
   /**
@@ -276,4 +250,30 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
   {
     return configWindow_;
   }
+
+  private Point                  startingPosition_;
+
+  private synthlab.api.Module    module_;
+
+  private BufferedImage          shadow_;
+
+  private ConvolveOp             op_;
+
+  private int                    wide_            = 200;
+
+  private ModuleConfigWindow     configWindow_;
+
+  private boolean                mouseOver_       = false;
+
+  private ArrayList<PortHandler> ports_           = new ArrayList<PortHandler>();
+
+  private static final long      serialVersionUID = -5287018845570600845L;
+
+  private ModulePoolPanel        poolPanel_;
+
+  private String                 name_;
+
+  private static Color           highlightColor   = new Color(255, 255, 255, 255);
+
+  private static Color           standardColor    = new Color(255, 255, 255, 255);
 }
