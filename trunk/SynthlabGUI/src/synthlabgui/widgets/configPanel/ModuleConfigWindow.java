@@ -55,6 +55,8 @@ public class ModuleConfigWindow extends JDialog
    * */
   private String                                title;
 
+  private boolean                               showing          = false;
+
   /**
    * Constructor
    * 
@@ -247,14 +249,22 @@ public class ModuleConfigWindow extends JDialog
     }
     setLocation(point);
     setVisible(true);
+    showing = true;
   }
 
   /**
    * Hide the window.
    * */
-  public void unshow()
+  public void unshow(boolean userOperation)
   {
     setVisible(false);
+    if (userOperation)
+      showing = false;
+  }
+
+  public boolean isShowing()
+  {
+    return showing;
   }
 
   /**
@@ -357,7 +367,7 @@ public class ModuleConfigWindow extends JDialog
       mousePressed = false;
       repaint();
       if (this.contains(e.getPoint()))
-        unshow();
+        unshow(true);
     }
 
     @Override

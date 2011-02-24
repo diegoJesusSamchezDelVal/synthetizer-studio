@@ -29,7 +29,7 @@ public class Module extends JPanel implements MouseListener, MouseMotionListener
     setupGeneral();
     setupShadow();
     setupPorts();
-    configWindow_ = new ModuleConfigWindow(name, module_, parent.getParentPanel(), new Point(0, 0));
+    configWindow_ = new ModuleConfigWindow(name, module_, null/* parent.getParentPanel() */, new Point(0, 0));
   }
 
   public void setupPorts()

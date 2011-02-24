@@ -2,6 +2,7 @@ package synthlabgui.widgets;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import synthlab.internal.Audio;
+import synthlabgui.widgets.configPanel.ModuleConfigWindow;
 
 public class MainWindow extends JFrame implements WindowListener
 {
@@ -181,6 +183,27 @@ public class MainWindow extends JFrame implements WindowListener
     }
   }
 
+  private void hideWindows()
+  {
+    for (Component com : modulePoolPanel_.getComponents())
+    {
+      ModuleConfigWindow window = ((Module) com).getConfigWindow();
+      System.out.println("config:" + window.isActive());
+      window.unshow(false);
+    }
+  }
+
+  private void recoverWindows()
+  {
+    for (Component com : modulePoolPanel_.getComponents())
+    {
+      ModuleConfigWindow window = ((Module) com).getConfigWindow();
+      // window.setAlwaysOnTop(true);
+      if (window.isShowing())
+        window.show(window.getLocation());
+    }
+  }
+
   // ====================================================================
   // WINDOW LISTENERS
   // --------------------------------------------------------------------
@@ -188,11 +211,6 @@ public class MainWindow extends JFrame implements WindowListener
   // the incoming events. Same for menu items & all. This allow us to
   // share actions between events.
   // ====================================================================
-  @Override
-  public void windowActivated(WindowEvent e)
-  {
-  }
-
   @Override
   public void windowClosed(WindowEvent e)
   {
@@ -207,16 +225,38 @@ public class MainWindow extends JFrame implements WindowListener
   @Override
   public void windowDeactivated(WindowEvent e)
   {
+    System.out.println("Desactivated");
+    boolean hasActive = false;
+    for (Component com : modulePoolPanel_.getComponents())
+    {
+      ModuleConfigWindow window = ((Module) com).getConfigWindow();
+      if (window.isActive())
+      {
+        hasActive = true;
+        break;
+      }
+    }
+    System.out.println(hasActive);
+    // hideWindows();
+  }
+
+  @Override
+  public void windowActivated(WindowEvent e)
+  {
+    System.out.println("activated");
+    // recoverWindows();
   }
 
   @Override
   public void windowDeiconified(WindowEvent e)
   {
+    recoverWindows();
   }
 
   @Override
   public void windowIconified(WindowEvent e)
   {
+    hideWindows();
   }
 
   @Override
